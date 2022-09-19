@@ -11,45 +11,60 @@ datasource db {
 }
 
 model AnotherPaymentsBill {
-  id Int @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
+  name        String?
+  amount      Int
+  date        String
+  inReturn    String
+  description String?
 }
 
 model ProjectBill {
-  id               String       @id @map("_id")
-  name             String       @unique
-  clientName       String       
-  clientAddress    String
-  workers          WorkerBill[]
-  workerPrecentage Int
-  revenues         Revenues[]
-  exposes          Exposes[]
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  workers  Worker[]
+  revenues Revenue[]
+  exposes  Exposes[]
+  Client   Client?   @relation(fields: [clientId], references: [id])
+  clientId Int?
 }
 
-model WorkerBill {
-  id         String  @id @map("_id")
-  workerName String
-  salary     Int
-  date       String
-  work       String
-  project    ProjectBill @relation(fields: [projectId], references: [id])
-  projectId  String  @unique
+model Worker {
+  id          Int           @id @default(autoincrement())
+  workerName  String
+  salary      Int
+  date        String
+  work        String
+  projectName String
+  projects    ProjectBill @relation(fields: [projectId], references: [id])
+  projectId   Int
 }
 
-model Revenues {
-  id        String  @id @map("_id")
-  amount    String
-  date      String
-  project    ProjectBill @relation(fields: [projectId], references: [id])
-  projectId  String  @unique
+model Revenue {
+  id     Int    @id @default(autoincrement())
+  amount Int
+  date   String
+
+  ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
+  projectBillId Int?
 }
 
 model Exposes {
-  id           String  @id @map("_id")
+  id           Int    @id @default(autoincrement())
   materialName String
   date         String
-  cost         String
+  totalcost    String
   billCode     String
-  project    ProjectBill @relation(fields: [projectId], references: [id])
-  projectId  String  @unique
+
+  ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
+  projectBillId Int?
 }
 
+model Client {
+  id      Int    @id @default(autoincrement())
+  name    String
+  address String
+
+  projects ProjectBill[]
+}
