@@ -2,21 +2,27 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model AnotherPaymentsBill {
-  id          String  @id @map("_id")
-  Name        String?
-  Amount      Int
-  Date        String
-  InReturn    String
-  Description String?
+  id Int @id @default(autoincrement())
+}
+
+model ProjectBill {
+  id               String       @id @map("_id")
+  Name             String       @unique
+  ClientName       String       
+  ClientAddress    String
+  Workers          WorkerBill[]
+  WorkerPrecentage Int
+  Revenues         Revenues[]
+  Exposes          Exposes[]
 }
 
 model WorkerBill {
@@ -25,40 +31,15 @@ model WorkerBill {
   Salary     Int
   Date       String
   Work       String
-  Project    Project @relation(fields: [ProjectId], references: [id])
+  Project    ProjectBill @relation(fields: [ProjectId], references: [id])
   ProjectId  String  @unique
-}
-
-model ClientBill {
-  id        String  @id @map("_id")
-  Project   Project @relation(fields: [ProjectId], references: [id])
-  ProjectId String  @unique
-  Client    Client  @relation(fields: [ClientId], references: [id])
-  ClientId  String  @unique
-}
-
-model Client {
-  id         String       @id @map("_id")
-  Name       String
-  Address    String
-  ClientBill ClientBill[]
-}
-
-model Project {
-  id               String       @id @map("_id")
-  Name             String       @unique
-  Workers          WorkerBill[]
-  WorkerPrecentage Int
-  Revenues         Revenues[]
-  Exposes          Exposes[]
-  ClientBill       ClientBill[]
 }
 
 model Revenues {
   id        String  @id @map("_id")
   Amount    String
   Date      String
-  Project   Project @relation(fields: [ProjectId], references: [id])
+  Project   ProjectBill @relation(fields: [ProjectId], references: [id])
   ProjectId String  @unique
 }
 
@@ -68,7 +49,7 @@ model Exposes {
   Date         String
   Cost         String
   BillCode     String
-  Project      Project @relation(fields: [ProjectId], references: [id])
+  Project      ProjectBill @relation(fields: [ProjectId], references: [id])
   ProjectId    String  @unique
 }
- 
+
