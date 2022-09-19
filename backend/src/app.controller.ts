@@ -9,15 +9,16 @@ export class AppController {
 
   @Get()
   async getHello() {
-    const ApBill = await prisma.anotherPaymentsBill.create({
+    //@ts-ignore
+    const ApBill = await prisma.AnotherPaymentsBill.create({
       //@ts-ignore
       data: {
-        Amount: 25,
-        Date : '2022',
-        InReturn : "Something"
+        //@ts-ignore
+        date : '2022',
+        amount: 20,
+        inReturn: '22'
       }
     })
 
-    console.log(ApBill)
   }
 }
