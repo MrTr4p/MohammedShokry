@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongodb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model AnotherPaymentsBit {
+  id          String  @id @map("_id")
+  Name        String?
+  Amount      Int
+  Date        String
+  InReturn    String
+  Description String?
+}
+
+model WorkerBill {
+  id         String  @id @map("_id")
+  WorkerName String
+  Salary     Int
+  Date       String
+  Work       String
+  Project    Project @relation(fields: [ProjectId], references: [id])
+  ProjectId  String  @unique
+}
+
+model ClientBill {
+  id        String  @id @map("_id")
+  Project   Project @relation(fields: [ProjectId], references: [id])
+  ProjectId String  @unique
+  Client    Client  @relation(fields: [ClientId], references: [id])
+  ClientId  String  @unique
+}
+
+model Client {
+  id         String       @id @map("_id")
+  Name       String
+  Address    String
+  ClientBill ClientBill[]
+}
+
+model Project {
+  id               String       @id @map("_id")
+  Name             String       @unique
+  Workers          WorkerBill[]
+  WorkerPrecentage Int
+  Revenues         Revenues[]
+  Exposes          Exposes[]
+  ClientBill       ClientBill[]
+}
+
+model Revenues {
+  id        String  @id @map("_id")
+  Amount    String
+  Date      String
+  Project   Project @relation(fields: [ProjectId], references: [id])
+  ProjectId String  @unique
+}
+
+model Exposes {
+  id           String  @id @map("_id")
+  MaterialName String
+  Date         String
+  Cost         String
+  BillCode     String
+  Project      Project @relation(fields: [ProjectId], references: [id])
+  ProjectId    String  @unique
+}
