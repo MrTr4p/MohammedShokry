@@ -16,40 +16,40 @@ model AnotherPaymentsBill {
 
 model ProjectBill {
   id               String       @id @map("_id")
-  Name             String       @unique
-  ClientName       String       
-  ClientAddress    String
-  Workers          WorkerBill[]
-  WorkerPrecentage Int
-  Revenues         Revenues[]
-  Exposes          Exposes[]
+  name             String       @unique
+  clientName       String       
+  clientAddress    String
+  workers          WorkerBill[]
+  workerPrecentage Int
+  revenues         Revenues[]
+  exposes          Exposes[]
 }
 
 model WorkerBill {
   id         String  @id @map("_id")
-  WorkerName String
-  Salary     Int
-  Date       String
-  Work       String
-  Project    ProjectBill @relation(fields: [ProjectId], references: [id])
-  ProjectId  String  @unique
+  workerName String
+  salary     Int
+  date       String
+  work       String
+  project    ProjectBill @relation(fields: [projectId], references: [id])
+  projectId  String  @unique
 }
 
 model Revenues {
   id        String  @id @map("_id")
-  Amount    String
-  Date      String
-  Project   ProjectBill @relation(fields: [ProjectId], references: [id])
-  ProjectId String  @unique
+  amount    String
+  date      String
+  project    ProjectBill @relation(fields: [projectId], references: [id])
+  projectId  String  @unique
 }
 
 model Exposes {
   id           String  @id @map("_id")
-  MaterialName String
-  Date         String
-  Cost         String
-  BillCode     String
-  Project      ProjectBill @relation(fields: [ProjectId], references: [id])
-  ProjectId    String  @unique
+  materialName String
+  date         String
+  cost         String
+  billCode     String
+  project    ProjectBill @relation(fields: [projectId], references: [id])
+  projectId  String  @unique
 }
 
