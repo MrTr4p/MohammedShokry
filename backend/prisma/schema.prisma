@@ -11,7 +11,7 @@ datasource db {
 }
 
 model AnotherPaymentsBill {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String?
   amount      Int
   date        DateTime
@@ -20,17 +20,18 @@ model AnotherPaymentsBill {
 }
 
 model ProjectBill {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  workers  Worker[]
-  revenues Revenue[]
-  exposes  Exposes[]
-  Client   Client?   @relation(fields: [clientId], references: [id])
-  clientId Int?
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  precentage Int
+  workers    Worker[]
+  revenues   Revenue[]
+  exposes    Expenses[]
+  Client     Client?   @relation(fields: [clientId], references: [id])
+  clientId   Int?
 }
 
 model Worker {
-  id          Int           @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   workerName  String
   salary      Int
   date        DateTime
@@ -41,16 +42,16 @@ model Worker {
 }
 
 model Revenue {
-  id     Int    @id @default(autoincrement())
+  id     Int      @id @default(autoincrement())
   amount Int
   date   DateTime
 
-  ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
-  projectBillId Int?
+  ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
+  projectBillId Int
 }
 
-model Exposes {
-  id           Int    @id @default(autoincrement())
+model Expenses {
+  id           Int      @id @default(autoincrement())
   materialName String
   date         DateTime
   totalcost    String
