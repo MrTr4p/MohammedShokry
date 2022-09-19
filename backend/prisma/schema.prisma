@@ -11,7 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AnotherPaymentsBit {
+model AnotherPaymentsBill {
   id          String  @id @map("_id")
   Name        String?
   Amount      Int
@@ -72,3 +72,4 @@ model Exposes {
   Project      Project @relation(fields: [ProjectId], references: [id])
   ProjectId    String  @unique
 }
+ 
