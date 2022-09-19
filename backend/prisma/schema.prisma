@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = "file:./dev.db"
 }
 
@@ -14,7 +14,7 @@ model AnotherPaymentsBill {
   id          Int     @id @default(autoincrement())
   name        String?
   amount      Int
-  date        String
+  date        DateTime
   inReturn    String
   description String?
 }
@@ -33,7 +33,7 @@ model Worker {
   id          Int           @id @default(autoincrement())
   workerName  String
   salary      Int
-  date        String
+  date        DateTime
   work        String
   projectName String
   projects    ProjectBill @relation(fields: [projectId], references: [id])
@@ -43,7 +43,7 @@ model Worker {
 model Revenue {
   id     Int    @id @default(autoincrement())
   amount Int
-  date   String
+  date   DateTime
 
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
   projectBillId Int?
@@ -52,7 +52,7 @@ model Revenue {
 model Exposes {
   id           Int    @id @default(autoincrement())
   materialName String
-  date         String
+  date         DateTime
   totalcost    String
   billCode     String
 

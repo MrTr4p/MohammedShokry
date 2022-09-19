@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 @Controller()
@@ -9,16 +9,24 @@ export class AppController {
 
   @Get()
   async getHello() {
-    //@ts-ignore
-    const ApBill = await prisma.AnotherPaymentsBill.create({
-      //@ts-ignore
-      data: {
-        //@ts-ignore
-        date : '2022',
-        amount: 20,
-        inReturn: '22'
+    const ApBill = await prisma.projectBill.create({
+      data :{
+        name: '30د',
+        revenues: {
+          //@ts-ignore
+          createMany:{
+            data:[
+              {
+                amount:20,
+                date:new Date('2020')
+              }
+            ]
+          }
+        },
       }
     })
 
+
+    return ApBill
   }
 }
