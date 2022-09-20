@@ -20,25 +20,28 @@ model AnotherPaymentsBill {
 }
 
 model ProjectBill {
-  id         Int       @id @default(autoincrement())
-  name       String    @unique
-  precentage Int
-  workers    Worker[]
-  revenues   Revenue[]
-  exposes    Expenses[]
-  Client     Client?   @relation(fields: [clientId], references: [id])
-  clientId   Int?
+  id               Int        @id @default(autoincrement())
+  name             String     @unique
+  officePrecentage Int
+  date             Int
+  workers          Worker[]
+  revenues         Revenue[]
+  expenses         Expenses[]
+  Client           Client?    @relation(fields: [clientId], references: [id])
+  clientId         Int?
 }
 
 model Worker {
-  id          Int         @id @default(autoincrement())
-  workerName  String
-  salary      Int
-  date        DateTime
-  work        String
-  projectName String
-  projects    ProjectBill @relation(fields: [projectId], references: [id])
-  projectId   Int
+  id               Int         @id @default(autoincrement())
+  workerName       String
+  salary           Int
+  precentage       Int?
+  salaryPrecentage Int
+  date             DateTime
+  work             String
+  projectName      String
+  projects         ProjectBill @relation(fields: [projectId], references: [id])
+  projectId        Int
 }
 
 model Revenue {
@@ -51,12 +54,12 @@ model Revenue {
 }
 
 model Expenses {
-  id           Int      @id @default(autoincrement())
-  materialName String
-  date         DateTime
-  totalcost    String
-  billCode     String
-
+  id            Int          @id @default(autoincrement())
+  materialName  String
+  date          DateTime
+  totalcost     Int
+  billCode      String?
+  day           String
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
   projectBillId Int?
 }
