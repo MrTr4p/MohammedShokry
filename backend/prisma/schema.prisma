@@ -23,12 +23,12 @@ model ProjectBill {
   id               Int        @id @default(autoincrement())
   name             String     @unique
   officePrecentage Int
-  date             Int
+  date             DateTime
   workers          Worker[]
   revenues         Revenue[]
   expenses         Expenses[]
-  Client           Client?    @relation(fields: [clientId], references: [id])
-  clientId         Int?
+  clientName       String
+  clientAddress    String
 }
 
 model Worker {
@@ -64,10 +64,3 @@ model Expenses {
   projectBillId Int?
 }
 
-model Client {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-
-  projects ProjectBill[]
-}
