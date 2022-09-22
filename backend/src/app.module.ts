@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { BillModule } from './Bill/bill.module'
+import { BillModule } from './ProjectNormalBill/bill.module'
+import { BillModule as TypeBillModule } from './Detailedbill/bill.module';
 @Module({
-  imports: [BillModule],
+  imports: [BillModule ,TypeBillModule ],
 
 })
 export class AppModule {}

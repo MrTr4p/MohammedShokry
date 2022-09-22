@@ -12,11 +12,6 @@ export class BillController {
     return await this.appService.createNewBill(request);
   }
 
-  @Get('/get/:name')
-  async getBill(@Param() param) {
-    console.log(param);
-    return await this.appService.getBill(param);
-  }
 
   @Delete('/delete/:name')
   async deleteBill(@Param() param) {

@@ -16,13 +16,14 @@ async function getBill(reqParam){
 
 async function createAndModify(reqBody, projectBill) {
   const expenses = reqBody.expenses;
+  try{
     for (let i = 0; i < expenses.length; i++) {
       const materialName = expenses[i].materialName.trim()
       const rev = await prisma.expenses.create({
         data: {
           materialName: materialName,
           totalcost: expenses[i].totalcost,
-          date: new Date(expenses[i].date),
+          date: new Date(expenses[i].date).toLocaleDateString(),
           
           day: expenses[i].day,
           billCode: expenses[i].billCode,
@@ -34,14 +35,19 @@ async function createAndModify(reqBody, projectBill) {
         },
       });
     }
+  }
+  catch(e){
+    console.log(e)
+  }
     const workers = reqBody.workers
+    try{
     for (let i = 0; i < workers.length; i++) {
       console.log(workers[i]);
       const workerName = workers[i].workerName.trim() 
       const rev = await prisma.worker.create({
         data: {
           workerName: workerName,
-          date: new Date(workers[i].date),
+          date: new Date(workers[i].date).toLocaleDateString(),
           salary: workers[i].salary,
           precentage: workers[i].precentage,
           salaryPrecentage: workers[i].salary * ( workers[i].precentage/100),
@@ -55,15 +61,20 @@ async function createAndModify(reqBody, projectBill) {
         },
       });
     }
+  }
+  catch(e){
+    console.log(e)
+  }
 
 
     const revenues = reqBody.revenues;
+    try{
     for (let i = 0; i < revenues.length; i++) {
       console.log(revenues[i]);
       const rev = await prisma.revenue.create({
         data: {
           amount: revenues[i].amount,
-          date: new Date(revenues[i].date),
+          date: new Date(revenues[i].date).toLocaleDateString(),
           ProjectBill: {
             connect: {
               id: projectBill.id,
@@ -72,6 +83,10 @@ async function createAndModify(reqBody, projectBill) {
         },
       });
     }
+  }
+  catch(e){
+    console.log(e)
+  }
 }
 
 async function createBill(reqBody) {
@@ -84,7 +99,7 @@ async function createBill(reqBody) {
       data: {
         name: projectName,
         //@ts-ignore
-        date: new Date(reqBody.date),
+        date: new Date(reqBody.date).toLocaleDateString(),
         officePrecentage: reqBody.precentage,
         clientName: reqBody.clientName,
         clientAddress: reqBody.clientAddress
@@ -194,6 +209,9 @@ export class BilService {
     const reqParam = param
     const reqBody = request.body
     const bill = await getBill(reqParam)
+    console.log(bill)
     createAndModify(reqBody, bill)
+
+    return "لقد تم تحديث الفاتورة ب نجاح"
   }
 }
