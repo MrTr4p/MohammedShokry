@@ -50,7 +50,8 @@ async function createAndModify(reqBody, projectBill) {
           date: new Date(workers[i].date).toLocaleDateString(),
           salary: workers[i].salary,
           precentage: workers[i].precentage,
-          salaryPrecentage: workers[i].salary * ( workers[i].precentage/100),
+          //@ts-ignore
+          salaryPrecentage: parseInt(workers[i].salary * ( workers[i].precentage/100)),
           projectName: projectBill.name,
           work: workers[i].work,
           projects: {
@@ -60,6 +61,7 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
+      console.log(rev)
     }
   }
   catch(e){
