@@ -25,6 +25,7 @@ export class BilService {
     const bill = await getBill(reqParam)
     const materialName = request.body.materialName
     const dates = []
+    let totalCost = 0
     const finalBill = []
     
 
@@ -53,14 +54,14 @@ export class BilService {
           }
           
         }
+       
         finalBill.push({
           date: dates[i],
-          totalCost: result
+          materialCost: result
         })
-       
+        totalCost = result + totalCost
       }
-       console.log(finalBill)
-      return finalBill
+      return {finalBill: finalBill , totalCost : totalCost}
     }
     else{
       throw new HttpException({
