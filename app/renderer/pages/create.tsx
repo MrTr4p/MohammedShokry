@@ -11,12 +11,12 @@ function Home() {
 	return (
 		<>
 			<Head>
-				<title>Home</title>
+				<title>Create New</title>
 			</Head>
 			<main>
 				<div className="flex justify-between items-start">
 					<div className="flex flex-col items-start gap-2">
-						<Header>الفواتير</Header>
+						<Header>أضافة فاتورة جديدة</Header>
 						<SubHeader>
 							كلام
 							كتيييييييييييييييييييييييييييييييييييييييييييييييييييير

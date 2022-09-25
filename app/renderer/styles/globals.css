@@ -9,3 +9,9 @@
 		@apply bg-base !font-cairo;
 	}
 }
+
+@layer utilities {
+	.btn-primary {
+		@apply bg-primary text-white font-semibold flex items-center gap-4 px-4 py-2 rounded-md hover:bg-primary/80 active:bg-primary transition;
+	}
+}
