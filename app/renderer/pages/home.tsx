@@ -1,16 +1,15 @@
-import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
 
 function Home() {
-  return (
-    <React.Fragment>
-      <Head>
-        <title>Home - Nextron (with-typescript-tailwindcss)</title>
-      </Head>
-
-    </React.Fragment>
-  );
+	return (
+		<React.Fragment>
+			<Head>
+				<title>Home - Nextron (with-typescript-tailwindcss)</title>
+			</Head>
+		</React.Fragment>
+	);
 }
 
 export default Home;
