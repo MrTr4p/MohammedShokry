@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Redirect, Req, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Redirect, Req, Delete, Put, Query } from '@nestjs/common';
 import { BilService } from './bill.service';
 import { Request, Param } from '@nestjs/common';
 
@@ -12,6 +12,10 @@ export class BillController {
     return await this.appService.createNewBill(request);
   }
 
+  @Get('/get/:name')
+  async getBill(@Param() param, @Query() query){
+    return await this.appService.getBill(param)
+  }
 
   @Delete('/delete/:name')
   async deleteBill(@Param() param) {

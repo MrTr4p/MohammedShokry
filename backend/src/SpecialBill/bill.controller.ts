@@ -8,7 +8,12 @@ export class BillController {
 
 
   @Post('/create')
-  async getBill(@Req() request) {
+  async createBill(@Req() request) {
     return await this.appService.createBill(request);
+  } 
+
+  @Get('/get/:name')
+  async getBill(@Param() param){
+    return await this.appService.getBill(param)
   }
 }

@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, ProjectBill } from '@prisma/client';
 import { Controller, Get, Post, Redirect, Req , HttpException, HttpStatus} from '@nestjs/common';
 import { Request } from '@nestjs/common';
 const prisma = new PrismaClient();
+
+
+
 
 async function getBill(reqParam){
   const bill = await prisma.projectBill.findFirst({
@@ -41,7 +44,12 @@ async function createAndModify(reqBody, projectBill) {
   }
     const workers = reqBody.workers
     try{
+    
     for (let i = 0; i < workers.length; i++) {
+      if(workers[i].precentage == null)
+      {
+        workers[i].precentage = 0
+      }
       console.log(workers[i]);
       const workerName = workers[i].workerName.trim() 
       const rev = await prisma.worker.create({
@@ -151,10 +159,9 @@ export class BilService {
 
   async getBill(param){
     const reqParam: {name: string} = param as any
-    console.log(reqParam.name)
     const bill = await getBill(reqParam)
-    
-    
+
+
     if(bill){
       const revenues = await prisma.revenue.findMany({
         where:{
@@ -171,7 +178,7 @@ export class BilService {
           projectId: bill.id
         }
       })
-      return {bill,expenses, revenues, workers}
+      return {bill : bill ,  expenses, revenues, workers}
     }
     else{
       throw new HttpException({

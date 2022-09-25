@@ -24,6 +24,14 @@ export class BilService {
     const reqParam: {name: string} = param as any
     const bill = await getBill(reqParam)
     const materialName = request.body.materialName
+    const material = await prisma.expenses.findMany({
+      where:{
+        materialName: materialName
+      }
+    })
+    console.log(material)
+    if(material && material.length != 0)
+    {
     const dates = []
     let totalCost = 0
     const finalBill = []
@@ -70,6 +78,10 @@ export class BilService {
       }, HttpStatus.NOT_FOUND);
     }
   }
+  else{
+    return "الفاتورة لا يوجد فيها هذا البند"
+  }
+}
 
   
 }
