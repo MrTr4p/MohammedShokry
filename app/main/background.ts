@@ -13,17 +13,17 @@ if (isProd) {
 (async () => {
 	await app.whenReady();
 
-  const mainWindow = createWindow('main', {
-    autoHideMenuBar: true,
-    width: 1000,
-    height: 600,
-  });
+	const mainWindow = createWindow("main", {
+		autoHideMenuBar: true,
+		width: 1000,
+		height: 600,
+	});
 
 	if (isProd) {
 		await mainWindow.loadURL("app://./home.html");
 	} else {
 		const port = process.argv[2];
-		await mainWindow.loadURL(`http://localhost:${port}/home`);
+		await mainWindow.loadURL(`http://localhost:${port}`);
 		mainWindow.webContents.openDevTools();
 	}
 })();

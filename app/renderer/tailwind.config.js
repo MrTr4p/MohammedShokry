@@ -6,7 +6,14 @@ module.exports = {
 		"./renderer/components/**/*.{js,ts,jsx,tsx}",
 	],
 	theme: {
+		container: {
+			center: true,
+			padding: "1rem",
+		},
 		extend: {
+			fontFamily: {
+				cairo: ["Cairo", "sans-serif"],
+			},
 			colors: {
 				primary: "#55516C",
 				secondary: "#ECECEC",
@@ -14,5 +21,6 @@ module.exports = {
 			},
 		},
 	},
+
 	plugins: [],
 };
