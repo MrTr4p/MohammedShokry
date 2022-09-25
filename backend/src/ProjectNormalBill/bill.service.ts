@@ -2,10 +2,51 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient, ProjectBill } from '@prisma/client';
 import { Controller, Get, Post, Redirect, Req , HttpException, HttpStatus} from '@nestjs/common';
 import { Request } from '@nestjs/common';
+import { BillController } from './bill.controller';
 const prisma = new PrismaClient();
 
 
-
+async function modeifyAndDelete(reqBody){
+  try{
+  for (let i = 0; i < reqBody.workers.length; i++) {
+    await prisma.worker.delete({
+      where:{
+        id:reqBody.workers[i]
+      }
+    })
+    
+  }
+}
+catch(e){
+  console.log(e)
+}
+try{
+  for (let i = 0; i < reqBody.revenues.length; i++) {
+    await prisma.revenue.delete({
+      where:{
+        id:reqBody.revenues[i]
+      }
+    })
+    
+  }
+}
+catch(e){
+  console.log(e)
+}
+try{
+  for (let i = 0; i < reqBody.expenses.length; i++) {
+    await prisma.expenses.delete({
+      where:{
+        id:reqBody.expenses[i]
+      }
+    })
+    
+  }
+}
+catch(e){
+  console.log(e)
+}
+}
 
 async function getBill(reqParam){
   const bill = await prisma.projectBill.findFirst({
@@ -18,8 +59,10 @@ async function getBill(reqParam){
 }
 
 async function createAndModify(reqBody, projectBill) {
-  const expenses = reqBody.expenses;
+  
   try{
+    const expenses = reqBody.expenses;
+    console.log(expenses)
     for (let i = 0; i < expenses.length; i++) {
       const materialName = expenses[i].materialName.trim()
       const rev = await prisma.expenses.create({
@@ -42,9 +85,10 @@ async function createAndModify(reqBody, projectBill) {
   catch(e){
     console.log(e)
   }
-    const workers = reqBody.workers
+   
     try{
-    
+      const workers = reqBody.workers
+      console.log(workers)
     for (let i = 0; i < workers.length; i++) {
       if(workers[i].precentage == null)
       {
@@ -69,7 +113,6 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
-      console.log(rev)
     }
   }
   catch(e){
@@ -77,8 +120,9 @@ async function createAndModify(reqBody, projectBill) {
   }
 
 
-    const revenues = reqBody.revenues;
+   
     try{
+      const revenues = reqBody.revenues;
     for (let i = 0; i < revenues.length; i++) {
       console.log(revenues[i]);
       const rev = await prisma.revenue.create({
@@ -92,31 +136,39 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
+      console.log(rev)
     }
   }
   catch(e){
     console.log(e)
   }
+  return 'تم انشاء الفاتورة بنجاح'
+ 
+ 
 }
 
 async function createBill(reqBody) {
   console.log("phase3")
-  console.log(reqBody.expenses)
 
   if (reqBody.expenses && reqBody.revenues && reqBody.workers) {
-    const projectName = reqBody.name.trim()
+    try{
     const projectBill = await prisma.projectBill.create({
       data: {
-        name: projectName,
-        //@ts-ignore
+        name: reqBody.name.trim(),
         date: new Date(reqBody.date).toLocaleDateString(),
         officePrecentage: reqBody.precentage,
         clientName: reqBody.clientName,
         clientAddress: reqBody.clientAddress
       },
     });
-
     createAndModify(reqBody, projectBill)
+  }
+  catch(e){
+    console.log('error')
+    console.log(e)
+  }
+  
+    
 
     
   } else {
@@ -128,22 +180,23 @@ async function createBill(reqBody) {
   }
 }
 
-
 @Injectable()
 export class BilService {
   async createNewBill(request: Request) {
     console.log('phase2')
-    let reqBody  = request.body as any
+    //@ts-ignore
+    let reqBody  = request.body.new as any
     let oldBill  = await prisma.projectBill.findFirst({
       where: {
         name: reqBody.name,
       },
     }) as any;
-    
+    console.log(oldBill)
     
     try {
       if (oldBill.expenses && oldBill.revenues) {
         await createBill(reqBody);
+        console.log('12')
       } else {
         await prisma.projectBill.delete({
           where: {
@@ -152,6 +205,7 @@ export class BilService {
         });
       }
     } catch (e) {
+      console.log(e)
       await createBill(reqBody);
     }
   }
@@ -216,11 +270,18 @@ export class BilService {
 
   async modifyBill(param , request){
     const reqParam = param
-    const reqBody = request.body
+    const newReqBody = request.body.new
+    const oldReqBody = request.body.delete
     const bill = await getBill(reqParam)
     console.log(bill)
-    createAndModify(reqBody, bill)
-
+    if(bill){
+    createAndModify(newReqBody, bill)
+    modeifyAndDelete(oldReqBody)
     return "لقد تم تحديث الفاتورة ب نجاح"
+    }
+    else{
+      return "لا توجد فاتورة بهذا الاسم"
+    }
+    
   }
 }

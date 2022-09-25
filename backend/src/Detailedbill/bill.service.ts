@@ -24,9 +24,11 @@ export class BilService {
     const reqParam: {name: string} = param as any
     const bill = await getBill(reqParam)
     const materialName = request.body.materialName
+    console.log(materialName)
     const material = await prisma.expenses.findMany({
       where:{
-        materialName: materialName
+        materialName: materialName,
+        projectBillId: bill.id
       }
     })
     console.log(material)

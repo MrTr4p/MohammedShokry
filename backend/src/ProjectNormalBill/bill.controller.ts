@@ -8,13 +8,14 @@ export class BillController {
 
   @Post('/create')
   async createBill(@Req() request: Request) {
-    console.log('phase1');
     return await this.appService.createNewBill(request);
+    
   }
 
   @Get('/get/:name')
   async getBill(@Param() param, @Query() query){
     return await this.appService.getBill(param)
+    
   }
 
   @Delete('/delete/:name')

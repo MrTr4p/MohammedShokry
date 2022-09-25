@@ -22,44 +22,61 @@ async function getPageinatedBill(query) {
   const page = parseInt(query.page);
   const limit = parseInt(query.limit);
   const filter = query.filter;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+  console.log(page)
   const results: Partial<result> = {};
   let model;
-  let count;
-  if (filter == 'office') {
-    model = await prisma.anotherPaymentsBill.findMany({
-      skip: startIndex,
-      take: limit,
-    });
-
-    count = await prisma.anotherPaymentsBill.count();
-  } else if (filter == 'public') {
+  if(page != null && limit != null && filter != null){
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    
+   
+    let count;
+    if (filter == 'office') {
+      model = await prisma.anotherPaymentsBill.findMany({
+        skip: startIndex,
+        take: limit,
+      });
+  
+      count = await prisma.anotherPaymentsBill.count();
+    } else if (filter == 'public') {
+      model = await prisma.projectBill.findMany({
+        skip: startIndex,
+        take: limit,
+        include: {
+          expenses: true,
+          revenues: true,
+          workers: true,
+          _count: true,
+        },
+      });
+      count = prisma.projectBill.count();
+    }
+  
+    if (endIndex < count) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+  }else{
     model = await prisma.projectBill.findMany({
-      skip: startIndex,
-      take: limit,
-      include: {
-        expenses: true,
-        revenues: true,
-        workers: true,
-        _count: true,
-      },
-    });
-    count = prisma.projectBill.count();
+      skip:0,
+      take: 10,
+      include:{
+        _count:true,
+        expenses:true,
+        revenues:true,
+        workers:true
+      }
+    })
   }
-
-  if (endIndex < count) {
-    results.next = {
-      page: page + 1,
-      limit: limit,
-    };
-  }
-  if (startIndex > 0) {
-    results.previous = {
-      page: page - 1,
-      limit: limit,
-    };
-  }
+ 
   try {
     results.results = model;
 
@@ -81,8 +98,12 @@ export class AppService {
     const req = await request.body;
     if (req.password == process.env.EDIT_PASSWORD) {
       return 'Edit account';
-    } else if (req.password == process.env.CREATE_PASSWORD) {
+    }
+    if (req.password == process.env.CREATE_PASSWORD) {
       return 'Create Account';
+    }
+    else{
+      return "الرمز غير صحيح"
     }
   }
 
