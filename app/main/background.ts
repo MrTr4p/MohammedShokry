@@ -13,10 +13,11 @@ if (isProd) {
 (async () => {
 	await app.whenReady();
 
-	const mainWindow = createWindow("main", {
-		width: 1000,
-		height: 600,
-	});
+  const mainWindow = createWindow('main', {
+    autoHideMenuBar: true,
+    width: 1000,
+    height: 600,
+  });
 
 	if (isProd) {
 		await mainWindow.loadURL("app://./home.html");
