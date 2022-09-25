@@ -14,6 +14,7 @@ if (isProd) {
   await app.whenReady();
 
   const mainWindow = createWindow('main', {
+    autoHideMenuBar: true,
     width: 1000,
     height: 600,
   });
