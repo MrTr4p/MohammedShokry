@@ -1,15 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-gray-900 text-white;
-  }
+	body {
+		@apply bg-base !font-cairo;
+	}
 }
 
-@layer components {
-  .btn-blue {
-    @apply text-white font-bold px-4 py-2 rounded bg-blue-600 hover:bg-blue-500;
-  }
+@layer utilities {
+	.btn-primary {
+		@apply bg-primary text-white font-semibold flex items-center gap-4 px-4 py-2 rounded-md hover:bg-primary/80 active:bg-primary transition;
+	}
 }
