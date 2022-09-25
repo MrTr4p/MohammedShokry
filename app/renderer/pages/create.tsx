@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 function Home() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -25,8 +25,8 @@ function Home() {
 					</div>
 
 					<button className="bg-primary drop-shadow-lg text-white text-2xl font-semibold flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/80 active:bg-primary transition ">
-						<span>أضف فاتورة</span>
-						<PlusIcon className="h-8 w-8"></PlusIcon>
+						<span>الغاء</span>
+						<XMarkIcon className="h-8 w-8"></XMarkIcon>
 					</button>
 				</div>
 			</main>

@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 function Home() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -32,6 +33,16 @@ function Home() {
 			</main>
 		</>
 	);
+}
+
+export async function getServerSideProps(context) {
+	const result = await axios({
+		url: "http://localhost:3000/home/allprojectbill?page=1&limit=2&filter=public",
+	});
+	console.log(result);
+	return {
+		props: {}, // will be passed to the page component as props
+	};
 }
 
 export default Home;

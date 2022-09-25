@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/kasdo770/MohammedShokry/issues"
   },
-  "homepage": "https://github.com/kasdo770/MohammedShokry#readme"
+  "homepage": "https://github.com/kasdo770/MohammedShokry#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
 }
