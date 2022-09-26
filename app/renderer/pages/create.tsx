@@ -63,7 +63,7 @@ function Home() {
 					))}
 				</div>
 				<div className=" ">
-				<div className=" flex row mx-16 mt-3 ">
+				<div className=" flex row mt-3 divide-y-8 divide-sold ">
 				{names.map (name => (
 					<div>
 							<div className="mx-16 text-xl font-semibold">
