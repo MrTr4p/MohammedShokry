@@ -13,6 +13,9 @@ function Navbar() {
 					<div className="relative h-8 w-8 ">
 						<Image src={LogoPng} layout="fill"></Image>
 					</div>
+					<div className="ml-2 font-bold">
+						S.H COMPANY
+					</div>
 				</div>
 			</div>
 		</nav>
