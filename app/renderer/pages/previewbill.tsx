@@ -218,11 +218,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data } = await axios({
 		url: `http://localhost:3000/bill/get/${encodeURIComponent(billName)}`
 	});
+	const bill = data.bill
 	console.log(data);
 	return {
 		props: {
 			main: {
-				name: '',
+				name: bill.name,
 				adress: "",
 				projectName: "",
 				date: "",
