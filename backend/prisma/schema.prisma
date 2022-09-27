@@ -11,8 +11,8 @@ datasource db {
 }
 
 model AnotherPaymentsBill {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
   amount      Int
   date        String
   inReturn    String
@@ -24,6 +24,7 @@ model ProjectBill {
   name             String     @unique
   officePrecentage Int
   date             String
+  projectStatus    Boolean
   workers          Worker[]
   revenues         Revenue[]
   expenses         Expenses[]
@@ -45,10 +46,9 @@ model Worker {
 }
 
 model Revenue {
-  id     Int      @id @default(autoincrement())
-  amount Int
-  date   String
-
+  id            Int         @id @default(autoincrement())
+  amount        Int
+  date          String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
   projectBillId Int
 }
@@ -63,4 +63,3 @@ model Expenses {
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
   projectBillId Int?
 }
-

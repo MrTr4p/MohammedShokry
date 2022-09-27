@@ -76,11 +76,14 @@ function Home({ homeBills }: { homeBills: any[] }) {
 						{rows.map((row) => {
 							prepareRow(row);
 							return (
-								<tr {...row.getRowProps()}>
+								<tr
+									{...row.getRowProps()}
+									className="h-12 border-2 rounded"
+								>
 									{row.cells.map((cell) => {
 										return (
 											<td
-												className="text-center"
+												className="text-center "
 												{...cell.getCellProps()}
 											>
 												{cell.render("Cell")}

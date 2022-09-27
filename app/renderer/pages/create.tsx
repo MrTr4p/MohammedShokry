@@ -7,6 +7,7 @@ import { PlusSmallIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
 import { Worker } from "../typings/interfaces";
 import { useTable } from "react-table";
+import WorkerInputRow from "../components/WorkerInputRow";
 
 function Create() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -17,7 +18,7 @@ function Create() {
 		customerName: "",
 		date: "",
 		projectName: "",
-		workers: [],
+		workers: [{ id: "first" }],
 		expenses: [],
 	});
 
@@ -46,16 +47,6 @@ function Create() {
 		],
 		[],
 	);
-
-	const workersData = [
-		{
-			workerName: "عمر محمد السيد شعبان",
-			workerJob: "كهربالئى",
-			workerCost: 5931,
-			workerDate: "2/12/2019",
-			workerPercantage: 5,
-		},
-	];
 
 	useEffect(() => {
 		console.log(bill);
@@ -144,19 +135,12 @@ function Create() {
 								</tr>
 							</thead>
 							<tbody>
-								{workersData.map((workerData) => {
-									let columns = Object.keys(workerData);
+								{bill.workers.map((workerData) => {
 									return (
-										<tr className="">
-											{columns.map((key) => (
-												<td
-													key={key}
-													className="text-center"
-												>
-													<CreateInput></CreateInput>
-												</td>
-											))}
-										</tr>
+										<WorkerInputRow
+											
+											id={workerData.id}
+										></WorkerInputRow>
 									);
 								})}
 							</tbody>

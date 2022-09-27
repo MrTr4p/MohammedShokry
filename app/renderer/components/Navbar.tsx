@@ -6,7 +6,7 @@ import { HomeIcon } from "@heroicons/react/24/outline";
 
 function Navbar() {
 	return (
-		<nav className="h-16 relative">
+		<nav className="h-16 relative print:hidden">
 			<div className="shadow-md fixed w-screen flex items-center bg-base h-16 z-50">
 				<div className="container w-full flex justify-between items-center">
 					<Link href="/">

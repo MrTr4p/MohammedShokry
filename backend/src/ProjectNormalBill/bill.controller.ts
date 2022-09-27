@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Redirect, Req, Delete, Put, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Redirect,
+  Req,
+  Delete,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { BilService } from './bill.service';
 import { Request, Param } from '@nestjs/common';
 
@@ -9,22 +18,20 @@ export class BillController {
   @Post('/create')
   async createBill(@Req() request: Request) {
     return await this.appService.createNewBill(request);
-    
   }
 
   @Get('/get/:name')
-  async getBill(@Param() param, @Query() query){
-    return await this.appService.getBill(param)
-    
+  async getBill(@Param() param, @Query() query) {
+    return await this.appService.getBill(param);
   }
 
   @Delete('/delete/:name')
   async deleteBill(@Param() param) {
-    return await this.appService.deleteBill(param)
+    return await this.appService.deleteBill(param);
   }
 
   @Put('/modify/:name')
-  async modifyBill(@Param() param , @Req() request){
-    return await this.appService.modifyBill(param , request)
+  async modifyBill(@Param() param, @Req() request) {
+    return await this.appService.modifyBill(param, request);
   }
 }

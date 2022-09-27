@@ -13,7 +13,94 @@ function preview() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const Header2 = tw.h2`text-3xl font-bold text-black`;
 	const SubHeader = tw.p`text-xl text-black`;
-
+	const revenues = [
+		{
+			id: 1,
+			amount: 200,
+			date: "1/2/2022",
+			projectBillId: 1,
+		},
+		{
+			id: 2,
+			amount: 140,
+			date: "1/2/2020",
+			projectBillId: 1,
+		},
+	];
+	const expenses = [
+		{
+			id: 1,
+			materialName: "كهرباء",
+			date: "1/2/2022",
+			totalcost: 300,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 2,
+			materialName: "خارصين",
+			date: "2/1/2022",
+			totalcost: 100,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 3,
+			materialName: "كهرباء",
+			date: "1/2/2022",
+			totalcost: 450,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 4,
+			materialName: "كهرباء",
+			date: "1/2/2022",
+			totalcost: 250,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 5,
+			materialName: "كهرباء",
+			date: "1/4/2022",
+			totalcost: 1230,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 6,
+			materialName: "كهرباء",
+			date: "1/4/2022",
+			totalcost: 320,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 7,
+			materialName: "خارصين",
+			date: "3/1/2022",
+			totalcost: 210,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+		{
+			id: 8,
+			materialName: "خارصين",
+			date: "2/1/2022",
+			totalcost: 300,
+			billCode: "#12123",
+			day: "friday",
+			projectBillId: 1,
+		},
+	];
 	const workers = [
 		{
 			id: "1",
@@ -42,27 +129,9 @@ function preview() {
 	const mainInputs = [
 		{
 			name: "customerName",
-			label: "أسم العميل",
-			placeholder: "اكتب هنا",
-			type: "text",
-		},
-		{
-			name: "customerAddress",
-			label: "عنوان العميل",
-			placeholder: "اكتب هنا",
-			type: "text",
-		},
-		{
-			name: "projectName",
-			label: "اسم المشروع",
-			placeholder: "اكتب هنا",
-			type: "text",
-		},
-		{
-			name: "date",
-			label: "التاريخ",
-			placeholder: "اكتب هنا",
-			type: "date",
+			adress: "customerAddress",
+			projectname: "عمار للحمير",
+			date: "date",
 		},
 	];
 
@@ -74,11 +143,7 @@ function preview() {
 			<main className="space-y-12">
 				<div className="flex justify-between items-start print:hidden">
 					<div className="flex flex-col items-start gap-2">
-						<Header>أضافة فاتورة جديدة</Header>
-						<SubHeader>
-							كلام
-							كتيييييييييييييييييييييييييييييييييييييييييييييييييييير
-						</SubHeader>
+						<Header>شكل الفاتورة</Header>
 					</div>
 
 					<Link href="/">
@@ -90,52 +155,170 @@ function preview() {
 						</a>
 					</Link>
 				</div>
-				<div className ='mx-auto'>
-				<div className="bg-base shadow-lg border   border-black p-4  rounded-md divide-y-2">
-					{workers.map((worker) => (
-					<div className ='mx-auto'>
-							<div
-							key={worker.id}
-							className=" flex gap-4 py-4 mx-auto"
-						>
-							<span className="font-bold flex row mt-2">
-								<StarIcon className ='h-4 w-4 mt-2'></StarIcon>
-								{worker.id}
-							</span>
-							<span className="mx-auto">
-								<label className="flex row font-bold text-lg">
-									اسم العامل
-								</label>
-								{worker.workerName}
-							</span>
-							<span className="mx-auto">
-								<label className="flex row font-bold text-kg">
-									مهنة
-								</label>
-								{worker.work}
-							</span>
-							<span className="mx-auto">
-								<label className="flex row font-bold text-kg">
-									التاريخ
-								</label>
-								{worker.date}
-							</span>
-							<span className="mx-auto">
-								<label className="flex row font-bold text-kg">
-									المبلغ
-								</label>
-								{worker.salary}
-							</span>
-							<span className="mx-auto">
-								<label className="flex row font-bold text-kg">
-									نسبة
-								</label>
-								{worker.precentage}
-							</span>
-						</div>
-						</div>
-					))}
-				</div>
+
+				<div className="bg-base shadow-lg border  border-black p-5  rounded-md print:absolute print:inset-0">
+					<div className=" divide-y-2">
+						{mainInputs.map((main) => (
+							<div className="mx-auto">
+								<div
+									key={main.name}
+									className=" flex gap-4 py-4 mx-auto"
+								>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											اسم العميل
+										</label>
+										{main.name}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											المبلغ
+										</label>
+										{main.projectname}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											مهنة
+										</label>
+										{main.adress}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											التاريخ
+										</label>
+										{main.date}
+									</span>
+								</div>
+							</div>
+						))}
+					</div>
+					<div className=" divide-y-2">
+						<label className=" text-2xl font-bold ">العمال</label>
+
+						{workers.map((worker) => (
+							<div className="mx-auto">
+								<div
+									key={worker.id}
+									className=" flex gap-4 py-4 mx-auto"
+								>
+									<span className="font-bold flex row mt-2">
+										<StarIcon className="h-2 w-2 mt-2"></StarIcon>
+										{worker.id}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											اسم العامل
+										</label>
+										{worker.workerName}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											العمل
+										</label>
+										{worker.work}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											التاريخ
+										</label>
+										{worker.date}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											المبلغ
+										</label>
+										{worker.salary}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											النسبة
+										</label>
+										{worker.precentage}
+									</span>
+								</div>
+							</div>
+						))}
+					</div>
+					<div className=" divide-y-2">
+						<label className=" text-2xl font-bold ">
+							المصروفات
+						</label>
+
+						{expenses.map((expense) => (
+							<div className="mx-auto">
+								<div
+									key={expense.id}
+									className=" flex gap-4 py-4 mx-auto"
+								>
+									<span className="font-bold flex row mt-2">
+										<StarIcon className="h-2 w-2 mt-2"></StarIcon>
+										{expense.id}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											اسم المادة
+										</label>
+										{expense.materialName}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											اليوم
+										</label>
+										{expense.day}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											التاريخ
+										</label>
+										{expense.date}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											المبلغ الكامل
+										</label>
+										{expense.totalcost}
+									</span>
+									<span className="mx-auto">
+										<label className="flex row font-bold text-lg">
+											رقم الفاتورة
+										</label>
+										{expense.billCode}
+									</span>
+								</div>
+							</div>
+						))}
+					</div>
+					<div className=" divide-y-2">
+						<label className=" text-2xl font-bold ">
+							ألايرادات
+						</label>
+
+						{revenues.map((revenue) => (
+							<div className="mx-auto">
+								<div
+									key={revenue.id}
+									className=" flex gap-4 py-4 mx-16"
+								>
+									<span className="font-bold flex row mt-2">
+										<StarIcon className="h-2 w-2 mt-2"></StarIcon>
+										{revenue.id}
+									</span>
+									<span className="mx-16">
+										<label className="flex row font-bold text-lg">
+											الكمية
+										</label>
+										{revenue.amount}
+									</span>
+									<span className="mx-16">
+										<label className="flex row font-bold text-lg">
+											التاريخ
+										</label>
+										{revenue.date}
+									</span>
+								</div>
+							</div>
+						))}
+					</div>
 				</div>
 			</main>
 		</>

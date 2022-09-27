@@ -7,8 +7,7 @@ import Image from "next/image";
 import LogoPng from "../public/images/logo.png";
 import axios from "axios";
 import { useRouter } from "next/router";
-import * as jwtDecode from 'jwt-decode'
-
+import * as jwtDecode from "jwt-decode";
 
 function Signin() {
 	const [password, setPassword] = useState("");
@@ -24,10 +23,15 @@ function Signin() {
 			},
 		});
 
-		const token : {data: {accountType:string}} = jwtDecode.default(result.data)
-		console.log(token , token.data)
-		if (token.data.accountType == "EDIT" || token.data.accountType == "CREATE") {
-			localStorage.setItem(result.data, "accesstoken")
+		const token: { data: { accountType: string } } = jwtDecode.default(
+			result.data,
+		);
+		console.log(token, token.data);
+		if (
+			token.data.accountType == "EDIT" ||
+			token.data.accountType == "CREATE"
+		) {
+			localStorage.setItem(result.data, "accesstoken");
 			return router.push("/");
 		}
 	}
@@ -68,4 +72,4 @@ function Signin() {
 	);
 }
 
-export default Signin
+export default Signin;

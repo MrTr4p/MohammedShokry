@@ -1,19 +1,27 @@
-import { Controller, Get, Post, Redirect, Req, Delete, Put, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Redirect,
+  Req,
+  Delete,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request, Param } from '@nestjs/common';
 
-@Controller("/home")
+@Controller('/home')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-
   @Get('/allprojectbill')
-  async getAllBills(@Query() query){
-    return await this.appService.getAll(query)
+  async getAllBills(@Query() query) {
+    return await this.appService.getAll(query);
   }
 
   @Post('/login')
   async login(@Req() request) {
-    return await this.appService.login(request)
+    return await this.appService.login(request);
   }
 }

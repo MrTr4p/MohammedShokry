@@ -4,7 +4,7 @@ const ACCESS_TOKEN =
   '7cfc00192b50e59a49613574edf0a30cde63c5d061da7356faa6fb81be9530f8aa8403a35a771718979cd4994132cc78ff504332a2a22b5ece94bcb68d9aca52';
 import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient, ProjectBill } from '@prisma/client';
-import * as jwt from "jsonwebtoken"
+import * as jwt from 'jsonwebtoken';
 import {
   Controller,
   Get,
@@ -101,23 +101,31 @@ export class AppService {
   async login(request) {
     const req = await request.body;
     let user = {
-      accountType:"",
-    }
+      accountType: '',
+    };
     console.log(req.password == CREATE_PASSWORD);
     console.log(CREATE_PASSWORD, EDIT_PASSWORD);
     if (req.password == EDIT_PASSWORD) {
-      user.accountType = "EDIT"
-      const ea = jwt.sign({
-        data:user
-      }, ACCESS_TOKEN, { expiresIn: "4h" })
-      return ea ;
+      user.accountType = 'EDIT';
+      const ea = jwt.sign(
+        {
+          data: user,
+        },
+        ACCESS_TOKEN,
+        { expiresIn: '4h' },
+      );
+      return ea;
     }
     if (req.password == CREATE_PASSWORD) {
-      user.accountType = "CREATE"
-      const ca = jwt.sign({
-        data:user
-      }, ACCESS_TOKEN, { expiresIn: "4h" })
-      return ca ;
+      user.accountType = 'CREATE';
+      const ca = jwt.sign(
+        {
+          data: user,
+        },
+        ACCESS_TOKEN,
+        { expiresIn: '4h' },
+      );
+      return ca;
     } else {
       return 'الرمز غير صحيح';
     }

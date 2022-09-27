@@ -126,7 +126,7 @@ function Preview() {
 				</div>
 				<div className="bg-base shadow-lg border border-black p-4 rounded-md space-y-6 divide-y-2">
 					<div className="flex row">
-						<Preview/>
+						<Preview />
 					</div>
 				</div>
 			</main>
