@@ -116,7 +116,7 @@ async function createAndModify(reqBody, projectBill) {
     }
   }
   catch(e){
-    console.log(e)
+      console.log(e)
   }
 
 
@@ -275,9 +275,9 @@ export class BilService {
     const bill = await getBill(reqParam)
     console.log(bill)
     if(bill){
-    createAndModify(newReqBody, bill)
-    modeifyAndDelete(oldReqBody)
-    return "لقد تم تحديث الفاتورة ب نجاح"
+      createAndModify(newReqBody, bill)
+      modeifyAndDelete(oldReqBody)
+      return "لقد تم تحديث الفاتورة ب نجاح"
     }
     else{
       return "لا توجد فاتورة بهذا الاسم"

@@ -14,6 +14,21 @@ async function getBill(reqParam){
   return bill
 }
 
+async function getRevenues(bill){
+  let totalRevenue = 0
+  const revenues = await prisma.revenue.findMany({
+    where:{
+      projectBillId: bill.id
+    }
+  })
+  for (let i = 0; i < revenues.length; i++) {
+    totalRevenue = revenues[i].amount + totalRevenue
+    
+  }
+
+  return totalRevenue
+}
+
 async function getTotalCost( expenses , workers , officePrecentage){
 
   let totalCost = 0
@@ -99,8 +114,9 @@ export class BilService {
   async getBill(param){
     const bill = await getBill(param)
     const  {finalExpensesBill , finalWorkersBill, totalCost , precentage} = await findAlll(bill)
+    const revenue = await getRevenues(bill)
 
-    return   {finalExpensesBill , finalWorkersBill , totalCost , precentage}
+    return   {finalExpensesBill , finalWorkersBill , totalCost , precentage, revenue} 
   }
 
   
