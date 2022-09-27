@@ -8,6 +8,7 @@ import CreateInput from "../components/CreateInput";
 import { Worker } from "../typings/interfaces";
 import { useTable } from "react-table";
 import WorkerInputRow from "../components/WorkerInputRow";
+import { v4 } from "uuid";
 
 function Create() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -18,7 +19,7 @@ function Create() {
 		customerName: "",
 		date: "",
 		projectName: "",
-		workers: [{ id: "first" }],
+		workers: [{ id: v4() }],
 		expenses: [],
 	});
 
@@ -138,7 +139,7 @@ function Create() {
 								{bill.workers.map((workerData) => {
 									return (
 										<WorkerInputRow
-											
+											onChange={(e) => console.log(e)}
 											id={workerData.id}
 										></WorkerInputRow>
 									);

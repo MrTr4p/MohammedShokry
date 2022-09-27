@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Worker } from "../typings/interfaces";
 import CreateWorkerInput from "./CreateInput";
 
-function WorkerInput({ id, onChange }: { id: string, onChange: (e: any) => void }) {
+function WorkerInput({
+	id,
+	onChange,
+}: {
+	id: string;
+	onChange?: (e: any) => void;
+}) {
 	const [workerData, setWorkerData] = useState<Worker>({
 		id: id,
 		cost: 0,
@@ -11,34 +17,33 @@ function WorkerInput({ id, onChange }: { id: string, onChange: (e: any) => void 
 		name: "",
 		precentage: 0,
 	});
-	useEffect(() => setWorkerData((state) => ({ ...state, id: id })), [id]);
 	const inputs = [
 		{
-			accessor: "name",
+			name: "name",
 			title: "اسم العميل",
 			placeholder: "محمد على",
 			type: "text",
 		},
 		{
-			accessor: "job",
+			name: "job",
 			title: "الوظيفة",
 			placeholder: "كهربائى",
 			type: "text",
 		},
 		{
-			accessor: "cost",
+			name: "cost",
 			title: "النسبة",
 			placeholder: "0",
 			type: "number",
 		},
 		{
-			accessor: "date",
+			name: "date",
 			title: "التاريخ",
 			placeholder: "",
 			type: "date",
 		},
 		{
-			accessor: "precentage",
+			name: "precentage",
 			title: "النسبة",
 			placeholder: "1.22%",
 			type: "number",
@@ -46,9 +51,11 @@ function WorkerInput({ id, onChange }: { id: string, onChange: (e: any) => void 
 	];
 
 	function handleChange(e) {
-		const { accessor, value } = e.target;
-		setWorkerData((state) => ({ ...state, [accessor]: value }));
+		const { name, value } = e.target;
+		setWorkerData((state) => ({ ...state, [name]: value }));
 	}
+	useEffect(() => setWorkerData((state) => ({ ...state, id: id })), [id]);
+	useEffect(() => onChange(workerData), [workerData]);
 
 	return (
 		<tr className=" border-2">

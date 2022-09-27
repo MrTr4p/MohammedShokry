@@ -18,6 +18,16 @@ export class BilService {
     const req = request.body;
     console.log(req);
 
+    if(!req.name||!req.date|| !req.inReturn || !req.amount){
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'يجب ملئ كل من ; اسم العميل , التاريخ, المقابل , المبلغ',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     await prisma.anotherPaymentsBill.create({
       data: {
         name: req.name,

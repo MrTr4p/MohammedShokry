@@ -30,8 +30,10 @@ function Home() {
 		date: "",
 		description: "",
 	});
+	const [message, setMessage] = useState("")
 
 	async function sendAnotherBill() {
+		try{
 		const result = await axios({
 			url: "http://localhost:3000/bill/special/create",
 			method: "POST",
@@ -43,8 +45,13 @@ function Home() {
 				description: input.description,
 			},
 		});
-
-		console.log(result);
+	}
+	catch(e){
+		console.log(e.response.error)
+	}
+		//setMessage(msg)
+		
+		//if(result.data == 'BAD')
 	}
 
 	return (
