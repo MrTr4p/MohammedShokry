@@ -50,7 +50,7 @@ function Create() {
 
 	const workersData = [
 		{
-			workerName: "عمر محمد السيد شعبان",
+			workerName: "احمد",
 			workerJob: "كهربالئى",
 			workerCost: 5931,
 			workerDate: "2/12/2019",
@@ -93,6 +93,14 @@ function Create() {
 		setBill((state) => ({ ...state, [e.target.name]: e.target.value }));
 	}
 
+	const tableInstance = useTable({
+		columns: workerColumns as any,
+		data: workersData,
+	});
+
+	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+		tableInstance;
+
 	return (
 		<>
 			<Head>
@@ -119,47 +127,21 @@ function Create() {
 				</div>
 				<div className="bg-base shadow-lg border border-black p-4 rounded-md space-y-6 divide-y-2">
 					<div className="flex items-start gap-4">
-						{mainInputs.map((input, index) => (
-							<CreateInput
-								key={`main-` + index}
-								onChange={handleMainInputsChange}
-								{...input}
-							>
-								{input.label}
-							</CreateInput>
-						))}
+						
 					</div>
 
 					<div className="flex items-start gap-4 w-full">
-						<table className="  w-full">
+						<table
+							
+							className=" border-black border-2 w-full"
+						>
 							<thead>
-								<tr className="bg-secondary">
-									{workerColumns.map((column) => (
-										<th
-											key={column.accessor}
-											className="text-start"
-										>
-											{column.Header}
-										</th>
-									))}
-								</tr>
+								
 							</thead>
-							<tbody>
-								{workersData.map((workerData) => {
-									let columns = Object.keys(workerData);
-									return (
-										<tr className="">
-											{columns.map((key) => (
-												<td
-													key={key}
-													className="text-center"
-												>
-													<CreateInput></CreateInput>
-												</td>
-											))}
-										</tr>
-									);
-								})}
+							<tbody >
+								<tr>
+									<th>ssss</th>
+									</tr>
 							</tbody>
 						</table>
 					</div>

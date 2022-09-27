@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Navbar></Navbar>
-			<div className = "container mt-12">
+			<div className="container mt-12">
 				<Component {...pageProps} />
 			</div>
 		</>

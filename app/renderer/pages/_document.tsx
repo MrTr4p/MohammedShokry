@@ -7,7 +7,6 @@ export default function Document() {
 			<body dir="rtl">
 				<Main />
 				<NextScript />
-                
 			</body>
 		</Html>
 	);

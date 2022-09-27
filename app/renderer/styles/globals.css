@@ -8,6 +8,30 @@
 	body {
 		@apply bg-base !font-cairo;
 	}
+	/* width */
+	::-webkit-scrollbar {
+		@apply w-2.5;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		@apply bg-primary rounded transition;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		@apply bg-primary/90;
+	}
+
+	/* Handle on click */
+	::-webkit-scrollbar-thumb:active {
+		@apply bg-primary/80;
+	}
 }
 
 @layer utilities {

@@ -17,8 +17,8 @@ if (isProd) {
 		autoHideMenuBar: true,
 		width: 1000,
 		height: 600,
-    minHeight: 700,
-    minWidth: 650
+		minHeight: 700,
+		minWidth: 650,
 	});
 
 	if (isProd) {

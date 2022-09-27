@@ -18,6 +18,12 @@
   },
   "homepage": "https://github.com/kasdo770/MohammedShokry#readme",
   "dependencies": {
-    "axios": "^0.27.2"
+    "@material-ui/core": "^4.12.4",
+    "@radix-ui/react-dialog": "^1.0.0",
+    "@types/react-table": "^7.7.12",
+    "@types/uuid": "^8.3.4",
+    "axios": "^0.27.2",
+    "react-table": "^7.8.0",
+    "uuid": "^9.0.0"
   }
 }
