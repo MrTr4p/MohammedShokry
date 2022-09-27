@@ -8,6 +8,9 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import Modal from "../components/Modal";
 
+import { motion } from "framer-motion"
+
+
 function Home(isOpen) {
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const SubHeader = tw.h1`text-xl text-black`;
@@ -39,6 +42,8 @@ function Home(isOpen) {
 						<PlusIcon className="h-8 w-8"></PlusIcon>
 					</button>
 					{modalOpen && <Modal setOpenModal={setModalOpen} />}
+
+
 				</div>
 			</main>
 		</>
