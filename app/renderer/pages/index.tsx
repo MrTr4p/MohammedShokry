@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import tw from "tailwind-styled-components";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-
 import axios from "axios";
 import Modal from "../components/Modal";
-
-import { motion } from "framer-motion"
-
+import { AnimatePresence, motion } from "framer-motion";
 
 function Home(isOpen) {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -41,23 +36,32 @@ function Home(isOpen) {
 						<span>أضف فاتورة</span>
 						<PlusIcon className="h-8 w-8"></PlusIcon>
 					</button>
-					{modalOpen && <Modal setOpenModal={setModalOpen} />}
 
-
+					<AnimatePresence>
+						{modalOpen && (
+							<motion.div
+								initial={{ scale: 0.5 }}
+								animate={{ scale: 1 }}
+								exit={{ scale: 0.5 }}
+							>
+								<Modal setOpenModal={setModalOpen} />
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</div>
 			</main>
 		</>
 	);
 }
 
-/*export async function getServerSideProps(context) {
+export async function getServerSideProps(context) {
 	const result = await axios({
-		url: "http://localhost:3000/home/allprojectbill?page=1&limit=2&filter=public",
+		url: "http://localhost:3000/home/allprojectbill?page=1&limit=99999&filter=public",
 	});
 	console.log(result);
 	return {
 		props: {}, // will be passed to the page component as props
 	};
-}*/
+}
 
 export default Home;
