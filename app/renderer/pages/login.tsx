@@ -6,9 +6,13 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import LogoPng from "../public/images/logo.png";
 import axios from "axios";
+import { useRouter } from "next/router";
+import * as jwtDecode from 'jwt-decode'
+
 
 function Signin() {
 	const [password, setPassword] = useState("");
+	const router = useRouter();
 
 	async function handleSignIn() {
 		//password
@@ -20,9 +24,12 @@ function Signin() {
 			},
 		});
 
-		console.log(result);
-		//Edit account
-		//Create account
+		const token : {data: {accountType:string}} = jwtDecode.default(result.data)
+		console.log(token , token.data)
+		if (token.data.accountType == "EDIT" || token.data.accountType == "CREATE") {
+			localStorage.setItem(result.data, "accesstoken")
+			return router.push("/");
+		}
 	}
 
 	return (
@@ -44,13 +51,12 @@ function Signin() {
 						<input
 							onChange={(e) => setPassword(e.target.value)}
 							placeholder="Password"
-							className="border-2 transition duration-500 placeholder-primary focus:placeholder-transparent border-priamry w-4/12 py-2 text-center text-primary bg-transparent rounded-md focus:outline-none"
+							className="border-2 transition duration-500 placeholder-primary focus:placeholder-transparent border-priamry w-4/12 py-2 text-center text-primary bg-transparent rounded-md focus:outline-none w-full"
 						></input>
 					</div>
 					<div className="flex justify-center">
 						<button
 							onClick={handleSignIn}
-							
 							className="inline-block px-6 py-2.5 disabled:bg-primary/50 bg-primary text-white font-medium text-xs leading-tight uppercase rounded-md shadow-md hover:shadow-lg  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary/80 active:shadow-lg transition duration-150 ease-in-out"
 						>
 							Enter
@@ -62,4 +68,4 @@ function Signin() {
 	);
 }
 
-export default Signin;
+export default Signin

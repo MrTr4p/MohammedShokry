@@ -32,17 +32,22 @@ function Modal({ setOpenModal }) {
 	const modalRef = useRef();
 	useOutsideAlerter(modalRef, () => setOpenModal(false));
 	return (
-		<div className="fixed z-50 inset-0 bg-primary/25 grid place-items-center">
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.15 }}
+			className="fixed z-50 inset-0 bg-primary/25 grid place-items-center"
+		>
 			<motion.div
-				initial={{ scale: 0 }}
-				animate={{ scale: 1 }}
-				exit={{ scale: 0 }}
+				initial={{ scale: 0.5, opacity: 0 }}
+				animate={{ scale: 1, opacity: 1 }}
+				exit={{ scale: 0, opacity: 0 }}
 				transition={{ duration: 0.15 }}
 			>
 				<div className="bg-base p-6 rounded" ref={modalRef}>
 					<div className="flex justify-between items-center">
 						<h1 className="font-bold text-2xl">
-							{" "}
 							اضافة فاتورة جديدة
 						</h1>
 						<XCircleIcon
@@ -52,10 +57,10 @@ function Modal({ setOpenModal }) {
 							className="h-8 w-8 cursor-pointer"
 						></XCircleIcon>
 					</div>
-					<div className="my-1">
+					<div className="my-4 mt-6">
 						<h1>اختار نوع الفاتورة</h1>
 					</div>
-					<div className="flex justify-between mt-8 mb-8 gap-12">
+					<div className="flex justify-between  mb-8 gap-20">
 						<Link href="/create">
 							<a>
 								<button className="focus:outline-none outline outline-1 rounded-md focus:ring focus:ring-primary hover:outline-primary transition">
@@ -75,7 +80,7 @@ function Modal({ setOpenModal }) {
 					</div>
 				</div>
 			</motion.div>
-		</div>
+		</motion.div>
 	);
 }
 

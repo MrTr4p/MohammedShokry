@@ -12,7 +12,7 @@ export class AppController {
     return await this.appService.getAll(query)
   }
 
-  @Get('/login')
+  @Post('/login')
   async login(@Req() request) {
     return await this.appService.login(request)
   }

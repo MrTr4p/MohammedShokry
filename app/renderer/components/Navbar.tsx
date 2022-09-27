@@ -15,8 +15,8 @@ function Navbar() {
 						</a>
 					</Link>
 					<div className="ml-2 font-bold flex gap-4">
-						<Link href="/signin">
-							<a>Sign In</a>
+						<Link href="/login">
+							<a>Log In</a>
 						</Link>
 						<Link href="/create-another-bill">
 							<a>Create AB</a>
@@ -28,7 +28,7 @@ function Navbar() {
 							<a>Home</a>
 						</Link>
 						<Link href="/previewbill">
-							<a>preview</a>
+							<a>Preview</a>
 						</Link>
 					</div>
 				</div>

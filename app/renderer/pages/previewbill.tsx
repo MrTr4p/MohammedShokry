@@ -4,6 +4,7 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusSmallIcon } from "@heroicons/react/24/solid";
+import { StarIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
 import { Worker } from "../typings/interfaces";
 import { useTable } from "react-table";
@@ -13,8 +14,31 @@ function preview() {
 	const Header2 = tw.h2`text-3xl font-bold text-black`;
 	const SubHeader = tw.p`text-xl text-black`;
 
+	const workers = [
+		{
+			id: "1",
+			workerName: "محمد",
+			salary: "200",
+			precentage: "12",
+			salaryPrecentage: "24",
+			date: "1/2/2022",
+			work: "كهرباء",
+			projectName: "عمار للحمير",
+			projectId: "1",
+		},
+		{
+			id: "2",
+			workerName: "احمد",
+			salary: 200,
+			precentage: 12,
+			salaryPrecentage: 24,
+			date: "1/2/2022",
+			work: "سلكيات",
+			projectName: "عمار للحمير",
+			projectId: 1,
+		},
+	];
 
-	
 	const mainInputs = [
 		{
 			name: "customerName",
@@ -42,9 +66,6 @@ function preview() {
 		},
 	];
 
-
-
-
 	return (
 		<>
 			<Head>
@@ -69,22 +90,52 @@ function preview() {
 						</a>
 					</Link>
 				</div>
-				<div className="bg-base shadow-lg border border-black p-4 rounded-md space-y-6 divide-y-2">
-					<div className="flex items-start gap-4">
-					{mainInputs.map(main => (
-							<div className="mx-auto">
-								<label className="">
-							{main.label}
-							<div className="flex row">
-								{main.name}
-							</div>
-						</label>
-							</div>
+				<div className ='mx-auto'>
+				<div className="bg-base shadow-lg border   border-black p-4  rounded-md divide-y-2">
+					{workers.map((worker) => (
+					<div className ='mx-auto'>
+							<div
+							key={worker.id}
+							className=" flex gap-4 py-4 mx-auto"
+						>
+							<span className="font-bold flex row mt-2">
+								<StarIcon className ='h-4 w-4 mt-2'></StarIcon>
+								{worker.id}
+							</span>
+							<span className="mx-auto">
+								<label className="flex row font-bold text-lg">
+									اسم العامل
+								</label>
+								{worker.workerName}
+							</span>
+							<span className="mx-auto">
+								<label className="flex row font-bold text-kg">
+									مهنة
+								</label>
+								{worker.work}
+							</span>
+							<span className="mx-auto">
+								<label className="flex row font-bold text-kg">
+									التاريخ
+								</label>
+								{worker.date}
+							</span>
+							<span className="mx-auto">
+								<label className="flex row font-bold text-kg">
+									المبلغ
+								</label>
+								{worker.salary}
+							</span>
+							<span className="mx-auto">
+								<label className="flex row font-bold text-kg">
+									نسبة
+								</label>
+								{worker.precentage}
+							</span>
+						</div>
+						</div>
 					))}
-				
-					</div>
-					<div className="flex items-start gap-4">
-					</div>
+				</div>
 				</div>
 			</main>
 		</>
