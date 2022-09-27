@@ -14,6 +14,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import Modal from "../components/Modal";
 
+import { motion } from "framer-motion"
+
+
 function Home(isOpen) {
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const SubHeader = tw.h1`text-xl text-black`;
@@ -45,6 +48,8 @@ function Home(isOpen) {
 						<PlusIcon className="h-8 w-8"></PlusIcon>
 					</button>
 					{modalOpen && <Modal setOpenModal={setModalOpen} />}
+
+
 				</div>
 			</main>
 		</>
