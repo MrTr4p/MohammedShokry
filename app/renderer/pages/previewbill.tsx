@@ -14,43 +14,7 @@ function preview() {
 	const SubHeader = tw.p`text-xl text-black`;
 
 
-	const workerColumns = React.useMemo(
-		() => [
-			{
-				Header: "اسم العامل",
-				accessor: "workerName", // accessor is the "key" in the data
-			},
-			{
-				Header: "الوظيفة",
-				accessor: "workerJob",
-			},
-			{
-				Header: "المبلغ",
-				accessor: "workerCost",
-			},
-			{
-				Header: "التاريخ",
-				accessor: "workerDate",
-			},
-			{
-				Header: "النسبة",
-				accessor: "workerPercantage",
-			},
-		],
-		[],
-	);
-
-	const workersData = [
-		{
-			workerName: "احمد",
-			workerJob: "كهربالئى",
-			workerCost: 5931,
-			workerDate: "2/12/2019",
-			workerPercantage: 5,
-		},
-	];
-
-
+	
 	const mainInputs = [
 		{
 			name: "customerName",
@@ -120,17 +84,6 @@ function preview() {
 				
 					</div>
 					<div className="flex items-start gap-4">
-					{workerColumns.map(main => (
-							<div className="mx-auto">
-								<label className="">
-							{main.Header}
-							<div className="flex row">
-								{main.accessor}
-							</div>
-						</label>
-							</div>
-					))}
-				
 					</div>
 				</div>
 			</main>

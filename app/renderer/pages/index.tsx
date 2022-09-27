@@ -5,6 +5,7 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import Modal from "../components/Modal";
 import { AnimatePresence, motion } from "framer-motion";
+import { GetServerSideProps } from "next";
 
 function Home(isOpen) {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -38,15 +39,7 @@ function Home(isOpen) {
 					</button>
 
 					<AnimatePresence>
-						{modalOpen && (
-							<motion.div
-								initial={{ scale: 0.5 }}
-								animate={{ scale: 1 }}
-								exit={{ scale: 0.5 }}
-							>
-								<Modal setOpenModal={setModalOpen} />
-							</motion.div>
-						)}
+						{modalOpen && <Modal setOpenModal={setModalOpen} />}
 					</AnimatePresence>
 				</div>
 			</main>
@@ -54,7 +47,7 @@ function Home(isOpen) {
 	);
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const result = await axios({
 		url: "http://localhost:3000/home/allprojectbill?page=1&limit=99999&filter=public",
 	});
@@ -62,6 +55,6 @@ export async function getServerSideProps(context) {
 	return {
 		props: {}, // will be passed to the page component as props
 	};
-}
+};
 
 export default Home;
