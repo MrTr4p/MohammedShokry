@@ -9,7 +9,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 import { useTable } from "react-table";
 
-function Home({ homeBills }: { homeBills: any[] }) {
+function Home({
+	homeBills,
+	billsType,
+}: {
+	homeBills: any[];
+	billsType: "public" | "office";
+}) {
 	console.log(homeBills);
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const SubHeader = tw.h1`text-xl text-black`;
@@ -17,14 +23,22 @@ function Home({ homeBills }: { homeBills: any[] }) {
 	const homeBillsData = React.useMemo(() => homeBills, []);
 	const homeBillsColumn = React.useMemo(
 		() => [
-			{ Header: "رقم الفاتورة", accessor: "id" },
-			{ Header: "التاريخ", accessor: "date" },
-			{ Header: "عدد العمال", accessor: "totalWorkers" },
-			{ Header: "مقابل", accessor: "inReturn" },
-			{ Header: "السعر الكلى", accessor: "totalCost" },
-			{ Header: "الحالة", accessor: "projectStatus" },
+			...(billsType === "public"
+				? [
+						{ Header: "رقم الفاتورة", accessor: "id" },
+						{ Header: "التاريخ", accessor: "date" },
+						{ Header: "عدد العمال", accessor: "totalWorkers" },
+						{ Header: "السعر الكلى", accessor: "totalCost" },
+						{ Header: "الحالة", accessor: "projectStatus" },
+				  ]
+				: [
+						{ Header: "رقم الفاتورة", accessor: "id" },
+						{ Header: "مقابل", accessor: "inReturn" },
+						{ Header: "التاريخ", accessor: "date" },
+						{ Header: "المبلغ", accessor: "totalCost" },
+				  ]),
 		],
-		[],
+		[billsType],
 	);
 
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -111,7 +125,7 @@ function Home({ homeBills }: { homeBills: any[] }) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { billType } = context.query;
-	const filter = billType || "public";
+	const filter = (billType || "public") as string;
 	const page = 1;
 	const limit = 20;
 	const { data } = await axios({
@@ -124,8 +138,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				return {
 					...row,
 					inReturn: row?.inReturn || "",
-					totalCost: row?.amount || "",
+					totalCost: row?.totalCost || "",
 					totalWorkers: row?._count?.workers || 0,
+					projectStatus: row?.projectStatus ? "مدفوع" : "معلق",
 				};
 			}),
 		}, // will be passed to the page component as props

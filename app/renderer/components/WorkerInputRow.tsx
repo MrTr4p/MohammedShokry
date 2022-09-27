@@ -7,7 +7,9 @@ function WorkerInput({
 	id,
 	onChange,
 	deleteRow,
+	index,
 }: {
+	index: number;
 	id: any;
 	onChange?: (e: any) => void;
 	deleteRow?: (e: any) => void;

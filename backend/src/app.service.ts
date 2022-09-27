@@ -24,10 +24,9 @@ interface result {
 }
 
 async function getPageinatedBill(query) {
-  const page = parseInt(query.page);
-  const limit = parseInt(query.limit);
-  const filter = query.filter;
-  console.log(page);
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const filter = query.filter || 'public';
   const results: Partial<result> = {};
   let model;
   if (page != null && limit != null && filter != null) {
@@ -39,12 +38,13 @@ async function getPageinatedBill(query) {
       model = await prisma.anotherPaymentsBill.findMany({
         skip: startIndex,
         take: limit,
-        
       });
 
       count = await prisma.anotherPaymentsBill.count();
     } else if (filter == 'public') {
-      model = await prisma.projectBill.findMany({
+      const projectArray = [];
+
+      const projectBill = await prisma.projectBill.findMany({
         skip: startIndex,
         take: limit,
         include: {
@@ -54,7 +54,32 @@ async function getPageinatedBill(query) {
           _count: true,
         },
       });
-      count = prisma.projectBill.count();
+
+      const summedBills = projectBill.map((bill) => {
+        let newBill = {
+          ...bill,
+          totalExpenses: 0,
+          totalWorkersSalary: 0,
+          totalRevenues: 0,
+          totalCost: 0,
+        };
+        newBill.totalExpenses = bill.expenses.reduce(
+          (total, current) => (total += current.totalcost),
+          0,
+        );
+        newBill.totalWorkersSalary = bill.workers.reduce(
+          (total, current) => (total += current.salary),
+          0,
+        );
+        newBill.totalRevenues = bill.revenues.reduce(
+          (total, current) => (total += current.amount),
+          0,
+        );
+        newBill.totalCost = newBill.totalExpenses + newBill.totalWorkersSalary;
+        return newBill;
+      });
+
+      model = summedBills;
     }
 
     if (endIndex < count) {
@@ -69,17 +94,6 @@ async function getPageinatedBill(query) {
         limit: limit,
       };
     }
-  } else {
-    model = await prisma.projectBill.findMany({
-      skip: 0,
-      take: 10,
-      include: {
-        _count: true,
-        expenses: true,
-        revenues: true,
-        workers: true,
-      },
-    });
   }
 
   try {

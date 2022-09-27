@@ -247,7 +247,15 @@ export class BilService {
           projectId: bill.id,
         },
       });
-      return { bill: bill, expenses, revenues, workers };
+      const totalCost = await prisma.expenses.aggregate({
+        where:{
+          projectBillId:bill.id
+        },
+        _sum:{
+          totalcost:true
+        }
+      })
+      return { bill: bill, expenses, revenues, workers, totalCost };
     } else {
       throw new HttpException(
         {

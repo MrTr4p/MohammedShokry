@@ -165,9 +165,10 @@ function Create() {
 									</tr>
 								</thead>
 								<tbody>
-									{bill.workers.map((workerData) => {
+									{bill.workers.map((workerData, i) => {
 										return (
 											<WorkerInputRow
+												index={i}
 												key={workerData.id}
 												deleteRow={deleteWorkerRow}
 												onChange={(e) =>

@@ -222,7 +222,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return {
 		props: {
 			main: {
-				name: "",
+				name: '',
 				adress: "",
 				projectName: "",
 				date: "",
