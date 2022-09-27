@@ -6,21 +6,13 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusSmallIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
 import { Worker } from "../typings/interfaces";
-import { v4 as uuidv4 } from "uuid";
 import { useTable } from "react-table";
 
-function Create() {
+function preview() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const Header2 = tw.h2`text-3xl font-bold text-black`;
 	const SubHeader = tw.p`text-xl text-black`;
-	const [bill, setBill] = useState({
-		customerAddress: "",
-		customerName: "",
-		date: "",
-		projectName: "",
-		workers: [],
-		expenses: [],
-	});
+
 
 	const workerColumns = React.useMemo(
 		() => [
@@ -58,9 +50,6 @@ function Create() {
 		},
 	];
 
-	useEffect(() => {
-		console.log(bill);
-	}, [bill]);
 
 	const mainInputs = [
 		{
@@ -89,17 +78,8 @@ function Create() {
 		},
 	];
 
-	function handleMainInputsChange(e) {
-		setBill((state) => ({ ...state, [e.target.name]: e.target.value }));
-	}
 
-	const tableInstance = useTable({
-		columns: workerColumns as any,
-		data: workersData,
-	});
 
-	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-		tableInstance;
 
 	return (
 		<>
@@ -127,23 +107,30 @@ function Create() {
 				</div>
 				<div className="bg-base shadow-lg border border-black p-4 rounded-md space-y-6 divide-y-2">
 					<div className="flex items-start gap-4">
-						
+					{mainInputs.map(main => (
+							<div className="mx-auto">
+								<label className="">
+							{main.label}
+							<div className="flex row">
+								{main.name}
+							</div>
+						</label>
+							</div>
+					))}
+				
 					</div>
-
-					<div className="flex items-start gap-4 w-full">
-						<table
-							
-							className=" border-black border-2 w-full"
-						>
-							<thead>
-								
-							</thead>
-							<tbody >
-								<tr>
-									<th>ssss</th>
-									</tr>
-							</tbody>
-						</table>
+					<div className="flex items-start gap-4">
+					{workerColumns.map(main => (
+							<div className="mx-auto">
+								<label className="">
+							{main.Header}
+							<div className="flex row">
+								{main.accessor}
+							</div>
+						</label>
+							</div>
+					))}
+				
 					</div>
 				</div>
 			</main>
@@ -151,4 +138,4 @@ function Create() {
 	);
 }
 
-export default Create;
+export default preview;

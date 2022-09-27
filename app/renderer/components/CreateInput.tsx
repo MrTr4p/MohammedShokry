@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Input, Worker } from "../typings/interfaces";
-import { v4 as uuidv4 } from "uuid";
 
 function CreateWorkerInput({
 	children,

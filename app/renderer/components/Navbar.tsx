@@ -24,6 +24,9 @@ function Navbar() {
 						<Link href="/anotherbill">
 							<a>anotherbill</a>
 						</Link>
+						<Link href="/previewbill">
+							<a>preview</a>
+						</Link>
 					</div>
 				</div>
 			</div>
