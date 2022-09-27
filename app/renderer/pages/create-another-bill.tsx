@@ -4,7 +4,7 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { PlusSmallIcon } from "@heroicons/react/24/solid";
-import { FolderPlusIcon } from "@heroicons/react/24/outline";
+import { FolderPlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import CreateInput from "../components/CreateInput";
 import { Worker } from "../typings/interfaces";
 import { v4 as uuidv4 } from "uuid";
@@ -30,27 +30,29 @@ function Home() {
 		date: "",
 		description: "",
 	});
-	const [message, setMessage] = useState("")
+	const [message, setMessage] = useState("");
 
 	async function sendAnotherBill() {
-		try{
-		const result = await axios({
-			url: "http://localhost:3000/bill/special/create",
-			method: "POST",
-			data: {
-				name: input.name,
-				date: input.date,
-				inReturn: input.inReturn,
-				amount: Number(input.amount),
-				description: input.description,
-			},
-		});
-	}
-	catch(e){
-		console.log(e.response.error)
-	}
-		//setMessage(msg)
-		
+		try {
+			const result = await axios({
+				url: "http://localhost:3000/bill/special/create",
+				method: "POST",
+				data: {
+					name: input.name,
+					date: input.date,
+					inReturn: input.inReturn,
+					amount: Number(input.amount),
+					description: input.description,
+				},
+			});
+		} catch (e) {
+			if (e.response.data.status == 400) {
+				console.log(e.response.data.error);
+				setMessage(e.response.data.error);
+			}
+		}
+		//
+
 		//if(result.data == 'BAD')
 	}
 
@@ -78,6 +80,16 @@ function Home() {
 					</Link>
 				</div>
 				<div className=" shadow-lg border border-black p-4 rounded-md ">
+					{message && (
+						<div className="flex justify-between items-start">
+							<h1 className="text-xl text-red-700 mb-4">
+								{message}
+							</h1>
+							<button onClick={() => setMessage("")}>
+								<XCircleIcon className="h-8 w-8"></XCircleIcon>
+							</button>
+						</div>
+					)}
 					<div className=" flex  gap-4">
 						<CreateInput
 							onChange={(e) =>

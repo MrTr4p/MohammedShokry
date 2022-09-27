@@ -1,3 +1,4 @@
+import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import { Worker } from "../typings/interfaces";
 import CreateWorkerInput from "./CreateInput";
@@ -5,9 +6,11 @@ import CreateWorkerInput from "./CreateInput";
 function WorkerInput({
 	id,
 	onChange,
+	deleteRow,
 }: {
-	id: string;
+	id: any;
 	onChange?: (e: any) => void;
+	deleteRow?: (e: any) => void;
 }) {
 	const [workerData, setWorkerData] = useState<Worker>({
 		id: id,
@@ -59,9 +62,9 @@ function WorkerInput({
 
 	return (
 		<tr className=" border-2">
-			{inputs.map((input) => {
+			{inputs.map((input, i) => {
 				return (
-					<td>
+					<td key={input.name + i}>
 						<CreateWorkerInput
 							{...input}
 							onChange={handleChange}
@@ -69,6 +72,15 @@ function WorkerInput({
 					</td>
 				);
 			})}
+
+			<td className="text-center text-base grid place-items-center ">
+				<button
+					onClick={() => deleteRow(workerData.id)}
+					className="p-2 bg-red-500 hover:bg-red-600 mt-1.5 rounded-md ml-2 transition"
+				>
+					<TrashIcon className="w-6 h-6 stroke-2"></TrashIcon>
+				</button>
+			</td>
 		</tr>
 	);
 }

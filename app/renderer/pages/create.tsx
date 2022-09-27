@@ -9,6 +9,7 @@ import { Worker } from "../typings/interfaces";
 import { useTable } from "react-table";
 import WorkerInputRow from "../components/WorkerInputRow";
 import { v4 } from "uuid";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 function Create() {
 	const Header = tw.h1`text-5xl font-bold text-black`;
@@ -44,6 +45,10 @@ function Create() {
 			{
 				Header: "النسبة",
 				accessor: "workerPercantage",
+			},
+			{
+				Header: "مسح",
+				accessor: "close",
 			},
 		],
 		[],
@@ -83,6 +88,29 @@ function Create() {
 	function handleMainInputsChange(e) {
 		setBill((state) => ({ ...state, [e.target.name]: e.target.value }));
 	}
+	function addNewWorkerRow() {
+		setBill((state) => ({
+			...state,
+			workers: [...state.workers, { id: v4() }],
+		}));
+	}
+
+	function editWorkerRow(data: any) {
+		setBill((state) => ({
+			...state,
+			workers: state.workers.map((worker) => {
+				if (worker.id == data.id) return data;
+				return worker;
+			}),
+		}));
+	}
+
+	function deleteWorkerRow(id: string) {
+		setBill((state) => ({
+			...state,
+			workers: state.workers.filter((workerRow) => workerRow.id !== id),
+		}));
+	}
 
 	return (
 		<>
@@ -108,7 +136,7 @@ function Create() {
 						</a>
 					</Link>
 				</div>
-				<div className="bg-base shadow-lg border border-black p-4 rounded-md space-y-6 divide-y-2">
+				<div className="bg-base shadow-lg border border-black p-4 rounded-md space-y-6">
 					<div className="flex items-start gap-4">
 						{mainInputs.map((input, index) => (
 							<CreateInput
@@ -120,32 +148,45 @@ function Create() {
 							</CreateInput>
 						))}
 					</div>
-
-					<div className="flex items-start gap-4 w-full">
-						<table className="  w-full">
-							<thead>
-								<tr className="bg-secondary">
-									{workerColumns.map((column) => (
-										<th
-											key={column.accessor}
-											className="text-start"
-										>
-											{column.Header}
-										</th>
-									))}
-								</tr>
-							</thead>
-							<tbody>
-								{bill.workers.map((workerData) => {
-									return (
-										<WorkerInputRow
-											onChange={(e) => console.log(e)}
-											id={workerData.id}
-										></WorkerInputRow>
-									);
-								})}
-							</tbody>
-						</table>
+					<div>
+						<h1 className="font-bold text-2xl my-4">العاملين</h1>
+						<div className="flex flex-col items-start gap-4 w-full">
+							<table className="w-full">
+								<thead>
+									<tr className="bg-secondary">
+										{workerColumns.map((column) => (
+											<th
+												key={column.accessor}
+												className="text-start px-2"
+											>
+												{column.Header}
+											</th>
+										))}
+									</tr>
+								</thead>
+								<tbody>
+									{bill.workers.map((workerData) => {
+										return (
+											<WorkerInputRow
+												key={workerData.id}
+												deleteRow={deleteWorkerRow}
+												onChange={(e) =>
+													editWorkerRow(e)
+												}
+												id={workerData.id}
+											></WorkerInputRow>
+										);
+									})}
+								</tbody>
+							</table>
+							<button
+								onClick={addNewWorkerRow}
+								className="bg-primary text-base border-2 w-full py-1 rounded-md hover:bg-primary/80 transition flex items-center justify-center gap-2"
+							>
+								<span>أضف عاملا جديدا</span>
+								<PlusIcon className="h-6 w-6 text-white"></PlusIcon>
+							</button>
+						</div>
 					</div>
 				</div>
 			</main>

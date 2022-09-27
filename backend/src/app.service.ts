@@ -39,6 +39,7 @@ async function getPageinatedBill(query) {
       model = await prisma.anotherPaymentsBill.findMany({
         skip: startIndex,
         take: limit,
+        
       });
 
       count = await prisma.anotherPaymentsBill.count();

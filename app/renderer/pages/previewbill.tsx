@@ -8,132 +8,18 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
 import { Worker } from "../typings/interfaces";
 import { useTable } from "react-table";
+import { GetServerSideProps } from "next";
+import axios from "axios";
 
-function preview() {
+function preview(props) {
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const Header2 = tw.h2`text-3xl font-bold text-black`;
 	const SubHeader = tw.p`text-xl text-black`;
-	const revenues = [
-		{
-			id: 1,
-			amount: 200,
-			date: "1/2/2022",
-			projectBillId: 1,
-		},
-		{
-			id: 2,
-			amount: 140,
-			date: "1/2/2020",
-			projectBillId: 1,
-		},
-	];
-	const expenses = [
-		{
-			id: 1,
-			materialName: "كهرباء",
-			date: "1/2/2022",
-			totalcost: 300,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 2,
-			materialName: "خارصين",
-			date: "2/1/2022",
-			totalcost: 100,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 3,
-			materialName: "كهرباء",
-			date: "1/2/2022",
-			totalcost: 450,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 4,
-			materialName: "كهرباء",
-			date: "1/2/2022",
-			totalcost: 250,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 5,
-			materialName: "كهرباء",
-			date: "1/4/2022",
-			totalcost: 1230,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 6,
-			materialName: "كهرباء",
-			date: "1/4/2022",
-			totalcost: 320,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 7,
-			materialName: "خارصين",
-			date: "3/1/2022",
-			totalcost: 210,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-		{
-			id: 8,
-			materialName: "خارصين",
-			date: "2/1/2022",
-			totalcost: 300,
-			billCode: "#12123",
-			day: "friday",
-			projectBillId: 1,
-		},
-	];
-	const workers = [
-		{
-			id: "1",
-			workerName: "محمد",
-			salary: "200",
-			precentage: "12",
-			salaryPrecentage: "24",
-			date: "1/2/2022",
-			work: "كهرباء",
-			projectName: "عمار للحمير",
-			projectId: "1",
-		},
-		{
-			id: "2",
-			workerName: "احمد",
-			salary: 200,
-			precentage: 12,
-			salaryPrecentage: 24,
-			date: "1/2/2022",
-			work: "سلكيات",
-			projectName: "عمار للحمير",
-			projectId: 1,
-		},
-	];
+	const revenues = props.bill.revenues;
+	const expenses = props.bill.expenses;
+	const workers = props.bill.workers;
 
-	const mainInputs = [
-		{
-			name: "customerName",
-			adress: "customerAddress",
-			projectname: "عمار للحمير",
-			date: "date",
-		},
-	];
+	const mainInputs = props.bill.main;
 
 	return (
 		<>
@@ -149,7 +35,7 @@ function preview() {
 					<Link href="/">
 						<a>
 							<button className="z-0 bg-white drop-shadow-lg text-primary border-primary border-2 text-2xl font-semibold flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/5 active:bg-primary/10 transition">
-								<span>الغاء</span>
+								<span>الرجوع</span>
 								<XMarkIcon className="h-8 w-8"></XMarkIcon>
 							</button>
 						</a>
@@ -324,5 +210,46 @@ function preview() {
 		</>
 	);
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const { billName } = context.query as any;
+	console.log(billName);
+	
+	const { data } = await axios({
+		url: `http://localhost:3000/bill/get/${encodeURIComponent(billName)}`
+	});
+	console.log(data);
+	return {
+		props: {
+			main: {
+				name: "",
+				adress: "",
+				projectName: "",
+				date: "",
+			},
+			worker: {
+				id: "",
+				workerName: "",
+				work: "",
+				date: "",
+				salary: 0,
+				prencentage: 0,
+			},
+			expenses: {
+				id: "",
+				materialName: "",
+				day: "",
+				date: "",
+				totalcost: "",
+				billcode: "",
+			},
+			revenues: {
+				id: "",
+				amount: "",
+				date: "",
+			},
+		}, // will be passed to the page component as props
+	};
+};
 
 export default preview;

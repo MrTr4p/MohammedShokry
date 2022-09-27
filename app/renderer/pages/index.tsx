@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Head from "next/head";
 import tw from "tailwind-styled-components";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import Modal from "../components/Modal";
 import { AnimatePresence, motion } from "framer-motion";
@@ -9,6 +10,7 @@ import { GetServerSideProps } from "next";
 import { useTable } from "react-table";
 
 function Home({ homeBills }: { homeBills: any[] }) {
+	console.log(homeBills);
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const SubHeader = tw.h1`text-xl text-black`;
 	const [modalOpen, setModalOpen] = useState(false);
@@ -17,9 +19,10 @@ function Home({ homeBills }: { homeBills: any[] }) {
 		() => [
 			{ Header: "رقم الفاتورة", accessor: "id" },
 			{ Header: "التاريخ", accessor: "date" },
-			{ Header: "عدد العمال", accessor: "workersCount" },
+			{ Header: "عدد العمال", accessor: "totalWorkers" },
+			{ Header: "مقابل", accessor: "inReturn" },
 			{ Header: "السعر الكلى", accessor: "totalCost" },
-			//{ Header: "سعر الفاتورة", accessor: "billCost" },
+			{ Header: "الحالة", accessor: "projectStatus" },
 		],
 		[],
 	);
@@ -60,6 +63,12 @@ function Home({ homeBills }: { homeBills: any[] }) {
 					</AnimatePresence>
 				</div>
 
+				<div className="flex row outline rounded-md outline-1">
+					<input placeholder="بحث" className="w-full p-4 "></input>
+					<button className="justify-start">
+						<MagnifyingGlassIcon className="w-6 h-6 mx-5 hover:bg-primary/10 active:bg-primary/20"></MagnifyingGlassIcon>
+					</button>
+				</div>
 				<table {...getTableProps()} className="w-full">
 					<thead className="bg-secondary h-8">
 						{headerGroups.map((headerGroup) => (
@@ -101,16 +110,22 @@ function Home({ homeBills }: { homeBills: any[] }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const { billType } = context.query;
+	const filter = billType || "public";
+	const page = 1;
+	const limit = 20;
 	const { data } = await axios({
-		url: "http://localhost:3000/home/allprojectbill?page=1&limit=99999&filter=public",
+		url: `http://localhost:3000/home/allprojectbill?page=${page}&limit=${limit}&filter=${filter}`,
 	});
 	return {
 		props: {
+			billsType: filter,
 			homeBills: data.map((row) => {
 				return {
 					...row,
-					workersCount: row._count.workers,
-					totalCost: 0,
+					inReturn: row?.inReturn || "",
+					totalCost: row?.amount || "",
+					totalWorkers: row?._count?.workers || 0,
 				};
 			}),
 		}, // will be passed to the page component as props

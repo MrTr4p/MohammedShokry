@@ -17,7 +17,7 @@ function CreateWorkerInput({
 	name?: string;
 }) {
 	return (
-		<div className="flex flex-col items-start space-y-2 grow ">
+		<div className="flex flex-col items-start space-y-2 grow px-1">
 			<label className="text-lg font-semibold">{children}</label>
 			<input
 				type={type}
