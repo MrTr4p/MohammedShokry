@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
+import { HttpException, HttpStatus } from "@nestjs/common";
 const prisma = new PrismaClient();
 
 async function modeifyAndDelete(reqBody) {
@@ -123,11 +123,11 @@ async function createAndModify(reqBody, projectBill) {
   } catch (e) {
     //console.log(e);
   }
-  return 'تم انشاء الفاتورة بنجاح';
+  return "تم انشاء الفاتورة بنجاح";
 }
 
 async function createBill(reqBody) {
-  console.log('phase3');
+  console.log("phase3");
 
   if (reqBody.expenses && reqBody.revenues && reqBody.workers) {
     try {
@@ -170,15 +170,15 @@ async function createBill(reqBody) {
         },
       });
     } catch (e) {
-      console.log('error');
+      console.log("error");
       console.log(e);
     }
   } else {
-    console.log('Error');
+    console.log("Error");
     throw new HttpException(
       {
         status: HttpStatus.NOT_ACCEPTABLE,
-        error: 'لا يمكن اضافة فاتورة جديدة بدون مصروفات و ارادات',
+        error: "لا يمكن اضافة فاتورة جديدة بدون مصروفات و ارادات",
       },
       HttpStatus.NOT_ACCEPTABLE,
     );
@@ -188,7 +188,7 @@ async function createBill(reqBody) {
 @Injectable()
 export class BilService {
   async createNewBill(request: Request) {
-    console.log('phase2');
+    console.log("phase2");
     //@ts-ignore
     let reqBody = request.body.new as any;
     let oldBill = (await prisma.projectBill.findFirst({
@@ -201,7 +201,7 @@ export class BilService {
     try {
       if (oldBill.expenses && oldBill.revenues) {
         await createBill(reqBody);
-        console.log('12');
+        console.log("12");
       } else {
         await prisma.projectBill.delete({
           where: {
@@ -248,7 +248,7 @@ export class BilService {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'لا توجد فاتورة ب هذا الاسم',
+          error: "لا توجد فاتورة ب هذا الاسم",
         },
         HttpStatus.NOT_FOUND,
       );
@@ -278,7 +278,7 @@ export class BilService {
         id: bill.id,
       },
     });
-    return 'لقد تم مسح الفاتورة ب نجاح';
+    return "لقد تم مسح الفاتورة ب نجاح";
   }
 
   async modifyBill(param, request) {
@@ -318,9 +318,9 @@ export class BilService {
         },
       });
       console.log(rev);
-      return 'لقد تم تحديث الفاتورة ب نجاح';
+      return "لقد تم تحديث الفاتورة ب نجاح";
     } else {
-      return 'لا توجد فاتورة بهذا الاسم';
+      return "لا توجد فاتورة بهذا الاسم";
     }
   }
 }

@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
+import { HttpException, HttpStatus } from "@nestjs/common";
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -13,7 +13,7 @@ export class BilService {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
-          error: 'يجب ملئ كل من ; اسم العميل , التاريخ, المقابل , المبلغ',
+          error: "يجب ملئ كل من ; اسم العميل , التاريخ, المقابل , المبلغ",
         },
         HttpStatus.BAD_REQUEST,
       );

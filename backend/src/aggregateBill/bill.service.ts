@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function getBill(reqParam) {
@@ -91,7 +91,7 @@ async function findAlll(bill) {
     }
 
     finalWorkersBill.push({
-      work: ' مصنعية ' + workersArray[i],
+      work: " مصنعية " + workersArray[i],
       salary: workersCost,
     });
   }

@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
+import { HttpException, HttpStatus } from "@nestjs/common";
 const prisma = new PrismaClient();
 
 async function getBill(reqParam) {
@@ -64,13 +64,13 @@ export class BilService {
         throw new HttpException(
           {
             status: HttpStatus.NOT_FOUND,
-            error: 'لا توجد فاتورة ب هذا الاسم',
+            error: "لا توجد فاتورة ب هذا الاسم",
           },
           HttpStatus.NOT_FOUND,
         );
       }
     } else {
-      return 'الفاتورة لا يوجد فيها هذا البند';
+      return "الفاتورة لا يوجد فيها هذا البند";
     }
   }
 }

@@ -5,37 +5,37 @@
 @tailwind utilities;
 
 @layer base {
-	body {
-		@apply bg-base !font-cairo;
-	}
-	/* width */
-	::-webkit-scrollbar {
-		@apply w-2.5;
-	}
+  body {
+    @apply bg-base !font-cairo;
+  }
+  /* width */
+  ::-webkit-scrollbar {
+    @apply w-2.5;
+  }
 
-	/* Track */
-	::-webkit-scrollbar-track {
-		background: #f1f1f1;
-	}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
 
-	/* Handle */
-	::-webkit-scrollbar-thumb {
-		@apply bg-primary rounded transition;
-	}
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded transition;
+  }
 
-	/* Handle on hover */
-	::-webkit-scrollbar-thumb:hover {
-		@apply bg-primary/90;
-	}
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/90;
+  }
 
-	/* Handle on click */
-	::-webkit-scrollbar-thumb:active {
-		@apply bg-primary/80;
-	}
+  /* Handle on click */
+  ::-webkit-scrollbar-thumb:active {
+    @apply bg-primary/80;
+  }
 }
 
 @layer utilities {
-	.btn-primary {
-		@apply bg-primary text-white font-semibold flex items-center gap-4 px-4 py-2 rounded-md hover:bg-primary/80 active:bg-primary transition;
-	}
+  .btn-primary {
+    @apply bg-primary text-white font-semibold flex items-center gap-4 px-4 py-2 rounded-md hover:bg-primary/80 active:bg-primary transition;
+  }
 }
