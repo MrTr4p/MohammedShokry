@@ -1,32 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import tw from "tailwind-styled-components";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import { PlusSmallIcon } from "@heroicons/react/24/solid";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { PrinterIcon } from "@heroicons/react/24/outline";
-import { BriefcaseIcon } from "@heroicons/react/24/outline";
-
 import Modal from "../components/PrintModel";
-import CreateInput from "../components/CreateInput";
-import { Worker } from "../typings/interfaces";
-import { useTable } from "react-table";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { GetServerSideProps } from "next";
 import axios from "axios";
 
 function preview(props) {
 	const [modalOpen, setModalOpen] = useState(false);
-
 	const Header = tw.h1`text-5xl font-bold text-black`;
-	const Header2 = tw.h2`text-3xl font-bold text-black`;
-	const SubHeader = tw.p`text-xl text-black`;
 	const revenues = props.revenues;
 	const expenses = props.expenses;
 	const workers = props.worker;
 	const mainInputs = props.main;
-	console.log(workers, expenses, revenues, mainInputs)
 
 	return (
 		<>
@@ -39,59 +27,57 @@ function preview(props) {
 						<Header>شكل الفاتورة</Header>
 					</div>
 
-					
-							<button
-							onClick={() => {
-								setModalOpen(true);
-							}}
-							className="z-0 bg-primary drop-shadow-lg text-white border-white border-2 text-2xl font-semibold flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/70 active:bg-primary/80 transition">
-								<span>طباعة</span>
-								<PrinterIcon className="h-8 w-8 text-white"></PrinterIcon>
-							</button>
-							<AnimatePresence>
+					<button
+						onClick={() => {
+							setModalOpen(true);
+						}}
+						className="z-0 bg-primary drop-shadow-lg text-white border-white border-2 text-2xl font-semibold flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/70 active:bg-primary/80 transition"
+					>
+						<span>طباعة</span>
+						<PrinterIcon className="h-8 w-8 text-white"></PrinterIcon>
+					</button>
+					<AnimatePresence>
 						{modalOpen && <Modal setOpenModal={setModalOpen} />}
 					</AnimatePresence>
 				</div>
 
 				<div className="bg-base shadow-lg border  border-black p-5  rounded-md print:absolute print:inset-0">
 					<div className=" divide-y-2">
-						
-							<div className=" grid-cols-5 mx-auto">
-								<div
-									key={mainInputs.name}
-									className=" flex gap-4 py-4 mx-auto"
-								>
-									<span className="mx-auto">
-										<label className="flex row font-bold text-lg">
-											اسم العميل
-										</label>
-										{mainInputs.name}
-									</span>
-									<span className="mx-auto">
-										<label className="flex row font-bold text-lg">
-											اسم المشروع
-										</label>
-										{mainInputs.projectName}
-									</span>
-									<span className="mx-auto">
-										<label className="flex row font-bold text-lg">
-											مهنة
-										</label>
-										{mainInputs.adress}
-									</span>
-									<span className="mx-auto">
-										<label className="flex row font-bold text-lg">
-											التاريخ
-										</label>
-										{mainInputs.date}
-									</span>
-								</div>
+						<div className=" grid-cols-5 mx-auto">
+							<div
+								key={mainInputs.name}
+								className=" flex gap-4 py-4 mx-auto"
+							>
+								<span className="mx-auto">
+									<label className="flex row font-bold text-lg">
+										اسم العميل
+									</label>
+									{mainInputs.name}
+								</span>
+								<span className="mx-auto">
+									<label className="flex row font-bold text-lg">
+										اسم المشروع
+									</label>
+									{mainInputs.projectName}
+								</span>
+								<span className="mx-auto">
+									<label className="flex row font-bold text-lg">
+										مهنة
+									</label>
+									{mainInputs.adress}
+								</span>
+								<span className="mx-auto">
+									<label className="flex row font-bold text-lg">
+										التاريخ
+									</label>
+									{mainInputs.date}
+								</span>
 							</div>
+						</div>
 					</div>
-					<div className ='py-10 outline-dashed outline-[1px] my-10'>
-					
-						<label className=" text-2xl font-bold mx-2">العاملين
-						
+					<div className="py-10 outline-dashed outline-[1px] my-10">
+						<label className=" text-2xl font-bold mx-2">
+							العاملين
 						</label>
 
 						{workers.map((worker) => (
@@ -192,32 +178,32 @@ function preview(props) {
 							ألايرادات
 						</label>
 
-						<div className ='"mx-auto'>
-						{revenues.map((revenue) => (
-							<div className="flex row">
-								<div
-									key={revenue.id}
-									className=" flex gap-4 py-4 "
-								>
-									<span className="font-bold flex row mt-2 mx-2">
-										<StarIcon className="h-2 w-2 mt-2"></StarIcon>
-										{revenue.id}
-									</span>
-									<span className="mx-16">
-										<label className="flex row font-bold text-lg">
-											الكمية
-										</label>
-										{revenue.amount}
-									</span>
-									<span className="mx-16">
-										<label className="flex row font-bold text-lg">
-											التاريخ
-										</label>
-										{revenue.date}
-									</span>
+						<div className='"mx-auto'>
+							{revenues.map((revenue) => (
+								<div className="flex row">
+									<div
+										key={revenue.id}
+										className=" flex gap-4 py-4 "
+									>
+										<span className="font-bold flex row mt-2 mx-2">
+											<StarIcon className="h-2 w-2 mt-2"></StarIcon>
+											{revenue.id}
+										</span>
+										<span className="mx-16">
+											<label className="flex row font-bold text-lg">
+												الكمية
+											</label>
+											{revenue.amount}
+										</span>
+										<span className="mx-16">
+											<label className="flex row font-bold text-lg">
+												التاريخ
+											</label>
+											{revenue.date}
+										</span>
+									</div>
 								</div>
-							</div>
-						))}
+							))}
 						</div>
 					</div>
 				</div>

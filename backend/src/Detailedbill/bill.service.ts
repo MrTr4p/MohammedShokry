@@ -1,15 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
-import {
-  Controller,
-  Get,
-  Post,
-  Redirect,
-  Req,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { Request } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+import { HttpException, HttpStatus } from '@nestjs/common';
 const prisma = new PrismaClient();
 
 async function getBill(reqParam) {

@@ -3,19 +3,10 @@ const CREATE_PASSWORD = 'sh2022';
 const ACCESS_TOKEN =
   '7cfc00192b50e59a49613574edf0a30cde63c5d061da7356faa6fb81be9530f8aa8403a35a771718979cd4994132cc78ff504332a2a22b5ece94bcb68d9aca52';
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient, ProjectBill } from '@prisma/client';
+import { PrismaClient, ProjectBill } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
 import Fuse from 'fuse.js';
-import {
-  Controller,
-  Get,
-  Post,
-  Redirect,
-  Req,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { Request } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 const prisma = new PrismaClient();
 
 interface result {
@@ -145,7 +136,6 @@ export class AppService {
             totalcost: true,
           },
         });
-        //@ts-ignore
         return {
           ...projectBill,
           workersSalary: workers._sum.salary,

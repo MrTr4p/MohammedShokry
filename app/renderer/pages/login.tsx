@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import tw from "tailwind-styled-components";
-import { PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import LogoPng from "../public/images/logo.png";
 import axios from "axios";

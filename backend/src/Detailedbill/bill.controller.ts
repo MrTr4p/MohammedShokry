@@ -1,14 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Redirect,
-  Req,
-  Delete,
-  Put,
-} from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { BilService } from './bill.service';
-import { Request, Param } from '@nestjs/common';
+import { Param } from '@nestjs/common';
 
 @Controller('/bill/detailed')
 export class BillController {

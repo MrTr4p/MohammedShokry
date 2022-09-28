@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
-import WorkerInputRow from "../components/WorkerInputRow";
 import { v4 } from "uuid";
-import { PlusIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
-import ExpenseInputRow from "../components/ExpenseInputRow";
-import RevenueInputRow from "../components/RevenueInputRow";
 import CreateTable from "../components/CreateTable";
 
 function Create() {
@@ -23,23 +19,21 @@ function Create() {
 		date: "",
 		name: "",
 		officePrecentage: 0,
-		workers: [{ id: v4()}],
+		workers: [{ id: v4() }],
 		expenses: [{ id: v4() }],
 		revenues: [{ id: v4() }],
 	});
 
-	async function sendBill(){
+	async function sendBill() {
 		const res = await axios({
-			url:`http://127.0.0.1:3000/bill/create`,
-			method:'POST',
-			data:{
-				new:{
-					bill
-				}
-			}
-		})
-			
-		
+			url: `http://127.0.0.1:3000/bill/create`,
+			method: "POST",
+			data: {
+				new: {
+					bill,
+				},
+			},
+		});
 	}
 
 	const totalCost: void = React.useMemo(() => {

@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Redirect,
-  Req,
-  Delete,
-  Put,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Req, Delete, Put } from '@nestjs/common';
 import { BilService } from './bill.service';
 import { Request, Param } from '@nestjs/common';
 

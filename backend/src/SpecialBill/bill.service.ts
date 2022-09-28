@@ -1,15 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
-import {
-  Controller,
-  Get,
-  Post,
-  Redirect,
-  Req,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { Request } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+import { HttpException, HttpStatus } from '@nestjs/common';
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -18,7 +9,7 @@ export class BilService {
     const req = request.body;
     console.log(req);
 
-    if(!req.name||!req.date|| !req.inReturn || !req.amount){
+    if (!req.name || !req.date || !req.inReturn || !req.amount) {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,

@@ -1,16 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, PrismaClient, ProjectBill } from '@prisma/client';
-import {
-  Controller,
-  Get,
-  Post,
-  Redirect,
-  Req,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { Request } from '@nestjs/common';
-import { BillController } from './bill.controller';
+import { PrismaClient } from '@prisma/client';
+import { HttpException, HttpStatus } from '@nestjs/common';
 const prisma = new PrismaClient();
 
 async function modeifyAndDelete(reqBody) {
@@ -79,8 +69,6 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
-
-      
     }
   } catch (e) {
     //console.log(e);
@@ -131,7 +119,6 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
-      
     }
   } catch (e) {
     //console.log(e);
@@ -156,31 +143,32 @@ async function createBill(reqBody) {
       });
       createAndModify(reqBody, projectBill);
       const totalExpensesCost = await prisma.expenses.aggregate({
-        where:{
-          projectBillId: projectBill.id
+        where: {
+          projectBillId: projectBill.id,
         },
-        _sum:{
-          totalcost:true
-        }
-      })
+        _sum: {
+          totalcost: true,
+        },
+      });
       const totalRevenue = await prisma.revenue.aggregate({
-        where:{
-          projectBillId:projectBill.id
+        where: {
+          projectBillId: projectBill.id,
         },
-        _sum:{
-          amount: true
-        }
-      })
-      const status = (totalExpensesCost._sum.totalcost - totalRevenue._sum.amount <= 0)
-      console.log(status)
+        _sum: {
+          amount: true,
+        },
+      });
+      const status =
+        totalExpensesCost._sum.totalcost - totalRevenue._sum.amount <= 0;
+      console.log(status);
       const rev = await prisma.projectBill.update({
-        where:{
-          id:projectBill.id
+        where: {
+          id: projectBill.id,
         },
-        data:{
-          projectStatus:status
-        }
-      })
+        data: {
+          projectStatus: status,
+        },
+      });
     } catch (e) {
       console.log('error');
       console.log(e);
@@ -248,13 +236,13 @@ export class BilService {
         },
       });
       const totalCost = await prisma.expenses.aggregate({
-        where:{
-          projectBillId:bill.id
+        where: {
+          projectBillId: bill.id,
         },
-        _sum:{
-          totalcost:true
-        }
-      })
+        _sum: {
+          totalcost: true,
+        },
+      });
       return { bill: bill, expenses, revenues, workers, totalCost };
     } else {
       throw new HttpException(
@@ -302,33 +290,34 @@ export class BilService {
       createAndModify(newReqBody, bill);
       modeifyAndDelete(oldReqBody);
       const totalExpensesCost = await prisma.expenses.aggregate({
-        where:{
-          projectBillId: bill.id
+        where: {
+          projectBillId: bill.id,
         },
-        _sum:{
-          totalcost:true
-        }
-      })
+        _sum: {
+          totalcost: true,
+        },
+      });
       const totalRevenue = await prisma.revenue.aggregate({
-        where:{
-          projectBillId:bill.id
+        where: {
+          projectBillId: bill.id,
         },
-        _sum:{
-          amount: true
-        }
-      })
-      console.log(totalExpensesCost._sum.totalcost, totalRevenue._sum.amount)
-      const status = (totalExpensesCost._sum.totalcost - totalRevenue._sum.amount <= 0)
-      console.log(status)
+        _sum: {
+          amount: true,
+        },
+      });
+      console.log(totalExpensesCost._sum.totalcost, totalRevenue._sum.amount);
+      const status =
+        totalExpensesCost._sum.totalcost - totalRevenue._sum.amount <= 0;
+      console.log(status);
       const rev = await prisma.projectBill.update({
-        where:{
-          id:bill.id
+        where: {
+          id: bill.id,
         },
-        data:{
-          projectStatus:status
-        }
-      })
-      console.log(rev)
+        data: {
+          projectStatus: status,
+        },
+      });
+      console.log(rev);
       return 'لقد تم تحديث الفاتورة ب نجاح';
     } else {
       return 'لا توجد فاتورة بهذا الاسم';
