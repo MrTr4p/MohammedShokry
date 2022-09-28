@@ -58,7 +58,7 @@ async function createAndModify(reqBody, projectBill) {
         data: {
           materialName: materialName,
           totalcost: expenses[i].totalcost,
-          date: new Date(expenses[i].date).toLocaleDateString(),
+          date: expenses[i].date,
 
           day: expenses[i].day,
           billCode: expenses[i].billCode,
@@ -84,7 +84,7 @@ async function createAndModify(reqBody, projectBill) {
       const rev = await prisma.worker.create({
         data: {
           workerName: workerName,
-          date: new Date(workers[i].date).toLocaleDateString(),
+          date: workers[i].date,
           salary: workers[i].salary,
           precentage: workers[i].precentage,
           salaryPrecentage: Number(
@@ -111,7 +111,7 @@ async function createAndModify(reqBody, projectBill) {
       const rev = await prisma.revenue.create({
         data: {
           amount: revenues[i].amount,
-          date: new Date(revenues[i].date).toLocaleDateString(),
+          date: revenues[i].date,
           ProjectBill: {
             connect: {
               id: projectBill.id,
@@ -126,15 +126,14 @@ async function createAndModify(reqBody, projectBill) {
   return "تم انشاء الفاتورة بنجاح";
 }
 
-async function createBill(reqBody) {
-  console.log("phase3");
-
+async function createBill(reqB) {
+  const reqBody = reqB
   if (reqBody.expenses && reqBody.revenues && reqBody.workers) {
     try {
       const projectBill = await prisma.projectBill.create({
         data: {
           name: reqBody.name.trim(),
-          date: new Date(reqBody.date).toLocaleDateString(),
+          date: reqBody.date,
           officePrecentage: reqBody.precentage,
           //@ts-ignore
           projectStatus: false,
@@ -190,15 +189,22 @@ async function createBill(reqBody) {
 @Injectable()
 export class BilService {
   async createNewBill(request: Request) {
-    console.log("phase2");
+    let oldBill
+    //@ts-ignore
+    console.log(request.body.new)
     //@ts-ignore
     let reqBody = request.body.new as any;
+    try{
     let oldBill = (await prisma.projectBill.findFirst({
       where: {
         name: reqBody.name,
       },
     })) as any;
     console.log(oldBill);
+  }
+  catch(e){
+    //console.log(e)
+  }
 
     try {
       if (oldBill.expenses && oldBill.revenues) {
@@ -212,7 +218,7 @@ export class BilService {
         });
       }
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       await createBill(reqBody);
     }
   }
