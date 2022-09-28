@@ -136,6 +136,7 @@ async function createBill(reqBody) {
           name: reqBody.name.trim(),
           date: new Date(reqBody.date).toLocaleDateString(),
           officePrecentage: reqBody.precentage,
+          //@ts-ignore
           projectStatus: false,
           clientName: reqBody.clientName,
           clientAddress: reqBody.clientAddress,
@@ -166,6 +167,7 @@ async function createBill(reqBody) {
           id: projectBill.id,
         },
         data: {
+          //@ts-ignore
           projectStatus: status,
         },
       });
@@ -314,6 +316,7 @@ export class BilService {
           id: bill.id,
         },
         data: {
+          //@ts-ignore
           projectStatus: status,
         },
       });

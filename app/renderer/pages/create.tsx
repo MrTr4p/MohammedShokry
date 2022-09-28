@@ -25,16 +25,18 @@ function Create() {
   });
 
   async function sendBill() {
+    const [bill , setBill] = useState({})
     const res = await axios({
       url: `http://127.0.0.1:3000/bill/create`,
       method: "POST",
       data: {
         new: {
-          bill,
+          bill : bill
         },
       },
     });
   }
+
 
   const totalCost: void = React.useMemo(() => {
     //bill.expenses.reduce()
@@ -253,6 +255,9 @@ function Create() {
             <div className="flex flex-col">
               <Header4>المبلغ الكلى</Header4>
               <SubHeader>392106</SubHeader>
+            </div>
+            <div className="flex mt-4 justify-end flex row">
+              <button onClick={sendBill} className=" justify-center outline outline-primary w-full mx-1 bg-primary drop-shadow-lg text-white text-xl font-semibold flex items-center gap-2 px-2 py-1 rounded-md hover:bg-primary/90 active:bg-primary/70 transition">حفظ</button>
             </div>
           </div>
         </div>

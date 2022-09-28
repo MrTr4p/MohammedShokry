@@ -55,13 +55,14 @@ function Home({
             { Header: "التاريخ", accessor: "date" },
             { Header: "عدد العمال", accessor: "totalWorkers" },
             { Header: "السعر الكلى", accessor: "totalCost" },
-            { Header: "الحالة", accessor: "projectStatus" },
+            { Header: "الحالة", accessor: "projectStatus" }
           ]
         : [
             { Header: "رقم الفاتورة", accessor: "id" },
             { Header: "مقابل", accessor: "inReturn" },
             { Header: "التاريخ", accessor: "date" },
             { Header: "المبلغ", accessor: "totalCost" },
+            ,
           ]),
     ],
     [billsType]
@@ -112,10 +113,13 @@ function Home({
             placeholder="بحث"
             className="w-full p-4 "
           ></input>
+          
           <button type="submit" className="justify-start">
             <MagnifyingGlassIcon className="w-6 h-6 mx-5 hover:bg-primary/10 active:bg-primary/20"></MagnifyingGlassIcon>
+            
           </button>
         </form>
+
         <table {...getTableProps()} className="w-full">
           <thead className="bg-secondary h-8">
             {headerGroups.map((headerGroup) => (
@@ -129,23 +133,37 @@ function Home({
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
+            
             {rows.map((row) => {
               prepareRow(row);
               return (
+                
                 <tr {...row.getRowProps()} className="h-12 border-2 rounded">
                   {row.cells.map((cell) => {
                     return (
+                      
                       <td className="text-center " {...cell.getCellProps()}>
                         {cell.render("Cell")}
+                       
                       </td>
+                      
                     );
-                  })}
+                    
+                  })
+                  
+                  }
+                  
                 </tr>
+                
               );
             })}
+            
           </tbody>
+         
         </table>
+        
       </main>
+      
     </>
   );
 }
