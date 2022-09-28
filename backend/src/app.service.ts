@@ -32,6 +32,7 @@ async function getPageinatedBill(query) {
         skip: startIndex,
         take: limit,
       });
+     
 
       count = await prisma.anotherPaymentsBill.count();
     } else if (filter == "public") {
@@ -47,6 +48,14 @@ async function getPageinatedBill(query) {
           _count: true,
         },
       });
+      console.log(projectBill)
+      const expenses = await prisma.expenses.findMany({
+        where:{
+          //@ts-ignore
+          projectBillId:projectBill.id
+        }
+      })
+      console.log(expenses)
 
       const summedBills = projectBill.map((bill) => {
         let newBill = {

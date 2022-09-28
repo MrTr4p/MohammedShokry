@@ -1,8 +1,10 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '-': ^0.0.1
   '@babel/runtime-corejs3': ^7.19.1
   '@heroicons/react': ^2.0.11
+  '@popperjs/core': ^2.9.1
   '@types/node': ^16.11.62
   '@types/react': ^18.0.21
   '@types/uuid': ^8.3.4
@@ -27,8 +29,10 @@ specifiers:
   uuid: ^9.0.0
 
 dependencies:
+  '-': 0.0.1
   '@babel/runtime-corejs3': 7.19.1
   '@heroicons/react': 2.0.11_react@18.2.0
+  '@popperjs/core': 2.11.6
   '@types/uuid': 8.3.4
   axios: 0.27.2
   custom-electron-titlebar: 4.1.0_electron@20.2.0
@@ -55,6 +59,10 @@ devDependencies:
   typescript: 4.8.4
 
 packages:
+
+  /-/0.0.1:
+    resolution: {integrity: sha512-3HfneK3DGAm05fpyj20sT3apkNcvPpCuccOThOPdzz8sY7GgQGe0l93XH9bt+YzibcTIgUAIMoyVJI740RtgyQ==}
+    dev: false
 
   /7zip-bin/5.1.1:
     resolution: {integrity: sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==}
@@ -1592,6 +1600,10 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
     dev: true
+
+  /@popperjs/core/2.11.6:
+    resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
+    dev: false
 
   /@sindresorhus/is/0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}

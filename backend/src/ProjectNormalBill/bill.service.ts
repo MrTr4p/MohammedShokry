@@ -49,9 +49,9 @@ async function getBill(reqParam) {
 }
 
 async function createAndModify(reqBody, projectBill) {
+  console.log(reqBody)
   try {
     const expenses = reqBody.expenses;
-
     for (let i = 0; i < expenses.length; i++) {
       const materialName = expenses[i].materialName.trim();
       const rev = await prisma.expenses.create({
@@ -69,6 +69,7 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
+      console.log(rev)
     }
   } catch (e) {
     //console.log(e);
@@ -99,6 +100,7 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
+      console.log(rev)
     }
   } catch (e) {
     //console.log(e);
@@ -119,6 +121,7 @@ async function createAndModify(reqBody, projectBill) {
           },
         },
       });
+      console.log(rev)
     }
   } catch (e) {
     //console.log(e);
@@ -127,7 +130,8 @@ async function createAndModify(reqBody, projectBill) {
 }
 
 async function createBill(reqB) {
-  const reqBody = reqB
+  const reqBody = reqB.bill
+  console.log(reqBody)
   if (reqBody.expenses && reqBody.revenues && reqBody.workers) {
     try {
       const projectBill = await prisma.projectBill.create({
@@ -135,13 +139,12 @@ async function createBill(reqB) {
           name: reqBody.name.trim(),
           date: reqBody.date,
           officePrecentage: reqBody.precentage,
-          //@ts-ignore
           projectStatus: false,
           clientName: reqBody.clientName,
           clientAddress: reqBody.clientAddress,
         },
       });
-      createAndModify(reqBody, projectBill);
+      await createAndModify(reqBody, projectBill);
       const totalExpensesCost = await prisma.expenses.aggregate({
         where: {
           projectBillId: projectBill.id,
@@ -158,18 +161,16 @@ async function createBill(reqB) {
           amount: true,
         },
       });
-      const status =
-        totalExpensesCost._sum.totalcost - totalRevenue._sum.amount <= 0;
-      console.log(status);
+      const status = await (totalExpensesCost._sum.totalcost - totalRevenue._sum.amount) <= 0;
       const rev = await prisma.projectBill.update({
         where: {
           id: projectBill.id,
         },
         data: {
-          //@ts-ignore
           projectStatus: status,
         },
       });
+      console.log(rev)
     } catch (e) {
       console.log("error");
       console.log(e);
@@ -200,7 +201,6 @@ export class BilService {
         name: reqBody.name,
       },
     })) as any;
-    console.log(oldBill);
   }
   catch(e){
     //console.log(e)
@@ -209,7 +209,6 @@ export class BilService {
     try {
       if (oldBill.expenses && oldBill.revenues) {
         await createBill(reqBody);
-        console.log("12");
       } else {
         await prisma.projectBill.delete({
           where: {

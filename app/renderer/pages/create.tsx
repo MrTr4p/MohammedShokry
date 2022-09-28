@@ -9,75 +9,38 @@ import axios from "axios";
 import CreateTable from "../components/CreateTable";
 import { Bill } from "../typings/interfaces";
 
-
 function Create() {
 	const Header = tw.h1`text-5xl `;
 	const Header4 = tw.h2`text-xl font-bold text-black`;
 	const SubHeader = tw.p`text-xl text-black font-medium`;
 
 	const [bill, setBill] = useState<Bill>({
-		clientAddress: "",
-		clientName: "",
-		date: "",
 		name: "",
+		clientName: "",
+		clientAddress: "",
+		date: "",
 		precentage: 0,
-		workers: [{ id: v4() }],
-		expenses: [{ id: v4() }],
-		revenues: [{ id: v4() }],
+		workers: [
+			{ id: 0, cost: 0, date: "", job: "", name: "", precentage: 0 },
+		],
+		expenses: [
+			{
+				id: 0,
+				billCode: "",
+				date: "",
+				day: "",
+				materialName: "",
+				totalcost: 0,
+			},
+		],
+		revenues: [{ id: 0, amount: 0, date: "" }],
 	});
 
 	useEffect(() => {
 		console.log(bill);
 	}, [bill]);
 
-	async function sendBill() {
-		console.log(bill);
-		const res = await axios({
-			url: `http://127.0.0.1:3000/bill/create`,
-			method: "POST",
-			data: {
-				new: {
-					bill: {
-            clientName:bill.clientName,
-            name: bill.name,
-            clientAddress:bill.clientAddress,
-            precentage:bill.precentage,
-            date:bill.date,
-						expenses: bill.expenses.map((expense) => {
-							return {
-								materialName: expense.materialName,
-                totalcost:expense.materialCost,
-                date:expense.materialDate,
-                day:expense.day,
-                billCode:expense.billCode
-							};
-						}),
-            workers: bill.workers.map((worker) => {
-							return {
-								workerName: worker.name,
-                date:worker.date,
-                work:worker.job,
-                salary:worker.cost,
-                billCode:worker.precentage
-							};
-						}),
-            revenues: bill.revenues.map((revenue) => {
-							return {
-								amount: revenue.materialCost,
-                date:revenue.materialDate,
-
-							};
-						}),
-					},
-				},
-			},
-		});
-		console.log(res);
-	}
-
-	const totalCost = React.useMemo(() => {
-		//bill.expenses.reduce()
-	}, [bill]);
+	async function sendBill() {}
 
 	const mainInputs = [
 		{
@@ -93,7 +56,7 @@ function Create() {
 			type: "text",
 		},
 		{
-			name: "projectName",
+			name: "name",
 			label: "اسم المشروع",
 			placeholder: "اكتب هنا",
 			type: "text",
@@ -105,90 +68,93 @@ function Create() {
 			type: "date",
 		},
 		{
-			name: "officePrecentage",
+			name: "precentage",
 			label: "نسبة المكتب",
 			placeholder: "1.2%",
 			type: "number",
 		},
 	];
 
-	const workerColumns = React.useMemo(
-		() => [
-			{
-				Header: "اسم العامل",
-				accessor: "workerName", // accessor is the "key" in the data
-			},
-			{
-				Header: "الوظيفة",
-				accessor: "workerJob",
-			},
-			{
-				Header: "المبلغ",
-				accessor: "workerCost",
-			},
-			{
-				Header: "التاريخ",
-				accessor: "workerDate",
-			},
-			{
-				Header: "النسبة",
-				accessor: "workerPercantage",
-			},
-			{
-				Header: "مسح",
-				accessor: "close",
-			},
-		],
-		[],
-	);
+	const workerColumns = [
+		{
+			Header: "اسم العامل",
+			accessor: "workerName",
+			type: "text",
+		},
+		{
+			Header: "الوظيفة",
+			accessor: "workerJob",
+			type: "text",
+		},
+		{
+			Header: "المبلغ",
+			accessor: "workerCost",
+			type: "number",
+		},
+		{
+			Header: "التاريخ",
+			accessor: "workerDate",
+			type: "date",
+		},
+		{
+			Header: "النسبة",
+			accessor: "workerPercantage",
+			type: "number",
+		},
+		{
+			Header: "مسح",
+			accessor: "close",
+			notInput: true,
+		},
+	];
 
-	const expensesColumns = React.useMemo(
-		() => [
-			{
-				Header: "اسم المادة",
-				accessor: "materialName", // accessor is the "key" in the data
-			},
-			{
-				Header: "اليوم",
-				accessor: "day",
-			},
-			{
-				Header: "المبلغ",
-				accessor: "materialCost",
-			},
-			{
-				Header: "التاريخ",
-				accessor: "materialDate",
-			},
-			{
-				Header: "كود الفاتورة",
-				accessor: "billCode",
-			},
-			{
-				Header: "مسح",
-				accessor: "close",
-			},
-		],
-		[],
-	);
+	const expensesColumns = [
+		{
+			Header: "اسم المادة",
+			accessor: "materialName",
+			type: "text",
+		},
+		{
+			Header: "اليوم",
+			accessor: "day",
+			type: "text",
+		},
+		{
+			Header: "المبلغ",
+			accessor: "materialCost",
+			type: "number",
+		},
+		{
+			Header: "التاريخ",
+			accessor: "date",
+			type: "date",
+		},
+		{
+			Header: "كود الفاتورة",
+			accessor: "billCode",
+			type: "text",
+		},
+		{
+			Header: "مسح",
+			accessor: "close",
+			notInput: true,
+		},
+	];
 
-	const revenueColumns = React.useMemo(
-		() => [
-			{
-				Header: "المبلغ",
-				accessor: "amount", // accessor is the "key" in the data
-			},
-			{
-				Header: "التاريخ",
-				accessor: "materialDate",
-			},
-			{
-				Header: "مسح",
-				accessor: "close",
-			},
-		],
-		[],
-	);
+	const revenueColumns = [
+		{
+			Header: "المبلغ",
+			accessor: "amount", // accessor is the "key" in the data
+		},
+		{
+			Header: "التاريخ",
+			accessor: "date",
+		},
+		{
+			Header: "مسح",
+			accessor: "close",
+		},
+	];
 
 	const tables: {
 		title: string;
@@ -207,7 +173,7 @@ function Create() {
 	function addNewRow(type: "workers" | "expenses" | "revenues") {
 		setBill((state) => ({
 			...state,
-			[type]: [...state[type], { id: v4() }],
+			[type]: [...state[type], { id: state[type].length++ }],
 		}));
 	}
 
@@ -221,10 +187,13 @@ function Create() {
 		}));
 	}
 
-	function deleteRow(type: "workers" | "expenses" | "revenues", id: string) {
+	function deleteRow(type: "workers" | "expenses" | "revenues", id: number) {
 		setBill((state) => ({
 			...state,
-			[type]: state[type].filter((rowCell) => rowCell.id !== id),
+			//@ts-ignore
+			[type]: state[type].filter(
+				(rowCell: { id: number }) => rowCell.id !== id,
+			),
 		}));
 	}
 

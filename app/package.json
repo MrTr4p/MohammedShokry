@@ -11,8 +11,10 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@babel/runtime-corejs3": "^7.19.1",
     "@heroicons/react": "^2.0.11",
+    "@popperjs/core": "^2.9.1",
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
     "custom-electron-titlebar": "^4.1.0",
