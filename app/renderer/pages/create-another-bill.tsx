@@ -90,20 +90,16 @@ function Home() {
 							</button>
 						</div>
 					)}
-					<div className=" flex   bg-secondary gap-4">
+					<div className="flex gap-4">
 						<CreateInput
-
-
 							onChange={(e) =>
 								setInput((state) => ({
 									...state,
 									name: e.target.value,
 								}))
 							}
-							
 						>
-							
-							<span className ='font-bold '>أسم المشروع</span>
+							<span className="font-bold ">أسم المشروع</span>
 						</CreateInput>
 						<CreateInput
 							onChange={(e) =>
@@ -113,10 +109,7 @@ function Home() {
 								}))
 							}
 						>
-							<span className ='font-bold '>
-							المقابل
-							</span>
-							
+							<span className="font-bold ">المقابل</span>
 						</CreateInput>
 						<CreateInput
 							onChange={(e) =>
@@ -127,9 +120,7 @@ function Home() {
 							}
 							type="number"
 						>
-							<span className ='font-bold'>
-							المبلغ
-							</span>
+							<span className="font-bold">المبلغ</span>
 						</CreateInput>
 						<CreateInput
 							type="date"
@@ -140,16 +131,12 @@ function Home() {
 								}))
 							}
 						>
-							<span className="font-bold">
-							التاريخ
-							</span>
+							<span className="font-bold">التاريخ</span>
 						</CreateInput>
 					</div>
 					<div className="mt-10">
 						<label>
-							<span className="font-bold">
-							الملاحظة
-							</span>
+							<span className="font-bold">الملاحظة</span>
 							<textarea
 								onChange={(e) =>
 									setInput((state) => ({
