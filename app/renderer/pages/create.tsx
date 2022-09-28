@@ -6,8 +6,8 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
 import { v4 } from "uuid";
 import axios from "axios";
-import CreateTable from "../components/CreateTable";
 import { Bill } from "../typings/interfaces";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 function Create() {
 	const Header = tw.h1`text-5xl `;
@@ -21,7 +21,7 @@ function Create() {
 		date: "",
 		precentage: 0,
 		workers: [
-			{ id: 0, cost: 0, date: "", job: "", name: "", precentage: 0 },
+			{ id: 0, cost: 945, date: "2022-06-21", job: "سباك مجارى", name: "محمد على", precentage: 5 },
 		],
 		expenses: [
 			{
@@ -44,32 +44,32 @@ function Create() {
 
 	const mainInputs = [
 		{
-			name: "clientName",
-			label: "أسم العميل",
+			Header: "أسم العميل",
+			accessor: "clientName",
 			placeholder: "اكتب هنا",
 			type: "text",
 		},
 		{
-			name: "clientAddress",
-			label: "عنوان العميل",
+			accessor: "clientAddress",
+			Header: "عنوان العميل",
 			placeholder: "اكتب هنا",
 			type: "text",
 		},
 		{
-			name: "name",
-			label: "اسم المشروع",
+			accessor: "name",
+			Header: "اسم المشروع",
 			placeholder: "اكتب هنا",
 			type: "text",
 		},
 		{
-			name: "date",
-			label: "التاريخ",
+			accessor: "date",
+			Header: "التاريخ",
 			placeholder: "اكتب هنا",
 			type: "date",
 		},
 		{
-			name: "precentage",
-			label: "نسبة المكتب",
+			accessor: "precentage",
+			Header: "نسبة المكتب",
 			placeholder: "1.2%",
 			type: "number",
 		},
@@ -145,57 +145,20 @@ function Create() {
 		{
 			Header: "المبلغ",
 			accessor: "amount", // accessor is the "key" in the data
+			type: "number",
 		},
 		{
 			Header: "التاريخ",
 			accessor: "date",
+			type: "date",
 		},
 		{
 			Header: "مسح",
 			accessor: "close",
+			notInput: true,
+			width: 16,
 		},
 	];
-
-	const tables: {
-		title: string;
-		type: "workers" | "expenses" | "revenues";
-		columnNames: any;
-	}[] = [
-		{ title: "العمال", type: "workers", columnNames: workerColumns },
-		{ title: "المصروفات", type: "expenses", columnNames: expensesColumns },
-		{ title: "الايريدات", type: "revenues", columnNames: revenueColumns },
-	];
-
-	function handleMainInputsChange(e) {
-		setBill((state) => ({ ...state, [e.target.name]: e.target.value }));
-	}
-
-	function addNewRow(type: "workers" | "expenses" | "revenues") {
-		setBill((state) => ({
-			...state,
-			[type]: [...state[type], { id: state[type].length++ }],
-		}));
-	}
-
-	function editRow(type: "workers" | "expenses" | "revenues", data: any) {
-		setBill((state) => ({
-			...state,
-			[type]: state[type].map((rowCell) => {
-				if (rowCell.id == data.id) return data;
-				return rowCell;
-			}),
-		}));
-	}
-
-	function deleteRow(type: "workers" | "expenses" | "revenues", id: number) {
-		setBill((state) => ({
-			...state,
-			//@ts-ignore
-			[type]: state[type].filter(
-				(rowCell: { id: number }) => rowCell.id !== id,
-			),
-		}));
-	}
 
 	return (
 		<>
@@ -222,52 +185,50 @@ function Create() {
 					</Link>
 				</div>
 				<div className="bg-base shadow-lg border border-black rounded-md  relative">
-					<div className="p-4  space-y-6">
-						<div className="flex items-start gap-4 ">
-							{mainInputs.map((input, index) => (
-								<CreateInput
-									key={`main-` + index}
-									name={input.name}
-									onChange={handleMainInputsChange}
-									{...input}
-								>
-									{input.label}
-								</CreateInput>
-							))}
+					<div className="p-4 space-y-6">
+						<div className="flex items-center">
+							{mainInputs.map((input, index) => {
+								return (
+									<CreateInput
+										key={index}
+										{...input}
+										onChange={(e) => {
+											setBill({
+												...bill,
+												[input.accessor]:
+													e.target.value,
+											});
+										}}
+									>
+										{input.Header}
+									</CreateInput>
+								);
+							})}
 						</div>
 
-						{tables.map(({ type, title, columnNames }, index) => {
-							return (
-								<CreateTable
-									key={index}
-									title={title}
-									addNewRow={addNewRow}
-									deleteRow={deleteRow}
-									editRow={editRow}
-									type={type}
-									columnNames={columnNames}
-									data={bill[type]}
-								></CreateTable>
-							);
-						})}
+						<table className="w-full">
+							<thead>
+								<tr className="bg-secondary ">
+									{workerColumns.map((tCell) => {
+										return (
+											<td className="p-2 rounded-t-md font-semibold">
+												{tCell.Header}
+											</td>
+										);
+									})}
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
 					</div>
+
 					<div className="bg-secondary p-4 flex items-start gap-8">
-						<div className="flex flex-col">
-							<Header4>المبلغ الكلى</Header4>
-							<SubHeader>392106</SubHeader>
-						</div>
-						<div className="flex flex-col">
-							<Header4>المبلغ الكلى</Header4>
-							<SubHeader>392106</SubHeader>
-						</div>
-						<div className="flex mt-4 justify-end flex row">
-							<button
-								onClick={sendBill}
-								className=" justify-center outline outline-primary w-full mx-1 bg-primary drop-shadow-lg text-white text-xl font-semibold flex items-center gap-2 px-2 py-1 rounded-md hover:bg-primary/90 active:bg-primary/70 transition"
-							>
-								حفظ
-							</button>
-						</div>
+						<button
+							onClick={sendBill}
+							className=" justify-center outline outline-primary w-full mx-1 bg-primary drop-shadow-lg text-white text-xl font-semibold flex items-center gap-2 px-2 py-1 rounded-md hover:bg-primary/90 active:bg-primary/70 transition"
+						>
+							حفظ
+						</button>
 					</div>
 				</div>
 			</main>

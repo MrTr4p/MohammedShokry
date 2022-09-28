@@ -60,9 +60,9 @@ function Home() {
       <main className="space-y-12">
         <div className="flex justify-between items-start">
           <div className="flex flex-col items-start gap-2">
-            <Header>أضافة فاتورة جديدة</Header>
+            <Header>أضافة فاتورة اخري</Header>
             <SubHeader>
-              كلام كتيييييييييييييييييييييييييييييييييييييييييييييييييييير
+              اضف فاتورة اخري هنا , يجب ملئ كل الخانات مع عدا الملاحظة
             </SubHeader>
           </div>
           <Link href="/">

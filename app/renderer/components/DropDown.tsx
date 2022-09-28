@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { DocumentIcon } from "@heroicons/react/24/outline";
@@ -6,7 +6,7 @@ import { UserIcon } from "@heroicons/react/24/outline";
 
 import NormalBill from "../public/images/logo.png";
 import { AnimatePresence, motion } from "framer-motion";
-
+import Aggbill from "../components/AggBill";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,6 +30,8 @@ function useOutsideAlerter(ref: any, callback: any) {
 }
 
 function DropDown({ open, setOpen }) {
+	const [AggOpen, setAggOpen] = useState(false);
+
 	const dropDownRef = useRef();
 	useOutsideAlerter(dropDownRef, () => setOpen(false));
 
@@ -42,18 +44,26 @@ function DropDown({ open, setOpen }) {
 			className={`absolute bg-white space-y-4 p-4 rounded outline outline-1 top-14 left-0 right-0`}
 			ref={dropDownRef}
 		>
-			<li className="">
-				<button className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-g font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+			<li className="w-full">
+				<button className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
 					<span className="flex row mx-auto">فاتورة مجمعية</span>
 				</button>
 			</li>
 			<li className="">
-				<button className=" w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-g font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+				<button
+					onClick={() => {
+						setAggOpen(false);
+					}}
+					className=" w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition"
+				>
 					<span className="mx-auto">فاتورة تفصيلية</span>
 				</button>
+				<AnimatePresence>
+					{setAggOpen && <Aggbill setOpenModal={setAggOpen} />}
+				</AnimatePresence>
 			</li>
 			<li className="">
-				<button className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-g font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+				<button className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
 					<span className="mx-auto">فاتورة عامل</span>
 				</button>
 			</li>
