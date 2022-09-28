@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Worker } from "../typings/interfaces";
 import CreateWorkerInput from "./CreateInput";
 
-function WorkerInputRow({
+function RevenueInputRow({
 	id,
 	onChange,
 	deleteRow,
@@ -24,34 +24,19 @@ function WorkerInputRow({
 	});
 	const inputs = [
 		{
-			name: "name",
-			title: "اسم العميل",
-			placeholder: "محمد على",
+			placeholder: "اليوم",
+			name: "day",
 			type: "text",
 		},
 		{
-			name: "job",
-			title: "الوظيفة",
-			placeholder: "كهربائى",
-			type: "text",
-		},
-		{
-			name: "cost",
-			title: "النسبة",
-			placeholder: "0",
+			placeholder: "المبلغ",
+			name: "materialCost",
 			type: "number",
 		},
 		{
-			name: "date",
-			title: "التاريخ",
-			placeholder: "",
+			placeholder: "التاريخ",
+			name: "materialDate",
 			type: "date",
-		},
-		{
-			name: "precentage",
-			title: "النسبة",
-			placeholder: "1.22%",
-			type: "number",
 		},
 	];
 
@@ -79,7 +64,7 @@ function WorkerInputRow({
 				<button
 					disabled={index === 0}
 					onClick={() => deleteRow(workerData.id)}
-					className="p-2 bg-red-500 hover:bg-red-600 mt-1.5 rounded-md transition disabled:bg-red-400"
+					className="p-2 bg-red-500 hover:bg-red-600 mt-1.5 rounded-md  transition disabled:bg-red-400"
 				>
 					<TrashIcon className="w-6 h-6 stroke-2"></TrashIcon>
 				</button>
@@ -88,4 +73,4 @@ function WorkerInputRow({
 	);
 }
 
-export default WorkerInputRow;
+export default RevenueInputRow;

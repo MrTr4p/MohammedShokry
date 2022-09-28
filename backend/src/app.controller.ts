@@ -15,6 +15,11 @@ import { Request, Param } from '@nestjs/common';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('/search/:name')
+  async getSearch(@Param() param){
+    return await this.appService.getSearch(param)
+  }
+
   @Get('/allprojectbill')
   async getAllBills(@Query() query) {
     return await this.appService.getAll(query);

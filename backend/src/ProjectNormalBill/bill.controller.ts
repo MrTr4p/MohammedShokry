@@ -21,7 +21,7 @@ export class BillController {
   }
 
   @Get('/get/:name')
-  async getBill(@Param() param, @Query() query) {
+  async getBill(@Param() param) {
     return await this.appService.getBill(param);
   }
 

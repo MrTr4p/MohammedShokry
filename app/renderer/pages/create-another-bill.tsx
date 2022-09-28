@@ -90,16 +90,20 @@ function Home() {
 							</button>
 						</div>
 					)}
-					<div className=" flex  gap-4">
+					<div className=" flex   bg-secondary gap-4">
 						<CreateInput
+
+
 							onChange={(e) =>
 								setInput((state) => ({
 									...state,
 									name: e.target.value,
 								}))
 							}
+							
 						>
-							أسم العميل
+							
+							<span className ='font-bold '>أسم المشروع</span>
 						</CreateInput>
 						<CreateInput
 							onChange={(e) =>
@@ -109,7 +113,10 @@ function Home() {
 								}))
 							}
 						>
+							<span className ='font-bold '>
 							المقابل
+							</span>
+							
 						</CreateInput>
 						<CreateInput
 							onChange={(e) =>
@@ -120,7 +127,9 @@ function Home() {
 							}
 							type="number"
 						>
+							<span className ='font-bold'>
 							المبلغ
+							</span>
 						</CreateInput>
 						<CreateInput
 							type="date"
@@ -131,12 +140,16 @@ function Home() {
 								}))
 							}
 						>
+							<span className="font-bold">
 							التاريخ
+							</span>
 						</CreateInput>
 					</div>
 					<div className="mt-10">
 						<label>
+							<span className="font-bold">
 							الملاحظة
+							</span>
 							<textarea
 								onChange={(e) =>
 									setInput((state) => ({
@@ -151,10 +164,10 @@ function Home() {
 					<div className="flex mt-4">
 						<button
 							onClick={sendAnotherBill}
-							className=" justify-center outline outline-primary w-full mx-1 bg-white drop-shadow-lg text-primary text-xl font-semibold flex items-center gap-2 px-2 py-1 rounded-md hover:bg-white/10 active:bg-primary/10 transition"
+							className=" justify-center outline outline-primary w-full mx-1 bg-primary drop-shadow-lg text-white text-xl font-semibold flex items-center gap-2 px-2 py-1 rounded-md hover:bg-primary/90 active:bg-primary/70 transition"
 						>
 							حفظ
-							<FolderPlusIcon className="w-5 h-5 mx-1"></FolderPlusIcon>
+							<FolderPlusIcon className="w-5 h-5 mx-1 text-white"></FolderPlusIcon>
 						</button>
 					</div>
 				</div>

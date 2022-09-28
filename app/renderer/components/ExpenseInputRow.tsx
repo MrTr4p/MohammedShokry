@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Worker } from "../typings/interfaces";
 import CreateWorkerInput from "./CreateInput";
 
-function WorkerInputRow({
+function ExpenseInputRow({
 	id,
 	onChange,
 	deleteRow,
@@ -24,34 +24,29 @@ function WorkerInputRow({
 	});
 	const inputs = [
 		{
-			name: "name",
-			title: "اسم العميل",
-			placeholder: "محمد على",
+			placeholder: "اسم المادة",
+			name: "materialName",
 			type: "text",
 		},
 		{
-			name: "job",
-			title: "الوظيفة",
-			placeholder: "كهربائى",
+			placeholder: "اليوم",
+			name: "day",
 			type: "text",
 		},
 		{
-			name: "cost",
-			title: "النسبة",
-			placeholder: "0",
+			placeholder: "المبلغ",
+			name: "materialCost",
 			type: "number",
 		},
 		{
-			name: "date",
-			title: "التاريخ",
-			placeholder: "",
+			placeholder: "التاريخ",
+			name: "materialDate",
 			type: "date",
 		},
 		{
-			name: "precentage",
-			title: "النسبة",
-			placeholder: "1.22%",
-			type: "number",
+			placeholder: "كود الفاتورة",
+			name: "billCode",
+			type: "text",
 		},
 	];
 
@@ -75,7 +70,7 @@ function WorkerInputRow({
 				);
 			})}
 
-			<td className="text-center text-base w-8">
+			<td className="text-center text-base  w-8 ">
 				<button
 					disabled={index === 0}
 					onClick={() => deleteRow(workerData.id)}
@@ -88,4 +83,4 @@ function WorkerInputRow({
 	);
 }
 
-export default WorkerInputRow;
+export default ExpenseInputRow;

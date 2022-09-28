@@ -16,15 +16,41 @@ function Home({
 	homeBills: any[];
 	billsType: "public" | "office";
 }) {
-	console.log(homeBills);
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const SubHeader = tw.h1`text-xl text-black`;
 	const [modalOpen, setModalOpen] = useState(false);
-	const homeBillsData = React.useMemo(() => homeBills, []);
+	const [search, setSearch] = useState("");
+	const [searchResult, setSearchResult] = useState([]);
+
+	async function getSearch(event) {
+		event.preventDefault();
+		setSearchResult((state) => []);
+		const { data } = await axios({
+			url: `http://localhost:3000/home/search/${search}`,
+		});
+		setSearchResult((state) => [
+			...state,
+			...data.map((row) => {
+				return {
+					...row,
+					inReturn: row?.inReturn || "",
+					totalCost: row?.totalCost || "",
+					totalWorkers: row?._count?.workers || 0,
+					projectStatus: row?.projectStatus ? "مدفوع" : "معلق",
+				};
+			}),
+		]);
+	}
+
+	const homeBillsData = React.useMemo(
+		() => (searchResult.length > 0 ? searchResult : homeBills),
+		[homeBills, searchResult],
+	);
 	const homeBillsColumn = React.useMemo(
 		() => [
 			...(billsType === "public"
 				? [
+						{ Header: "اسم المشروع", accessor: "name" },
 						{ Header: "رقم الفاتورة", accessor: "id" },
 						{ Header: "التاريخ", accessor: "date" },
 						{ Header: "عدد العمال", accessor: "totalWorkers" },
@@ -40,6 +66,7 @@ function Home({
 		],
 		[billsType],
 	);
+	console.log(homeBills);
 
 	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
 		useTable({
@@ -77,12 +104,19 @@ function Home({
 					</AnimatePresence>
 				</div>
 
-				<div className="flex row outline rounded-md outline-1">
-					<input placeholder="بحث" className="w-full p-4 "></input>
-					<button className="justify-start">
+				<form
+					className="flex row outline rounded-md outline-1"
+					onSubmit={(e) => getSearch(e)}
+				>
+					<input
+						onChange={(e) => setSearch(e.target.value)}
+						placeholder="بحث"
+						className="w-full p-4 "
+					></input>
+					<button type="submit" className="justify-start">
 						<MagnifyingGlassIcon className="w-6 h-6 mx-5 hover:bg-primary/10 active:bg-primary/20"></MagnifyingGlassIcon>
 					</button>
-				</div>
+				</form>
 				<table {...getTableProps()} className="w-full">
 					<thead className="bg-secondary h-8">
 						{headerGroups.map((headerGroup) => (
@@ -127,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { billType } = context.query;
 	const filter = (billType || "public") as string;
 	const page = 1;
-	const limit = 20;
+	const limit = 9999999999;
 	const { data } = await axios({
 		url: `http://localhost:3000/home/allprojectbill?page=${page}&limit=${limit}&filter=${filter}`,
 	});
@@ -146,5 +180,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		}, // will be passed to the page component as props
 	};
 };
-
 export default Home;

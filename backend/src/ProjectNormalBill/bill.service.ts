@@ -298,7 +298,6 @@ export class BilService {
     const newReqBody = request.body.new;
     const oldReqBody = request.body.delete;
     const bill = await getBill(reqParam);
-    console.log(bill);
     if (bill) {
       createAndModify(newReqBody, bill);
       modeifyAndDelete(oldReqBody);

@@ -5,6 +5,7 @@ const ACCESS_TOKEN =
 import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient, ProjectBill } from '@prisma/client';
 import * as jwt from 'jsonwebtoken';
+import Fuse from 'fuse.js';
 import {
   Controller,
   Get,
@@ -113,6 +114,50 @@ async function getPageinatedBill(query) {
 
 @Injectable()
 export class AppService {
+  async getSearch(param) {
+    const projectBills = await prisma.projectBill.findMany({
+      include: {
+        expenses: true,
+        revenues: true,
+        workers: true,
+        _count: true,
+      },
+    });
+
+    const fuse = new Fuse(projectBills, { keys: ['name'] });
+    const searchResultBills = fuse.search(param.name).map((x) => x.item);
+
+    const results = await Promise.all(
+      searchResultBills.map(async (projectBill) => {
+        const workers = await prisma.worker.aggregate({
+          where: {
+            projectId: projectBill.id,
+          },
+          _sum: {
+            salary: true,
+          },
+        });
+        const expenses = await prisma.expenses.aggregate({
+          where: {
+            projectBillId: projectBill.id,
+          },
+          _sum: {
+            totalcost: true,
+          },
+        });
+        //@ts-ignore
+        return {
+          ...projectBill,
+          workersSalary: workers._sum.salary,
+          totalExpenses: expenses._sum.totalcost,
+          totalCost: workers._sum.salary + expenses._sum.totalcost,
+        };
+      }),
+    );
+
+    return results;
+  }
+
   async login(request) {
     const req = await request.body;
     let user = {
