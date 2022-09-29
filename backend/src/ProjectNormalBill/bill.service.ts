@@ -44,12 +44,16 @@ async function getBill(reqParam) {
     where: {
       name: reqParam.name,
     },
+    include:{
+      expenses:true,
+      revenues:true,
+      workers:true
+    }
   });
   return bill;
 }
 
 async function createAndModify(reqBody, projectBill) {
-  console.log(reqBody)
   try {
     const expenses = reqBody.expenses;
     for (let i = 0; i < expenses.length; i++) {
@@ -221,24 +225,18 @@ export class BilService {
 
   async getBill(param) {
     const reqParam: { name: string } = param as any;
-    const bill = await getBill(reqParam);
+    const bill = await prisma.projectBill.findFirst({
+      where:{
+        name:reqParam.name
+      },
+      include:{
+        expenses:true,
+        workers:true,
+        revenues:true
+      }
+    })
 
     if (bill) {
-      const revenues = await prisma.revenue.findMany({
-        where: {
-          projectBillId: bill.id,
-        },
-      });
-      const expenses = await prisma.expenses.findMany({
-        where: {
-          projectBillId: bill.id,
-        },
-      });
-      const workers = await prisma.worker.findMany({
-        where: {
-          projectId: bill.id,
-        },
-      });
       const totalCost = await prisma.expenses.aggregate({
         where: {
           projectBillId: bill.id,
@@ -247,7 +245,7 @@ export class BilService {
           totalcost: true,
         },
       });
-      return { bill: bill, expenses, revenues, workers, totalCost };
+      return { bill: bill, totalCost };
     } else {
       throw new HttpException(
         {
@@ -262,37 +260,29 @@ export class BilService {
   async deleteBill(param) {
     const reqParam = param;
     const bill = await getBill(reqParam);
-    await prisma.revenue.deleteMany({
-      where: {
-        projectBillId: bill.id,
-      },
-    });
-    await prisma.expenses.deleteMany({
-      where: {
-        projectBillId: bill.id,
-      },
-    });
-    await prisma.worker.deleteMany({
-      where: {
-        projectId: bill.id,
-      },
-    });
     await prisma.projectBill.delete({
       where: {
         id: bill.id,
       },
+      include:{
+        workers:true,
+        expenses:true,
+        revenues:true
+      }
     });
     return "لقد تم مسح الفاتورة ب نجاح";
   }
 
   async modifyBill(param, request) {
     const reqParam = param;
-    const newReqBody = request.body.new;
-    const oldReqBody = request.body.delete;
+    const requestedBill = request.body.bill
     const bill = await getBill(reqParam);
+    console.log(reqParam)
     if (bill) {
-      createAndModify(newReqBody, bill);
-      modeifyAndDelete(oldReqBody);
+       createAndModify(requestedBill, bill);
+      // modeifyAndDelete(oldReqBody);
+
+
       const totalExpensesCost = await prisma.expenses.aggregate({
         where: {
           projectBillId: bill.id,

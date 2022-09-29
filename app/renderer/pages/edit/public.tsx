@@ -24,7 +24,19 @@ function Public({ billData }) {
 		console.log(bill);
 	}, [bill]);
 
-	async function sendBill() {}
+	async function sendBill() {
+		console.log(bill.name)
+		const url = `http://localhost:3000/bill/modify/${bill.name}`
+		console.log(url)
+		const rev = await axios({
+			url:url,
+			method:"PUT",
+			data:{
+				bill
+			}
+		})
+		console.log(rev)
+	}
 
 	const mainInputs = [
 		{

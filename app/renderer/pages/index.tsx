@@ -3,6 +3,9 @@ import Head from "next/head";
 import tw from "tailwind-styled-components";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { PrinterIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+
 import axios from "axios";
 import Modal from "../components/Modal";
 import { AnimatePresence } from "framer-motion";
@@ -148,28 +151,48 @@ function Home({
 							</tr>
 						))}
 					</thead>
-					<tbody {...getTableBodyProps()}>
+					<tbody  {...getTableBodyProps()}>
+						
 						{rows.map((row) => {
+							
 							prepareRow(row);
+							
 							return (
 								<tr
-									{...row.getRowProps()}
-									className="h-12 border-2 rounded"
-								>
-									{row.cells.map((cell) => {
-										return (
-											<td
-												className="text-center "
-												{...cell.getCellProps()}
-											>
-												{cell.render("Cell")}
-											</td>
-										);
-									})}
-								</tr>
+								
+								{...row.getRowProps()}
+								className="h-12 border-2 rounded"
+							>
+								
+								{row.cells.map((cell) => {
+									return (
+										
+										<td
+											className="text-center "
+											{...cell.getCellProps()}
+										>
+											
+											{cell.render("Cell")}
+											
+										</td>
+										
+									);
+								})}
+								<button>
+						<PencilSquareIcon className="w-7 h-7 mt-1 mr-10"></PencilSquareIcon>
+					</button>
+					<button>
+						<PrinterIcon className="w-7 h-7 mt-1 mr-10"></PrinterIcon>
+					</button>
+							</tr>
+								
 							);
+							
 						})}
+						
 					</tbody>
+					
+					
 				</table>
 			</main>
 		</>

@@ -72,6 +72,7 @@ function Home({ billData, }) {
 				</div>
 				<table className="outline outline-1 w-full">
 					<thead className="bg-secondary h-8">
+						
 						<tr>
 							<th></th>
 						</tr>
