@@ -33,7 +33,11 @@ function Home({ billData, }) {
 					</div>
 					<div>
 						<div className="flex row">
-							<button className="w-3/5 mx-4 bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+							<button
+							onClick={() => {
+								setModalOpen(true);
+							}}
+							className="w-3/5 mx-4 bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
 								<span className="flex row mx-auto">
 									فاتورة مجمعية
 								</span>
