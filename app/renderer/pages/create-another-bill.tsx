@@ -61,7 +61,7 @@ function Home() {
         <div className="flex justify-between items-start">
           <div className="flex flex-col items-start gap-2">
             <Header>أضافة فاتورة اخري</Header>
-            <SubHeader>
+            <SubHeader className='mt-2'>
               اضف فاتورة اخري هنا , يجب ملئ كل الخانات مع عدا الملاحظة
             </SubHeader>
           </div>
@@ -141,7 +141,9 @@ function Home() {
               ></textarea>
             </label>
           </div>
-          <div className="flex mt-4">
+          <div className="flex mt-4 bg-secondary w-full">
+            <Link href="/">
+            <a className="w-full">
             <button
               onClick={sendAnotherBill}
               className=" justify-center outline outline-primary w-full mx-1 bg-primary drop-shadow-lg text-white text-xl font-semibold flex items-center gap-2 px-2 py-1 rounded-md hover:bg-primary/90 active:bg-primary/70 transition"
@@ -149,6 +151,8 @@ function Home() {
               حفظ
               <FolderPlusIcon className="w-5 h-5 mx-1 text-white"></FolderPlusIcon>
             </button>
+            </a>
+            </Link>
           </div>
         </div>
       </main>

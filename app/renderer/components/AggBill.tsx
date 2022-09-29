@@ -28,9 +28,9 @@ function useOutsideAlerter(ref: any, callback: any) {
   }, [ref]);
 }
 
-function AggBill({ setAggOpen }) {
+function AggBill({ setModalOpen }) {
   const modalRef = useRef();
-  useOutsideAlerter(modalRef, () => setAggOpen(false));
+  useOutsideAlerter(modalRef, () => setModalOpen(false));
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -50,7 +50,7 @@ function AggBill({ setAggOpen }) {
             <h1 className="font-bold text-2xl">اضافة فاتورة جديدة</h1>
             <XCircleIcon
               onClick={() => {
-                setAggOpen(false);
+                setModalOpen(false);
               }}
               className="h-8 w-8 cursor-pointer"
             ></XCircleIcon>

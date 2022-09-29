@@ -4,7 +4,7 @@ const ACCESS_TOKEN =
   "7cfc00192b50e59a49613574edf0a30cde63c5d061da7356faa6fb81be9530f8aa8403a35a771718979cd4994132cc78ff504332a2a22b5ece94bcb68d9aca52";
 import { Injectable } from "@nestjs/common";
 //@ts-ignore
-import { PrismaClient, ProjectBill } from "@prisma/client";
+import { PrismaClient, ProjectBill, AnotherPaymentsBill } from "@prisma/client";
 import * as jwt from "jsonwebtoken";
 import Fuse from "fuse.js";
 import { HttpException, HttpStatus } from "@nestjs/common";
@@ -32,7 +32,6 @@ async function getPageinatedBill(query) {
         skip: startIndex,
         take: limit,
       });
-     
 
       count = await prisma.anotherPaymentsBill.count();
     } else if (filter == "public") {
@@ -48,14 +47,14 @@ async function getPageinatedBill(query) {
           _count: true,
         },
       });
-      console.log(projectBill)
+      console.log(projectBill);
       const expenses = await prisma.expenses.findMany({
-        where:{
+        where: {
           //@ts-ignore
-          projectBillId:projectBill.id
-        }
-      })
-      console.log(expenses)
+          projectBillId: projectBill.id,
+        },
+      });
+      console.log(expenses);
 
       const summedBills = projectBill.map((bill) => {
         let newBill = {
@@ -128,7 +127,7 @@ export class AppService {
     const fuse = new Fuse(projectBills, { keys: ["name"] });
     const searchResultBills = fuse.search(param.name).map((x) => x.item);
 
-    const results = await Promise.all(
+    let results = await Promise.all(
       searchResultBills.map(async (projectBill: any) => {
         const workers = await prisma.worker.aggregate({
           where: {
@@ -155,7 +154,6 @@ export class AppService {
       }),
     );
 
-    return results;
   }
 
   async login(request) {

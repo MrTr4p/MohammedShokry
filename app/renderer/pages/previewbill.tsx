@@ -11,17 +11,14 @@ import { GetServerSideProps } from "next";
 import { useTable } from "react-table";
 import { createPopper } from "@popperjs/core";
 import DropDown from "../components/DropDown";
+import AggBill from "../components/AggBill";
 
-function Home({
-	homeBills,
-	billsType,
-}: {
-	homeBills: any[];
-	billsType: "public" | "office";
-}) {
+function Home({ billData, }) {
 	const Header = tw.h1`text-5xl font-bold text-black`;
 	const SubHeader = tw.h1`text-xl text-black`;
 	const [open, setOpen] = useState(false);
+	const [data, setdata] = useState(false);
+	const [modalOpen, setModalOpen] = useState(false);
 
 	return (
 		<>
@@ -32,26 +29,25 @@ function Home({
 				<div className="flex justify-between items-start">
 					<div className="flex flex-col items-start gap-2">
 						<Header>الفاتورة</Header>
-						<SubHeader>ارجو اتاكد قبل طباعة الفاتورة</SubHeader>
+						<SubHeader>ارجو التاكد قبل طباعة الفاتورة</SubHeader>
 					</div>
 					<div>
 						<div className="flex row">
-							<button
-								onClick={() => {
-									setOpen(!open);
-								}}
-								className=" relative bg-primary drop-shadow-lg text-white text-2xl font-semibold flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/80 active:bg-primary transition"
-							>
-								اختار طريقة الطباعة
-								<ChevronDownIcon className="mt-1 w-8 h-8"></ChevronDownIcon>
-								<AnimatePresence>
-									{open && (
-										<DropDown
-											open={!open}
-											setOpen={setOpen}
-										/>
-									)}
-								</AnimatePresence>
+							<button className="w-3/5 mx-4 bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+								<span className="flex row mx-auto">
+									فاتورة مجمعية
+								</span>
+							</button>
+							<AnimatePresence>
+								{modalOpen && (
+									<AggBill setOpenModal={setModalOpen} />
+								)}
+							</AnimatePresence>
+							<button className=" w-3/5 mx-4 bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+								<span className="mx-auto">فاتورة تفصيلية</span>
+							</button>
+							<button className="w-3/5 mx-4 bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+								<span className="mx-auto">فاتورة عامل</span>
 							</button>
 						</div>
 					</div>
@@ -68,7 +64,7 @@ function Home({
 						</tr>
 					</tbody>
 					<div className="justify-start flex row mx-4">
-						<span className="font-bold text-2xl ">العاملين</span>
+						<span className="font-bold text-2xl ">العمال</span>
 					</div>
 					<thead className="bg-secondary h-8">
 						<tr>
@@ -113,9 +109,32 @@ function Home({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { billName } = context.query;
+	const billName = context.query.billName as string;
+	const { data } = await axios({
+		url: `http://localhost:3000/bill/get/${encodeURIComponent(billName)}`,
+	});
+	const billData = {
+		...data.bill,
+		...data,
+		precentage: data.bill.officePrecentage,
+		workers: data.workers.map((worker) => {
+			return {
+				id: worker.id,
+				name: worker.workerName,
+				cost: worker.salary,
+				job: worker.work,
+				precentage: worker.precentage,
+			};
+		}),
+	};
+
+	delete billData.bill;
+
 	return {
-		props: {}, // will be passed to the page component as props
+		props: {
+			billData,
+		}, // will be passed to the page component as props
 	};
 };
+
 export default Home;

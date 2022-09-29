@@ -57,7 +57,7 @@ async function createAndModify(reqBody, projectBill) {
       const rev = await prisma.expenses.create({
         data: {
           materialName: materialName,
-          totalcost: expenses[i].totalcost,
+          totalcost: Number(expenses[i].totalcost),
           date: expenses[i].date,
 
           day: expenses[i].day,
@@ -86,8 +86,8 @@ async function createAndModify(reqBody, projectBill) {
         data: {
           workerName: workerName,
           date: workers[i].date,
-          salary: workers[i].salary,
-          precentage: workers[i].precentage,
+          salary: Number(workers[i].salary),
+          precentage: Number(workers[i].precentage),
           salaryPrecentage: Number(
             workers[i].salary * (workers[i].precentage / 100),
           ),
@@ -103,7 +103,7 @@ async function createAndModify(reqBody, projectBill) {
       console.log(rev)
     }
   } catch (e) {
-    //console.log(e);
+    console.log(e);
   }
 
   try {
@@ -112,7 +112,7 @@ async function createAndModify(reqBody, projectBill) {
     for (let i = 0; i < revenues.length; i++) {
       const rev = await prisma.revenue.create({
         data: {
-          amount: revenues[i].amount,
+          amount: Number(revenues[i].amount),
           date: revenues[i].date,
           ProjectBill: {
             connect: {
@@ -130,15 +130,15 @@ async function createAndModify(reqBody, projectBill) {
 }
 
 async function createBill(reqB) {
+  console.log(reqB)
   const reqBody = reqB.bill
-  console.log(reqBody)
   if (reqBody.expenses && reqBody.revenues && reqBody.workers) {
     try {
       const projectBill = await prisma.projectBill.create({
         data: {
           name: reqBody.name.trim(),
           date: reqBody.date,
-          officePrecentage: reqBody.precentage,
+          officePrecentage: Number(reqBody.precentage),
           projectStatus: false,
           clientName: reqBody.clientName,
           clientAddress: reqBody.clientAddress,
@@ -170,13 +170,10 @@ async function createBill(reqB) {
           projectStatus: status,
         },
       });
-      console.log(rev)
     } catch (e) {
-      console.log("error");
       console.log(e);
     }
   } else {
-    console.log("Error");
     throw new HttpException(
       {
         status: HttpStatus.NOT_ACCEPTABLE,

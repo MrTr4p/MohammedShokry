@@ -11,14 +11,13 @@ export interface Bill {
 	name: string;
 	date: string;
 	precentage: number;
-
 	workers: Worker[];
 	expenses: Expense[];
 	revenues: Revenue[];
 }
 
 export interface Worker {
-	id: number;
+	id: string;
 	name: string;
 	job: string;
 	cost: number;
@@ -27,7 +26,7 @@ export interface Worker {
 }
 
 export interface Expense {
-	id: number;
+	id: string;
 	materialName: string;
 	totalcost: number;
 	billCode: string;
@@ -36,7 +35,7 @@ export interface Expense {
 }
 
 export interface Revenue {
-	id: number;
+	id: string;
 	amount: number;
 	date: string;
 }

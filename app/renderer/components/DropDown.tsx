@@ -31,7 +31,6 @@ function useOutsideAlerter(ref: any, callback: any) {
 
 function DropDown({ open, setOpen }) {
 	const [AggOpen, setAggOpen] = useState(false);
-
 	const dropDownRef = useRef();
 	useOutsideAlerter(dropDownRef, () => setOpen(false));
 
@@ -45,22 +44,14 @@ function DropDown({ open, setOpen }) {
 			ref={dropDownRef}
 		>
 			<li className="w-full">
-				<button className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
+				<button onClick ={() => setAggOpen(true)} className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
 					<span className="flex row mx-auto">فاتورة مجمعية</span>
 				</button>
 			</li>
 			<li className="">
-				<button
-					onClick={() => {
-						setAggOpen(false);
-					}}
-					className=" w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition"
-				>
+				<button className=" w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">
 					<span className="mx-auto">فاتورة تفصيلية</span>
 				</button>
-				<AnimatePresence>
-					{setAggOpen && <Aggbill setOpenModal={setAggOpen} />}
-				</AnimatePresence>
 			</li>
 			<li className="">
 				<button className="w-3/5 mx-auto bg-white outline outine-1 outine-primary text-primary text-sm font-semibold flex items-center gap-2 px-4 py-1 rounded-md hover:bg-primary/10 active:bg-primary/20 transition">

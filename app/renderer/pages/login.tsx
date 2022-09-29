@@ -49,13 +49,13 @@ function Signin() {
             <Image src={LogoPng}></Image>
           </div>
           <div className=" flex flex-col items-center justify-center text-2xl space-y-2">
-            <h1>S.H COMPANY</h1>
+            <h1>شركة S.H </h1>
             <p className="text-red-600 text-sm">{error}</p>
           </div>
           <div className="flex justify-center">
             <input
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
+              placeholder="كلمة المرور"
               className="w-52 border-2 transition duration-500 placeholder-primary focus:placeholder-transparent border-priamry  py-2 text-center text-primary bg-transparent rounded-md focus:outline-none"
             ></input>
           </div>
@@ -65,7 +65,7 @@ function Signin() {
               onClick={handleSignIn}
               className=" inline-block px-6 py-2.5 disabled:bg-primary/50 bg-primary text-white font-medium  leading-tight uppercase rounded-md shadow-md hover:shadow-lg  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary/80 active:shadow-lg transition duration-150 ease-in-out"
             >
-              Enter
+              ادخل
             </button>
           </div>
         </div>

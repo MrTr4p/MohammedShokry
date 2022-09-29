@@ -33,7 +33,7 @@ model ProjectBill {
 }
 
 model Worker {
-  id               Int         @id @default(autoincrement())
+  id               String      @id @default(uuid())
   workerName       String
   salary           Int
   precentage       Int?
@@ -46,7 +46,7 @@ model Worker {
 }
 
 model Revenue {
-  id            Int         @id @default(autoincrement())
+  id            String      @id @default(uuid())
   amount        Int
   date          String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
@@ -54,7 +54,7 @@ model Revenue {
 }
 
 model Expenses {
-  id            Int          @id @default(autoincrement())
+  id            String       @id @default(uuid())
   materialName  String
   date          String
   totalcost     Int

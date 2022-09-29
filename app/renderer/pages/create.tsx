@@ -5,9 +5,9 @@ import tw from "tailwind-styled-components";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import CreateInput from "../components/CreateInput";
 import { v4 } from "uuid";
-import axios from "axios";
 import { Bill } from "../typings/interfaces";
-import { useForm, SubmitHandler } from "react-hook-form";
+import InputTable from "../components/InputTable";
+import axios from "axios";
 
 function Create() {
 	const Header = tw.h1`text-5xl `;
@@ -21,11 +21,18 @@ function Create() {
 		date: "",
 		precentage: 0,
 		workers: [
-			{ id: 0, cost: 945, date: "2022-06-21", job: "سباك مجارى", name: "محمد على", precentage: 5 },
+			{
+				id: v4(),
+				cost: 0,
+				date: "",
+				job: "",
+				name: "",
+				precentage: 0,
+			},
 		],
 		expenses: [
 			{
-				id: 0,
+				id: v4(),
 				billCode: "",
 				date: "",
 				day: "",
@@ -33,14 +40,36 @@ function Create() {
 				totalcost: 0,
 			},
 		],
-		revenues: [{ id: 0, amount: 0, date: "" }],
+		revenues: [{ id: v4(), amount: 0, date: "" }],
 	});
 
 	useEffect(() => {
 		console.log(bill);
 	}, [bill]);
 
-	async function sendBill() {}
+	async function sendBill() {
+		await axios({
+			url: "http://localhost:3000/bill/create",
+			method: "POST",
+			data: {
+				new: {
+					bill: {
+						...bill,
+						workers: bill.workers.map((worker) => {
+							return {
+								id: worker.id,
+								workerName: worker.name,
+								salary: worker.cost,
+								work: worker.job,
+								precentage: worker.precentage,
+								date: worker.date,
+							};
+						}),
+					},
+				},
+			},
+		});
+	}
 
 	const mainInputs = [
 		{
@@ -78,33 +107,33 @@ function Create() {
 	const workerColumns = [
 		{
 			Header: "اسم العامل",
-			accessor: "workerName",
+			accessor: "name",
 			type: "text",
 		},
 		{
 			Header: "الوظيفة",
-			accessor: "workerJob",
+			accessor: "job",
 			type: "text",
 		},
 		{
 			Header: "المبلغ",
-			accessor: "workerCost",
+			accessor: "cost",
 			type: "number",
 		},
 		{
 			Header: "التاريخ",
-			accessor: "workerDate",
+			accessor: "date",
 			type: "date",
 		},
 		{
 			Header: "النسبة",
-			accessor: "workerPercantage",
+			accessor: "precentage",
 			type: "number",
 		},
 		{
 			Header: "مسح",
 			accessor: "close",
-			notInput: true,
+			close: true,
 		},
 	];
 
@@ -121,7 +150,7 @@ function Create() {
 		},
 		{
 			Header: "المبلغ",
-			accessor: "materialCost",
+			accessor: "totalcost",
 			type: "number",
 		},
 		{
@@ -137,7 +166,7 @@ function Create() {
 		{
 			Header: "مسح",
 			accessor: "close",
-			notInput: true,
+			close: true,
 		},
 	];
 
@@ -155,9 +184,14 @@ function Create() {
 		{
 			Header: "مسح",
 			accessor: "close",
-			notInput: true,
-			width: 16,
+			close: true,
 		},
+	];
+
+	const tables = [
+		{ columns: workerColumns, title: "العاملين", type: "workers" },
+		{ columns: expensesColumns, title: "المصروفات", type: "expenses" },
+		{ columns: revenueColumns, title: "الايرادات", type: "revenues" },
 	];
 
 	return (
@@ -170,8 +204,8 @@ function Create() {
 					<div className="flex flex-col items-start gap-2">
 						<Header>أضافة فاتورة جديدة</Header>
 						<SubHeader>
-							كلام
-							كتيييييييييييييييييييييييييييييييييييييييييييييييييييير
+							اضف فاتورة مشروع جديدة تحتوي علي عمال , ارادات و
+							مصروفات
 						</SubHeader>
 					</div>
 
@@ -192,6 +226,7 @@ function Create() {
 									<CreateInput
 										key={index}
 										{...input}
+										value={bill[input.accessor]}
 										onChange={(e) => {
 											setBill({
 												...bill,
@@ -206,20 +241,22 @@ function Create() {
 							})}
 						</div>
 
-						<table className="w-full">
-							<thead>
-								<tr className="bg-secondary ">
-									{workerColumns.map((tCell) => {
-										return (
-											<td className="p-2 rounded-t-md font-semibold">
-												{tCell.Header}
-											</td>
-										);
-									})}
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
+						{tables.map((table, index) => {
+							return (
+								<InputTable
+									onChange={(tableState) =>
+										setBill({
+											...bill,
+											[table.type]: tableState,
+										})
+									}
+									columns={table.columns}
+									data={bill[table.type]}
+								>
+									{table.title}
+								</InputTable>
+							);
+						})}
 					</div>
 
 					<div className="bg-secondary p-4 flex items-start gap-8">
