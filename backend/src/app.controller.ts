@@ -1,23 +1,19 @@
-import { Controller, Get, Post, Req, Query } from "@nestjs/common";
-import { AppService } from "./app.service";
-import { Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { AppService } from './app.service';
 
-@Controller("/home")
+
+@Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get("/search/:name")
-  async getSearch(@Param() param) {
-    return await this.appService.getSearch(param);
+  @Get("/getAll")
+  getAll(@Query() type ) {
+    return this.appService.getAll(type);
   }
 
-  @Get("/allprojectbill")
-  async getAllBills(@Query() query) {
-    return await this.appService.getAll(query);
-  }
 
-  @Post("/login")
-  async login(@Req() request) {
-    return await this.appService.login(request);
+  @Get('/search')
+  getSearch(@Query() type , @Param() param){
+    return this.appService.getSearch(type, param);
   }
 }

@@ -11,7 +11,7 @@ datasource db {
 }
 
 model AnotherPaymentsBill {
-  id          Int     @id @default(autoincrement())
+  id          String  @id @default(uuid())
   name        String
   amount      Int
   date        String
@@ -20,29 +20,33 @@ model AnotherPaymentsBill {
 }
 
 model ProjectBill {
-  id               Int        @id @default(autoincrement())
-  name             String     @unique
-  officePrecentage Int
+  id               String         @id @default(uuid())
+  name             String         @unique
+  officePrecentage Int?
   date             String
-  projectStatus    Boolean
-  workers          Worker[]
+  workers          WorkerSalary[]
   revenues         Revenue[]
   expenses         Expenses[]
+  sections         Section[]
   clientName       String
   clientAddress    String
 }
 
 model Worker {
-  id               String      @id @default(uuid())
-  workerName       String
-  salary           Int
-  precentage       Int?
-  salaryPrecentage Int
-  date             String
-  work             String
-  projectName      String
-  projects         ProjectBill @relation(fields: [projectId], references: [id])
-  projectId        Int
+  id      String         @id @default(uuid())
+  name    String         @unique
+  work    String
+  project WorkerSalary[]
+}
+
+model WorkerSalary {
+  id            String      @id @default(uuid())
+  amount        Int
+  date          String
+  Worker        Worker      @relation(fields: [WorkerId], references: [id])
+  WorkerId      String
+  ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
+  projectBillId String
 }
 
 model Revenue {
@@ -50,7 +54,15 @@ model Revenue {
   amount        Int
   date          String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
-  projectBillId Int
+  projectBillId String
+}
+
+model Section {
+  id            String       @id @default(uuid())
+  name          String
+  ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
+  projectBillId String?
+  expenses      Expenses[]
 }
 
 model Expenses {
@@ -58,8 +70,9 @@ model Expenses {
   materialName  String
   date          String
   totalcost     Int
-  billCode      String?
+  section       Section?     @relation(fields: [secionId], references: [id])
+  secionId      String?
   day           String
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
-  projectBillId Int?
+  projectBillId String?
 }
