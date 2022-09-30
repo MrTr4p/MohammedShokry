@@ -34,6 +34,7 @@ async function getPageinatedBill(query) {
       });
 
       count = await prisma.anotherPaymentsBill.count();
+      console.log(model)
     } else if (filter == "public") {
       const projectArray = [];
 

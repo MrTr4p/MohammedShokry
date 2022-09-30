@@ -5,13 +5,12 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { PrinterIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-
+import Link from "next/link";
 import axios from "axios";
 import Modal from "../components/Modal";
 import { AnimatePresence } from "framer-motion";
 import { GetServerSideProps } from "next";
 import { useTable } from "react-table";
-import { Switch } from "antd";
 
 function Home({
 	homeBills,
@@ -34,7 +33,12 @@ function Home({
 	function toProject(){
 		//navigate('/?billType=public')
 	}
+	function transfer(){
 
+	}
+	function flytosky(){
+
+	}
 	async function getSearch(event) {
 		event.preventDefault();
 		setSearchResult((state) => []);
@@ -132,12 +136,20 @@ function Home({
 					</button>
 				</form>
 				<div className="flex justify-center">
+					<Link href='/?billType=public'>
+					<a>
 					<button className="mx-4 relative bg-primary  text-white text-sm font-bold flex items-center  px-2 py-1 rounded-full hover:bg-primary/80 active:bg-primary transition">
 						مشروع
 					</button>
+					</a>
+					</Link>
+					<Link href='/?billType=office'>
+					<a>
 					<button className=" mx-4 relative bg-primary  text-white text-sm font-bold flex items-center  px-2 py-1 rounded-full hover:bg-primary/80 active:bg-primary transition">
 						مكتب
 					</button>
+					</a>
+					</Link>
 				</div>
 				<table {...getTableProps()} className="w-full">
 					<thead className="bg-secondary h-8">
@@ -178,12 +190,7 @@ function Home({
 										
 									);
 								})}
-								<button>
-						<PencilSquareIcon className="w-7 h-7 mt-1 mr-10"></PencilSquareIcon>
-					</button>
-					<button>
-						<PrinterIcon className="w-7 h-7 mt-1 mr-10"></PrinterIcon>
-					</button>
+
 							</tr>
 								
 							);
@@ -214,7 +221,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				return {
 					...row,
 					inReturn: row?.inReturn || "",
-					totalCost: row?.totalCost || "",
+					totalCost: row?.totalCost || row?.amount || '',
 					totalWorkers: row?._count?.workers || 0,
 					projectStatus: row?.projectStatus ? "مدفوع" : "معلق",
 				};

@@ -142,7 +142,7 @@ async function createBill(reqB) {
         data: {
           name: reqBody.name.trim(),
           date: reqBody.date,
-          officePrecentage: Number(reqBody.precentage),
+          officePrecentage: parseInt(reqBody.precentage),
           projectStatus: false,
           clientName: reqBody.clientName,
           clientAddress: reqBody.clientAddress,
