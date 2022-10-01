@@ -20,7 +20,7 @@ model AnotherPaymentsBill {
 }
 
 model ProjectBill {
-  id               String         @id @default(uuid())
+  id               Int         @id @default(autoincrement())
   name             String         @unique
   officePrecentage Int?
   date             String
@@ -42,11 +42,12 @@ model Worker {
 model WorkerSalary {
   id            String      @id @default(uuid())
   amount        Int
+  precentage    Int?
   date          String
   Worker        Worker      @relation(fields: [WorkerId], references: [id])
   WorkerId      String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
-  projectBillId String
+  projectBillId Int
 }
 
 model Revenue {
@@ -54,14 +55,14 @@ model Revenue {
   amount        Int
   date          String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
-  projectBillId String
+  projectBillId Int
 }
 
 model Section {
   id            String       @id @default(uuid())
   name          String
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
-  projectBillId String?
+  projectBillId Int?
   expenses      Expenses[]
 }
 
@@ -74,5 +75,5 @@ model Expenses {
   secionId      String?
   day           String
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
-  projectBillId String?
+  projectBillId Int?
 }
