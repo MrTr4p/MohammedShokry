@@ -4,6 +4,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
 function BillTypeModal() {
 	const [value, setValue] = useState<string>();
@@ -45,18 +46,18 @@ function BillTypeModal() {
 
 									<ToggleGroup.Root
 										type="single"
-										className="flex justify-between"
+										className="flex gap-2 justify-between"
 										onValueChange={(value) => {
 											setValue(value);
 										}}
 									>
-										{["1", "2", "3"].map((el) => {
+										{["عامه", "مكتب"].map((el) => {
 											let selected = el == value;
 											return (
 												<ToggleGroup.Item
 													key={el}
 													value={el}
-													className={`p-16 py-24 border-2 border-secondary group ${
+													className={`w-full py-24 border-2 border-secondary group ${
 														selected
 															? "border-primary"
 															: ""
@@ -92,7 +93,7 @@ function BillTypeModal() {
 									</ToggleGroup.Root>
 									<div className="flex gap-2 w-full">
 										<Dialog.Close className="btn-primary px-6">
-											أكمل
+											<Link href="/create/">أكمل</Link>
 										</Dialog.Close>
 										<Dialog.Close className="btn-outline px-6">
 											الغاء

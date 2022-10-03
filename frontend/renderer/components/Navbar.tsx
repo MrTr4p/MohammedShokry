@@ -6,7 +6,7 @@ import Link from "next/link";
 function Navbar() {
 	return (
 		<nav className="h-14 relative print:hidden">
-			<div className="shadow-md fixed w-screen flex items-center bg-base h-14">
+			<div className="shadow-md fixed w-screen flex items-center bg-base h-14 z-50">
 				<div className="container w-full flex justify-between items-center">
 					<div className="flex items-center gap-2">
 						<Link href="/">
