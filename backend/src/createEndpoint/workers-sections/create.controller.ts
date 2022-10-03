@@ -4,7 +4,7 @@ import { CreateSectionService } from './create.sections.service';
 
 
 @Controller('/create')
-export class AppController {
+export class CreateW_SController {
   constructor(private readonly appService: CreateWorkerService , private readonly sectionService : CreateSectionService) {}
 
   @Post('/worker')

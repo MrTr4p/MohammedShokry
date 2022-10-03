@@ -1,10 +1,10 @@
 import { Controller, Get, Req } from "@nestjs/common";
-import { BilService } from "./bill.service";
+import { NormalBilService } from "./bill.service";
 import { Param } from "@nestjs/common";
 
 @Controller("/bill/all")
-export class BillController {
-  constructor(private readonly appService: BilService) {}
+export class NormalBillController {
+  constructor(private readonly appService: NormalBilService) {}
 
   @Get("/get/:name")
   async getBill(@Param() param) {

@@ -13,7 +13,7 @@ async function getBill(reqParam) {
 }
 
 @Injectable()
-export class BilService {
+export class NormalBilService {
   async getBill(param) {
     const bill = await getBill(param)
     return bill

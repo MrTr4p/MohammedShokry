@@ -4,7 +4,7 @@ import { GetService } from './get.service';
 
 
 @Controller('/create/bill')
-export class AppController {
+export class CreateBillController {
   constructor(private readonly appService: CreateBillService, private readonly getservice: GetService) {}
 
   @Post('/project')

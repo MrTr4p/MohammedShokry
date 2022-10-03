@@ -35,7 +35,7 @@ async function getAll(projectBill){
 }
 
 @Injectable()
-export class BilService {
+export class AggregateBilService {
   async getAggregateBill(param) {
     let workersArray = []
     let expensesArray = []

@@ -13,7 +13,7 @@ async function getBill(reqParam) {
 }
 
 @Injectable()
-export class BilService {
+export class DetailedBilService {
   async getDetailedBill(param, request) {
     const projectBill : {id: any} = await getBill(param)
     let result = []

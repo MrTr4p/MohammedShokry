@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 
 
@@ -15,5 +15,10 @@ export class AppController {
   @Get('/search')
   getSearch(@Query() type , @Param() param){
     return this.appService.getSearch(type, param);
+  }
+
+  @Get('/login')
+  login(@Req() req){
+    return this.appService.login(req)
   }
 }
