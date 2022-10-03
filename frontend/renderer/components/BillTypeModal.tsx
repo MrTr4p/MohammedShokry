@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
 function BillTypeModal() {
-	const [value, setValue] = useState<string>();
+	const [value, setValue] = useState<string>("public");
 
 	return (
 		<AnimatePresence initial={true}>
@@ -48,10 +48,10 @@ function BillTypeModal() {
 										type="single"
 										className="flex gap-2 justify-between"
 										onValueChange={(value) => {
-											setValue(value);
+											if (value) setValue(value);
 										}}
 									>
-										{["عامه", "مكتب"].map((el) => {
+										{["office", "public"].map((el) => {
 											let selected = el == value;
 											return (
 												<ToggleGroup.Item
@@ -63,8 +63,9 @@ function BillTypeModal() {
 															: ""
 													} rounded-md relative transition`}
 												>
-													{el}
-
+													{el == "public"
+														? "عامة"
+														: "خاصة"}
 													<AnimatePresence>
 														{selected && (
 															<motion.div
@@ -92,9 +93,17 @@ function BillTypeModal() {
 										})}
 									</ToggleGroup.Root>
 									<div className="flex gap-2 w-full">
-										<Dialog.Close className="btn-primary px-6">
-											<Link href="/create/">أكمل</Link>
-										</Dialog.Close>
+										<Link
+											href={
+												value ? `/create/${value}` : "/"
+											}
+										>
+											<a href={`/create/${value}`}>
+												<Dialog.Close className="btn-primary px-6 h-full">
+													أكمل
+												</Dialog.Close>
+											</a>
+										</Link>
 										<Dialog.Close className="btn-outline px-6">
 											الغاء
 										</Dialog.Close>
