@@ -7,24 +7,83 @@ const SecertaryPass = "sh2022";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 
-async function filter(type?: "office" | "public") {
-  const filter = type || "public";
-  let result;
-  if (filter == "office") {
-    result = await prisma.anotherPaymentsBill.findMany({ take: 50 });
-  } else {
-    result = await prisma.projectBill.findMany({
-      include: {
-        expenses: true,
-        revenues: true,
-        sections: true,
-        workers: true,
-        _count: true,
+
+interface result {
+  projectBills?: {
+      pagination?: {
+          totalCount: number,
+          totalPages: number,
+          pageSize: number,
+          currentPage: number,
+          lastPage: boolean,
       },
-      take: 50,
-    });
-  }
-  return result;
+      data: object[],
+  },
+  anotherBills?: {
+      pagination?: {
+          totalCount: number,
+          totalPages: number,
+          pageSize: number,
+          lastPage: boolean,
+          currentPage: number,
+      },
+      data: object[],
+  },
+};
+
+async function filter(pageReq , limitReq , bpageReq, blimitReq) {
+    let anotherBills = {pagination :{} , data:{}} as any
+    let projectbill = {pagination :{} , data:{}} as any
+    let result = {}
+    const [aBCount , bCount] = await Promise.all([await prisma.anotherPaymentsBill.count() , await prisma.projectBill.count()])
+    const abIndex = pageReq * limitReq
+    const bindex = bpageReq * blimitReq
+    const bskipindex = (bpageReq - 1) * blimitReq
+    const abskipindex = (pageReq - 1) * limitReq
+    const totalabPages = aBCount / limitReq
+    const totalBPages = bCount/ blimitReq
+
+
+    anotherBills.pagination.currentPage  = parseInt(pageReq)
+    anotherBills.pagination.pageSize = parseInt(limitReq)
+    anotherBills.pagination.totalCount = aBCount
+    anotherBills.pagination.totalPages =  totalabPages
+
+    projectbill.pagination.currentPage = Number(bpageReq)
+    projectbill.pagination.pageSize = Number(blimitReq)
+    projectbill.pagination.totalCount = bCount
+    projectbill.pagination.totalPages = totalBPages
+    
+
+    if(abIndex < aBCount){
+      anotherBills.pagination.lastPage = false
+    }else{
+      anotherBills.pagination.lastPage = true
+    }
+
+    if(bindex < bCount){
+      projectbill.pagination.lastPage = false
+    }else{
+      projectbill.pagination.lastPage = true
+    }
+
+    try{
+      projectbill.data = await prisma.projectBill.findMany({take: Number(blimitReq) , skip :bskipindex })
+    }catch(e){
+      throw new Error(e)
+    }
+
+    try{
+      anotherBills.data = await prisma.anotherPaymentsBill.findMany({take: Number(pageReq) , skip :abskipindex })
+    }catch(e){
+      throw new Error(e)
+    }
+
+    return result = {
+      projectBills : projectbill,
+      anotherBills : anotherBills
+    }
+    
 }
 
 @Injectable()
@@ -70,7 +129,7 @@ export class AppService {
     }
   }
   async getAll(query) {
-    const result = await filter(query.type);
+    const result = await filter(query.abpage , query.ablimit, query.bpage, query.blimit);
     return result;
   }
 
