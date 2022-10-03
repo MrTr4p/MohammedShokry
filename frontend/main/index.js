@@ -15,8 +15,9 @@ electron_1.app.on("ready", async () => {
     await (0, electron_next_1.default)("./renderer");
     const mainWindow = new electron_1.BrowserWindow({
         autoHideMenuBar: true,
+        maximizable: true,
         width: 800,
-        height: 600,
+        height: 800,
         minWidth: 650,
         webPreferences: {
             nodeIntegration: false,

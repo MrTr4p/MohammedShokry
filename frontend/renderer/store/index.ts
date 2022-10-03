@@ -53,10 +53,12 @@ export interface State {
 	workers: Worker[];
 	homePublicBills: ProjectBill[];
 	homeOfficeBills: ProjectBill[];
+	searchState: "loading" | "empty" | "found";
 	setHomePublicBills: (projectBills: ProjectBill[]) => void;
 	setHomeOfficeBills: (projectBills: ProjectBill[]) => void;
 	setWorkers: (workers: Worker[]) => void;
 	newWorker: (worker: Worker) => void;
+	setSearchState: (state: "empty" | "loading" | "found") => void;
 }
 
 const storeSlice: StateCreator<
@@ -68,6 +70,7 @@ const storeSlice: StateCreator<
 	workers: [],
 	homePublicBills: [],
 	homeOfficeBills: [],
+	searchState: "empty",
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
 	setWorkers: (workers) => set(() => ({ workers: workers })),
@@ -75,6 +78,7 @@ const storeSlice: StateCreator<
 		set((state) => {
 			return { workers: [...state.workers, worker] };
 		}),
+	setSearchState: (state) => set(() => ({ searchState: state })),
 });
 
 export interface newProjectBill {

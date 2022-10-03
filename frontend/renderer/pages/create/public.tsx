@@ -20,8 +20,8 @@ function Public() {
 				</Link>
 			</header>
 			<main>
-				<div className="flex gap-6">
-                    
+				<div className="border-black ">
+		
                 </div>
 			</main>
 		</div>
