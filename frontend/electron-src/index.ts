@@ -13,8 +13,11 @@ app.on("ready", async () => {
 
 	const mainWindow = new BrowserWindow({
 		autoHideMenuBar: true,
+		fullscreen: true,
+		
 		width: 800,
-		height: 600,
+		height: 800,
+		minWidth: 650,
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: false,

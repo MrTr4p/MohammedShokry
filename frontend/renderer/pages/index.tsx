@@ -38,7 +38,7 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 				<BillTypeModal></BillTypeModal>
 			</header>
 			<main>
-				<div className="flex gap-6">
+				<div className="flex flex-col lg:flex-row md:gap-4 lg:gap-6">
 					<Table data={homePublicBills.slice(0, 50)}></Table>
 					<Table data={homeOfficeBills.slice(0, 50)}></Table>
 				</div>

@@ -17,6 +17,7 @@ electron_1.app.on("ready", async () => {
         autoHideMenuBar: true,
         width: 800,
         height: 600,
+        minWidth: 650,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: false,
