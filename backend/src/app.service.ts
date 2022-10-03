@@ -74,23 +74,4 @@ export class AppService {
     return result;
   }
 
-  async getSearch(query: string) {
-    const projectBills = await prisma.projectBill.findMany({});
-    const anotherBills = await prisma.anotherPaymentsBill.findMany({});
-
-    const projectBillsFuse = new Fuse(projectBills, { keys: ["name"] });
-    const anotherBillsFuse = new Fuse(anotherBills, { keys: ["name"] });
-
-    const projectBillsResult = projectBillsFuse
-      .search(query)
-      .map((x) => x.item);
-    const anotherBillsResult = anotherBillsFuse
-      .search(query)
-      .map((x) => x.item);
-
-    return {
-      projectBills: projectBillsResult,
-      anotherBills: anotherBillsResult,
-    };
-  }
 }

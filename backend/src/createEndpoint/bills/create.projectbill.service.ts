@@ -3,19 +3,6 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 
-async function getWorkers(workers) {
-  let result = [];
-  for (let i = 0; i < workers.length; i++) {
-    const elementResult = await prisma.worker.findFirst({
-      where: {
-        name: workers,
-      },
-    });
-    result.push(elementResult);
-  }
-  return result;
-}
-
 @Injectable()
 export class CreateBillService {
   async createPublicBill(req) {

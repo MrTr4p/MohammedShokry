@@ -3,11 +3,11 @@ import { CreateBillController } from './bills/create.bill.controller';
 import { CreateBillService } from './bills/create.projectbill.service';
 import { CreateWorkerService } from './workers-sections/create.workers.service';
 import { CreateSectionService } from './workers-sections/create.sections.service';
-import { GetService } from './bills/get.service';
+import { CreateW_SController } from './workers-sections/create.controller';
 
 @Module({ 
   imports: [],
   controllers: [CreateBillController],
-  providers: [CreateBillService , CreateWorkerService, GetService , CreateSectionService],
+  providers: [CreateBillService , CreateWorkerService , CreateSectionService],
 })
 export class CreateModule {}
