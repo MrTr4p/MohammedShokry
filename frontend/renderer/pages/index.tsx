@@ -35,7 +35,7 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 			if (query) {
 				setSearchState("loading");
 				let { data } = await axios({
-					url: "http://localhost:3000/search?query=" + query,
+					url: "http://localhost:3000/search/bill?query=" + query,
 				});
 				if (
 					data &&

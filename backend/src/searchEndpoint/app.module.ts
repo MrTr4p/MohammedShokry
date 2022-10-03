@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { WorkersController } from './workers/app.controller';
-import { BillController } from './bill/app.controller';
-import { AppService as BillService } from './bill/app.service';
-import { AppService as WorkersService } from './workers/app.service';
+import { BillController } from './Search/app.controller';
+import { AppService as BillService } from './Search/app.service';
+import { WorkerService } from './Search/workers.service';
 
 @Module({
   imports: [],
-  controllers: [WorkersController , BillController],
-  providers: [WorkersService , BillService],
+  controllers: [ BillController],
+  providers: [BillService, WorkerService],
 })
 export class SearchModule {}
