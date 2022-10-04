@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply bg-base !font-cairo;
+	}
+	/* width */
+	::-webkit-scrollbar {
+		@apply w-2;
+	}
+
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: #f1f1f1;
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		@apply bg-primary rounded transition;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		@apply bg-primary/90;
+	}
+
+	/* Handle on click */
+	::-webkit-scrollbar-thumb:active {
+		@apply bg-primary/80;
+	}
+}
+
+@layer components {
+	.btn-primary {
+		@apply font-semibold bg-primary p-2 px-3 flex items-center gap-2 text-base rounded-md justify-center hover:bg-primary-hover active:bg-primary-active transition;
+	}
+
+	.btn-outline {
+		@apply font-semibold border-2 border-primary p-2 px-3 text-primary flex items-center gap-2 rounded-md justify-center hover:border-primary-hover active:border-primary-active transition;
+	}
+}
