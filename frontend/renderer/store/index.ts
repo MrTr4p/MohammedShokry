@@ -5,6 +5,10 @@ import { produce } from "immer";
 import { v4 } from "uuid";
 import _ from "lodash";
 
+type RecursivePartial<T> = {
+	[P in keyof T]?: RecursivePartial<T[P]>;
+};
+
 export interface ProjectBill {
 	id: number;
 	name: string;
@@ -75,7 +79,10 @@ const storeSlice: StateCreator<
 	searchState: "empty",
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
-	setDropdownWorkers: (workers) => set(() => ({ dropdownWorkers: workers })),
+	setDropdownWorkers: (workers) =>
+		set((state) => ({
+			dropdownWorkers: [...state.dropdownWorkers, ...workers],
+		})),
 	newDropdownWorker: (worker) =>
 		set((state) => {
 			return { workers: [...state.workers, worker] };
@@ -101,16 +108,16 @@ export interface newProjectBill {
 	setOfficePrecentage: (precentage: number) => void;
 	setDate: (date: string) => void;
 	addWorker: (workerId: string) => void;
-	updateWorker: (workerId: string, data: Partial<Worker>) => void;
+	updateWorker: (workerId: string, data: RecursivePartial<Worker>) => void;
 	removeWorker: (id: string) => void;
 	addRevenue: () => void;
-	updateRevenue: (id: string, data: Partial<Revenue>) => void;
+	updateRevenue: (id: string, data: RecursivePartial<Revenue>) => void;
 	removeRevenue: (id: string) => void;
 	addExpense: (sectionId: string) => void;
-	updateExpense: (id: string, data: Partial<Expense>) => void;
+	updateExpense: (id: string, data: RecursivePartial<Expense>) => void;
 	removeExpense: (id: string) => void;
 	addSection: () => void;
-	updateSection: (id: string, data: Partial<Section>) => void;
+	updateSection: (id: string, data: RecursivePartial<Section>) => void;
 	removeSection: (id: string) => void;
 }
 
@@ -137,14 +144,16 @@ const newProjectBillSlice: StateCreator<
 	setOfficePrecentage: (precentage) =>
 		set(() => ({ officePrecentage: precentage })),
 	setDate: (date) => set(() => ({ date: date })),
-	addWorker: (workerId) => {
+	addWorker: async (workerId) => {
+		let { data }: { data: undefined | Worker } = await axios({
+			url:
+				"http://localhost:3000/search/workers/get/single?id=" +
+				workerId,
+		});
 		set(
 			produce<State & newProjectBill>((draft) => {
-				draft.workers.push(
-					draft.dropdownWorkers.find(
-						(worker) => worker.id === workerId,
-					),
-				);
+				if (!data) return;
+				draft.workers.push(data);
 			}),
 		);
 	},
@@ -154,10 +163,10 @@ const newProjectBillSlice: StateCreator<
 				let workerIndex = draft.workers.findIndex(
 					(worker) => worker.id === workerId,
 				);
-				draft.workers[workerIndex] = _.merge<Partial<Worker>, Worker>(
-					data,
-					draft.workers[workerIndex],
-				);
+				draft.workers[workerIndex] = _.merge<
+					RecursivePartial<Worker>,
+					Worker
+				>(data, draft.workers[workerIndex]);
 			}),
 		);
 	},
@@ -221,7 +230,7 @@ const newProjectBillSlice: StateCreator<
 					(section) => section.id === sectionId,
 				);
 				draft.sections[sectionIndex] = _.merge<
-					Partial<Section>,
+					RecursivePartial<Section>,
 					Section
 				>(data, draft.sections[sectionIndex]);
 			}),
@@ -264,7 +273,7 @@ const newProjectBillSlice: StateCreator<
 					(expense) => expense.id === expenseId,
 				);
 				draft.expenses[expenseIndex] = _.merge<
-					Partial<Expense>,
+					RecursivePartial<Expense>,
 					Expense
 				>(data, draft.expenses[expenseIndex]);
 			}),

@@ -18,7 +18,17 @@ export class BillController {
   }
 
   @Get("/workers")
-  getWorker(@Query("query") query: string) {
-    return this.workerService.getWorker(query);
+  searchWorkers(@Query("query") query: string) {
+    return this.workerService.workersSearch(query);
+  }
+
+  @Get("/workers/get")
+  getWorkers() {
+    return this.workerService.getWorkers();
+  }
+
+  @Get("/workers/get/single")
+  getWorker(@Query("id") id: string) {
+    return this.workerService.getWorker(id);
   }
 }

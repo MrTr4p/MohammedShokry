@@ -1,0 +1,6 @@
+@use "react-widgets/scss/styles.scss" with (
+	$list-selected-bg: #55516c,
+	$widget-focus-color: #55516c28,
+	$widget-hover-border-color: #55516c15,
+	$input-focus-border-color: #55516c15
+);

@@ -7,11 +7,11 @@ async function bootstrap() {
   app.enableCors({ origin: "http://localhost:8000" });
 
   await app.listen(3000);
-  //seedDB(100000);
+  //seedDB(10000, "worker");
 }
 bootstrap();
 
-async function seedDB(amount: number = 1) {
+async function seedDB(amount: number = 1, type: "worker" | "bill") {
   const names =
     "سمير ادريس ناصر فادى فاضل فرح حسن  ناديا اسد احسان امين رائد سلمان حوثى قاسم بلال عطية مريم رايان عدنان عفاف خديجة زهرة ايمن حسين فيصل سعد عبدل فطمة فاطمة احمد محمد على أسراء شهد عمرو عمر عمار صبحى شعبان غازى أمير أسامة ادهم محمود منال الخضرى عبدالله سميح فوزى شكرى يوسف رمزى هانى جرجس مهاب صبرى عباس أبراهيم حمزة".split(
       " ",
@@ -19,6 +19,11 @@ async function seedDB(amount: number = 1) {
 
   const projectCategorys =
     "كشرى كبدة بطاطس شاورما عيادة مستشفى صيانة لاب تقسيط تيكنولوجيا كومبيو كاميرات زجاج نجارة شاشات ماية زيت تموين تقسيط بنك حديقة شركة".split(
+      " ",
+    );
+
+  const jobs =
+    "كهربائى سباك شيف طباخ مبرمج مدير نقاش مبيض مبيعات مصمم بائع حمال سواق طباع صباغ دباغ نقال قياس تبليط بناء".split(
       " ",
     );
 
@@ -52,7 +57,7 @@ async function seedDB(amount: number = 1) {
     return bigName;
   }
 
-  function generateFakeData() {
+  function generateFakeBillData() {
     const date = randomDate(new Date(2012, 0, 1), new Date());
     const [day, month, year] = date
       .toLocaleDateString("en-GB")
@@ -73,6 +78,13 @@ async function seedDB(amount: number = 1) {
     };
   }
 
+  function generateFakeWorkerData() {
+    return {
+      name: getName(5) + makeid(4),
+      work: jobs[Math.floor(Math.random() * jobs.length)],
+    };
+  }
+
   let threads = 150;
 
   for (let x = 0; x < amount; x += threads) {
@@ -80,21 +92,39 @@ async function seedDB(amount: number = 1) {
       Array.from({ length: threads })
         .fill(" ")
         .map(async (_, i) => {
-          var config = {
-            method: "post",
-            url: "http://localhost:3000/create/bill/project",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            data: generateFakeData(),
-          };
-          return await axios(config)
-            .then(function (response) {
-              console.log(x + i, response.data);
-            })
-            .catch(function (error) {
-              console.log(error.message);
-            });
+          if (type === "bill") {
+            let config = {
+              method: "post",
+              url: "http://localhost:3000/create/bill/project",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              data: generateFakeBillData(),
+            };
+            return await axios(config)
+              .then(function (response) {
+                console.log(x + i, response.data);
+              })
+              .catch(function (error) {
+                console.log(error.message);
+              });
+          } else {
+            let config = {
+              method: "post",
+              url: "http://localhost:3000/create/worker",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              data: generateFakeWorkerData(),
+            };
+            return await axios(config)
+              .then(function (response) {
+                console.log(x + i, response.data);
+              })
+              .catch(function (error) {
+                console.log(error.message);
+              });
+          }
         }),
     );
   }
