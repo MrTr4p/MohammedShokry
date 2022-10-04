@@ -10,10 +10,7 @@ export class AppController {
     return this.appService.getAll(type);
   }
 
-  @Get("/search")
-  getSearch(@Query("query") query: string) {
-    return this.appService.getSearch(query);
-  }
+
 
   @Get("/login")
   login(@Req() req) {
