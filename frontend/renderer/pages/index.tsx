@@ -30,6 +30,8 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 
 	async function search(e: any) {
 		e.preventDefault();
+		if (searchState === "loading") return;
+
 		if (searchRef?.current) {
 			const query = (searchRef.current as any).value?.trim() || "";
 			if (query) {

@@ -1,8 +1,12 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
+import Input from "../../components/Input";
+import { useNewBillStore } from "../../store";
 
 function Public() {
+	const newBillStore = useNewBillStore((state) => state);
+
 	return (
 		<div className="space-y-12">
 			<header className="flex justify-between items-start">
@@ -20,9 +24,13 @@ function Public() {
 				</Link>
 			</header>
 			<main>
-				<div className="border-black ">
-		
-                </div>
+				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md">
+					<Input
+						label="أسم العميل"
+						type={"text"}
+						onChange={(e) => console.log(e.target.value)}
+					></Input>
+				</div>
 			</main>
 		</div>
 	);
