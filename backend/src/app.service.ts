@@ -7,83 +7,88 @@ const SecertaryPass = "sh2022";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 
-
 interface result {
   projectBills?: {
-      pagination?: {
-          totalCount: number,
-          totalPages: number,
-          pageSize: number,
-          currentPage: number,
-          lastPage: boolean,
-      },
-      data: object[],
-  },
+    pagination?: {
+      totalCount: number;
+      totalPages: number;
+      pageSize: number;
+      currentPage: number;
+      lastPage: boolean;
+    };
+    data: object[];
+  };
   anotherBills?: {
-      pagination?: {
-          totalCount: number,
-          totalPages: number,
-          pageSize: number,
-          lastPage: boolean,
-          currentPage: number,
-      },
-      data: object[],
-  },
-};
+    pagination?: {
+      totalCount: number;
+      totalPages: number;
+      pageSize: number;
+      lastPage: boolean;
+      currentPage: number;
+    };
+    data: object[];
+  };
+}
 
-async function filter(pageReq , limitReq , bpageReq, blimitReq) {
-    let anotherBills = {pagination :{} , data:{}} as any
-    let projectbill = {pagination :{} , data:{}} as any
-    let result = {}
-    const [aBCount , bCount] = await Promise.all([await prisma.anotherPaymentsBill.count() , await prisma.projectBill.count()])
-    const abIndex = pageReq * limitReq
-    const bindex = bpageReq * blimitReq
-    const bskipindex = (bpageReq - 1) * blimitReq
-    const abskipindex = (pageReq - 1) * limitReq
-    const totalabPages = aBCount / limitReq
-    const totalBPages = bCount/ blimitReq
+async function filter(pageReq, limitReq, bpageReq, blimitReq) {
+  let anotherBills = { pagination: {}, data: {} } as any;
+  let projectbill = { pagination: {}, data: {} } as any;
+  let result = {};
+  const [aBCount, bCount] = await Promise.all([
+    await prisma.anotherPaymentsBill.count(),
+    await prisma.projectBill.count(),
+  ]);
+  const abIndex = pageReq * limitReq;
+  const bindex = bpageReq * blimitReq;
+  const bskipindex = (bpageReq - 1) * blimitReq;
+  const abskipindex = (pageReq - 1) * limitReq;
+  const totalabPages = aBCount / limitReq;
+  const totalBPages = bCount / blimitReq;
 
+  anotherBills.pagination.currentPage = Number(pageReq);
+  anotherBills.pagination.pageSize = Number(limitReq);
+  anotherBills.pagination.totalCount = aBCount;
+  anotherBills.pagination.totalPages = totalabPages;
 
-    anotherBills.pagination.currentPage  = parseInt(pageReq)
-    anotherBills.pagination.pageSize = parseInt(limitReq)
-    anotherBills.pagination.totalCount = aBCount
-    anotherBills.pagination.totalPages =  totalabPages
+  projectbill.pagination.currentPage = Number(bpageReq);
+  projectbill.pagination.pageSize = Number(blimitReq);
+  projectbill.pagination.totalCount = bCount;
+  projectbill.pagination.totalPages = totalBPages;
 
-    projectbill.pagination.currentPage = Number(bpageReq)
-    projectbill.pagination.pageSize = Number(blimitReq)
-    projectbill.pagination.totalCount = bCount
-    projectbill.pagination.totalPages = totalBPages
-    
+  if (abIndex < aBCount) {
+    anotherBills.pagination.lastPage = false;
+  } else {
+    anotherBills.pagination.lastPage = true;
+  }
 
-    if(abIndex < aBCount){
-      anotherBills.pagination.lastPage = false
-    }else{
-      anotherBills.pagination.lastPage = true
-    }
+  if (bindex < bCount) {
+    projectbill.pagination.lastPage = false;
+  } else {
+    projectbill.pagination.lastPage = true;
+  }
 
-    if(bindex < bCount){
-      projectbill.pagination.lastPage = false
-    }else{
-      projectbill.pagination.lastPage = true
-    }
+  try {
+    projectbill.data = await prisma.projectBill.findMany({
+      take: Number(blimitReq),
+      skip: bskipindex,
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
 
-    try{
-      projectbill.data = await prisma.projectBill.findMany({take: Number(blimitReq) , skip :bskipindex })
-    }catch(e){
-      throw new Error(e)
-    }
+  try {
+    anotherBills.data = await prisma.anotherPaymentsBill.findMany({
+      take: Number(pageReq),
+      skip: abskipindex,
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
 
-    try{
-      anotherBills.data = await prisma.anotherPaymentsBill.findMany({take: Number(pageReq) , skip :abskipindex })
-    }catch(e){
-      throw new Error(e)
-    }
-
-    return result = {
-      projectBills : projectbill,
-      anotherBills : anotherBills
-    }
-    
+  return (result = {
+    projectBills: projectbill,
+    anotherBills: anotherBills,
+  });
 }
 
 @Injectable()
@@ -129,8 +134,12 @@ export class AppService {
     }
   }
   async getAll(query) {
-    const result = await filter(query.abpage , query.ablimit, query.bpage, query.blimit);
+    const result = await filter(
+      query.abpage,
+      query.ablimit,
+      query.bpage,
+      query.blimit,
+    );
     return result;
   }
-
 }

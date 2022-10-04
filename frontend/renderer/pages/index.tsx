@@ -95,11 +95,11 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 				>
 					<Table
 						title={"الفواتير العامة"}
-						data={homePublicBills.slice(0, 50)}
+						data={homePublicBills}
 					></Table>
 					<Table
 						title={"الفواتير الخاصة"}
-						data={homeOfficeBills.slice(0, 50)}
+						data={homeOfficeBills}
 					></Table>
 
 					<AnimatePresence>
@@ -148,14 +148,22 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const PAGE_SIZE = 100;
+	const PAGE = 1;
+
 	const { data: billsData } = await axios({
-		url: "http://localhost:3000/getAll?type=public",
+		url: `http://localhost:3000/getAll?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE_SIZE}`,
 	});
+
+	const { projectBills, anotherBills } = billsData;
 
 	return {
 		props: {
-			publicBills: billsData,
-			officeBills: billsData,
+			publicBills: projectBills.data,
+			officeBills:
+				anotherBills.data.length > 0
+					? anotherBills.data
+					: projectBills.data,
 		},
 	};
 };
