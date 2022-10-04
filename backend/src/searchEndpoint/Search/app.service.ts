@@ -3,15 +3,25 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 
-
 @Injectable()
 export class AppService {
+  async getSearch(query: string, maxResults = 100) {
+    const [projectBills, anotherBills] = await Promise.all([
+      await prisma.projectBill.findMany({
+        select: { clientName: true, name: true },
+      }),
+      await prisma.anotherPaymentsBill.findMany({
+        select: { name: true },
+      }),
+    ]);
 
-  async getSearch(query: string) {
-    const [projectBills, anotherBills] = await Promise.all([ await prisma.projectBill.findMany({}), await prisma.anotherPaymentsBill.findMany({})]);
+    const projectBillsFuse = new Fuse(projectBills, {
+      keys: ["name", "clientName"],
+    });
 
-    const projectBillsFuse = new Fuse(projectBills, { keys: ["name"] });
-    const anotherBillsFuse = new Fuse(anotherBills, { keys: ["name"] });
+    const anotherBillsFuse = new Fuse(anotherBills, {
+      keys: ["name"],
+    });
 
     const projectBillsResult = projectBillsFuse
       .search(query)
@@ -21,8 +31,8 @@ export class AppService {
       .map((x) => x.item);
 
     return {
-      projectBills: projectBillsResult,
-      anotherBills: anotherBillsResult,
+      projectBills: projectBillsResult.slice(0, maxResults),
+      anotherBills: anotherBillsResult.slice(0, maxResults),
     };
   }
 }

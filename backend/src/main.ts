@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({ origin: "http://localhost:8000" });
 
   await app.listen(3000);
-  //seedDB(20000);
+  //seedDB(100000);
 }
 bootstrap();
 
@@ -52,42 +52,51 @@ async function seedDB(amount: number = 1) {
     return bigName;
   }
 
-  for (let x = 0; x < amount; x++) {
+  function generateFakeData() {
     const date = randomDate(new Date(2012, 0, 1), new Date());
     const [day, month, year] = date
       .toLocaleDateString("en-GB")
       .replace(/\//g, "-")
       .split("-");
 
-    var config = {
-      method: "post",
-      url: "http://localhost:3000/create/bill/project",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        name:
-          projectCategorys[
-            Math.floor(Math.random() * projectCategorys.length)
-          ] +
-          " " +
-          getName(2) +
-          makeid(4),
-        clientAddress:
-          getName(2) +
-          streets[Math.floor(Math.random() * streets.length)].trim(),
-        clientName: getName(5) + makeid(4),
-        date: `${year}-${month}-${day}`,
-        officePrecentage: Math.floor(Math.random() * 85),
-      },
+    return {
+      name:
+        projectCategorys[Math.floor(Math.random() * projectCategorys.length)] +
+        " " +
+        getName(2) +
+        makeid(4),
+      clientAddress:
+        getName(2) + streets[Math.floor(Math.random() * streets.length)].trim(),
+      clientName: getName(5) + makeid(4),
+      date: `${year}-${month}-${day}`,
+      officePrecentage: Math.floor(Math.random() * 85),
     };
-    await axios(config)
-      .then(function (response) {
-        console.log(response.data + x);
-      })
-      .catch(function (error) {
-        console.log(error.message);
-      });
+  }
+
+  let threads = 150;
+
+  for (let x = 0; x < amount; x += threads) {
+    await Promise.all(
+      Array.from({ length: threads })
+        .fill(" ")
+        .map(async (_, i) => {
+          var config = {
+            method: "post",
+            url: "http://localhost:3000/create/bill/project",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: generateFakeData(),
+          };
+          return await axios(config)
+            .then(function (response) {
+              console.log(x + i, response.data);
+            })
+            .catch(function (error) {
+              console.log(error.message);
+            });
+        }),
+    );
   }
 }
 

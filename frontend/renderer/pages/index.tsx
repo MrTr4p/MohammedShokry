@@ -37,7 +37,9 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 			if (query) {
 				setSearchState("loading");
 				let { data } = await axios({
-					url: "http://localhost:3000/search?query=" + query,
+					url:
+						"http://localhost:3000/search/bill?max_results=100&query=" +
+						query,
 				});
 				if (
 					data &&
@@ -148,8 +150,8 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const PAGE_SIZE = 100;
-	const PAGE = 1;
+	const PAGE_SIZE = 50;
+	const PAGE = 2;
 
 	const { data: billsData } = await axios({
 		url: `http://localhost:3000/getAll?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE_SIZE}`,
