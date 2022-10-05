@@ -111,12 +111,13 @@ export interface newProjectBill {
 	sections: Section[];
 	date: string;
 
+	restState: () => void;
 	setName: (name: string) => void;
 	setClientName: (name: string) => void;
 	setClientAddress: (address: string) => void;
 	setOfficePrecentage: (precentage: number) => void;
 	setDate: (date: string) => void;
-	sendToBackend: () => Promise<void>;
+	sendToBackend: () => Promise<any>;
 	addWorker: (workerId?: string) => void;
 	updateWorker: (workerId: string, data: RecursivePartial<Worker>) => void;
 	removeWorker: (id: string) => void;
@@ -149,9 +150,48 @@ const newProjectBillSlice: StateCreator<
 	workers: [],
 
 	sendToBackend: async () => {
-		let bill = get();
-		axios({ url: "" })
+		let {
+			clientAddress,
+			clientName,
+			date,
+			expenses,
+			workers,
+			sections,
+			name,
+			revenues,
+			restState,
+		} = get();
+		let { data } = await axios({
+			url: "http://localhost:3000/create/bill/project",
+			method: "post",
+			data: {
+				clientAddress,
+				clientName,
+				date,
+				expenses,
+				workers,
+				sections,
+				name,
+				revenues,
+			},
+		});
+
+		restState();
+		console.log(data);
+		return data;
 	},
+	restState: () =>
+		set((state) => ({
+			clientAddress: "",
+			clientName: "",
+			officePrecentage: 0,
+			date: "",
+			name: "",
+			expenses: [],
+			revenues: [],
+			sections: [],
+			workers: [],
+		})),
 	setName: (name) => set(() => ({ name })),
 	setClientName: (name) => set(() => ({ clientName: name })),
 	setClientAddress: (address) => set(() => ({ clientAddress: address })),

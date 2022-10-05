@@ -12,79 +12,75 @@ async function getBill(reqParam) {
   return bill;
 }
 
-async function getAll(projectBill){
+async function getAll(projectBill) {
   const workers = await prisma.workerSalary.findMany({
-    where:{
-      projectBillId:projectBill.id
+    where: {
+      projectBillId: projectBill.id,
     },
-    include:{
-      Worker:true
-    }
-  })
+    include: {
+      Worker: true,
+    },
+  });
   const expenses = await prisma.expenses.findMany({
-    where:{
-      projectBillId:projectBill.id
+    where: {
+      projectBillId: projectBill.id,
     },
-    include:{
-      section:true
-    }
-  })
+    include: {
+      section: true,
+    },
+  });
 
-
-  return {workers, expenses}
+  return { workers, expenses };
 }
 
 @Injectable()
 export class AggregateBilService {
   async getAggregateBill(param) {
-    let workersArray = []
-    let expensesArray = []
-    let finalWorkersBill = []
-    let finalExpensesBill = []
-    const projectBill : {id : any} = await getBill(param)
-    const {workers, expenses } = await getAll(projectBill)
-    
-      for (let i = 0; i < workers.length; i++) {  
-        if(!workersArray.includes(workers[i].Worker.work)){
-          workersArray.push(workers[i].Worker.work)
+    let workersArray = [];
+    let expensesArray = [];
+    let finalWorkersBill = [];
+    let finalExpensesBill = [];
+    const projectBill: { id: any } = await getBill(param);
+    const { workers, expenses } = await getAll(projectBill);
+
+    for (let i = 0; i < workers.length; i++) {
+      if (!workersArray.includes(workers[i].Worker.work)) {
+        workersArray.push(workers[i].Worker.work);
+      }
+    }
+
+    for (let i = 0; i < workersArray.length; i++) {
+      let workerCost = 0;
+      for (let i = 0; i < workers.length; i++) {
+        if (workersArray.includes(workers[i].Worker.work)) {
+          workerCost = workerCost + workers[i].amount;
         }
       }
+      finalWorkersBill.push({
+        work: workersArray[i],
+        totalCost: workerCost,
+      });
+    }
 
-      for (let i = 0; i < workersArray.length; i++) {
-        let workerCost = 0
-        for (let i = 0; i < workers.length; i++) {
-          if(workersArray.includes(workers[i].Worker.work)){
-            workerCost = workerCost + workers[i].amount
-          }
-        }
-        finalWorkersBill.push({
-          work: workersArray[i],
-          totalCost: workerCost
-        })
+    for (let i = 0; i < expenses.length; i++) {
+      if (!expensesArray.includes(expenses[i].section.name)) {
+        expensesArray.push(expenses[i].section.name);
       }
+    }
 
-
+    for (let i = 0; i < expensesArray.length; i++) {
+      let expenseCost = 0;
       for (let i = 0; i < expenses.length; i++) {
-        if(!expensesArray.includes(expenses[i].section.name)){
-          expensesArray.push(expenses[i].section.name)
+        if (expensesArray.includes(expenses[i].section.name)) {
+          expenseCost = expenseCost + expenses[i].totalcost;
         }
-        
       }
+      finalExpensesBill.push({
+        section: expensesArray[i],
+        totalCost: expenseCost,
+      });
+    }
 
-      for (let i = 0; i < expensesArray.length; i++) {
-        let expenseCost = 0
-        for (let i = 0; i < expenses.length; i++) {
-          if(expensesArray.includes(expenses[i].section.name)){
-            expenseCost = expenseCost + expenses[i].totalcost
-          }
-        }
-        finalExpensesBill.push({
-          section : expensesArray[i],
-          totalCost: expenseCost
-        })
-      }
-
-     
-      return {finalExpensesBill, finalWorkersBill}
+    return { finalExpensesBill, finalWorkersBill };
   }
 }

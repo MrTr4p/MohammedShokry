@@ -151,7 +151,7 @@ export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const PAGE_SIZE = 50;
-	const PAGE = 2;
+	const PAGE = 1;
 
 	const { data: billsData } = await axios({
 		url: `http://localhost:3000/getAll?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE_SIZE}`,

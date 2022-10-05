@@ -58,6 +58,6 @@ export class CreateBillService {
       }
     }
 
-    return "تم اضافة فاتورة مشروع بنجاح";
+    return { message: "تم اضافة فاتورة مشروع بنجاح" };
   }
 }

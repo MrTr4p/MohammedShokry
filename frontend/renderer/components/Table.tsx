@@ -13,17 +13,25 @@ function Table({ data, title }: { title?: string; data: ProjectBill[] }) {
 
 			<table className="table-auto w-full border-2 border-secondary rounded-md">
 				<thead className="bg-secondary">
-					<tr>
-						<th className="p-2 text-start whitespace-nowrap">رقم الفاتورة</th>
-						<th className="p-2 text-start whitespace-nowrap">أسم العميل</th>
-						<th className="p-2 text-start whitespace-nowrap">أسم المشروع</th>
-						<th className="p-2 text-start whitespace-nowrap">التاريخ</th>
+					<tr className="">
+						<th className="p-2 text-start whitespace-nowrap">
+							رقم الفاتورة
+						</th>
+						<th className="p-2 text-start whitespace-nowrap">
+							أسم العميل
+						</th>
+						<th className="p-2 text-start whitespace-nowrap">
+							أسم المشروع
+						</th>
+						<th className="p-2 text-start whitespace-nowrap">
+							التاريخ
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 					{data.map((row) => {
 						return (
-							<tr key={row.id + row.clientName}>
+							<tr className="" key={row.id + row.clientName}>
 								<td className="p-2 flex items-center gap-2">
 									<Link href={`/edit/public/${row.id}`}>
 										<a

@@ -1,12 +1,13 @@
 import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../components/Input";
 import { useStore } from "../../store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import WorkerInputTable from "../../components/WorkerInputTable";
 import ExpensesInputTable from "../../components/ExpensesInputTable";
 import RevenuesInputTable from "../../components/RevenuesInputTable";
+import { useRouter } from "next/router";
 function Public() {
 	const {
 		clientName,
@@ -19,9 +20,29 @@ function Public() {
 		setClientName,
 		setName,
 		setOfficePrecentage,
+		sendToBackend,
+		restState,
 	} = useStore((state) => state);
+	const [infoMessage, setInfoMessage] = useState({
+		message: "",
+		error: false,
+	});
 
-	
+	const router = useRouter();
+
+	async function handleSave() {
+		sendToBackend()
+			.then((result) => {
+				setInfoMessage({ message: result.message, error: false });
+				router.push("/");
+			})
+			.catch((err) =>
+				setInfoMessage({
+					message: err.response.data.message,
+					error: true,
+				}),
+			);
+	}
 
 	return (
 		<div className="space-y-12">
@@ -33,7 +54,7 @@ function Public() {
 					<p>هنا يمكنك ملئ الحقول لصنع فاتورة عامة (فاتورة مشروع)</p>
 				</div>
 				<Link href="/">
-					<a href="" className="btn-outline px-6">
+					<a href="" className="btn-outline px-6" onClick={restState}>
 						ألغاء
 						<XMarkIcon className="w-6 h-6"></XMarkIcon>
 					</a>
@@ -79,8 +100,24 @@ function Public() {
 					<ExpensesInputTable></ExpensesInputTable>
 					<RevenuesInputTable></RevenuesInputTable>
 					<div></div>
-					<div className="bg-secondary p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
-						<button className="btn-primary px-12">حفظ</button>
+					<div className="bg-secondary flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
+						<button
+							className="btn-primary px-12"
+							onClick={handleSave}
+						>
+							حفظ
+						</button>
+						{infoMessage.message && (
+							<h1
+								className={`font-bold text-center text-lg ${
+									infoMessage.error
+										? "text-red-600"
+										: "text-green-600"
+								}`}
+							>
+								{infoMessage.message}
+							</h1>
+						)}
 					</div>
 				</div>
 			</main>
