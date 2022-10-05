@@ -98,7 +98,7 @@ export class CreateBillService {
 
     for (let i = 0; i < workers.length; i++) {
       const element = workers[i];
-      console.log(element);
+      console.log(element.project.salary);
       await prisma.workerSalary.create({
         data: {
           Worker: {

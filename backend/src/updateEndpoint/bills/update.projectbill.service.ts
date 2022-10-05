@@ -81,12 +81,12 @@ export class CreateBillService {
           data: {
             Worker: {
               connect: {
-                id: workers[i].worker.id,
+                id: workers[i].id,
               },
             },
-            date: element.date,
-            amount: element.amount,
-            precentage: element.precentage || 0,
+            date: element.project.date,
+            amount: element.project.salary,
+            precentage: element.project.precentage || 0,
             ProjectBill: {
               connect: {
                 id: projectBill.id,
@@ -94,7 +94,6 @@ export class CreateBillService {
             },
           },
         });
-        console.log(worker);
       }
     } catch (e) {
       console.log(e);
@@ -104,6 +103,7 @@ export class CreateBillService {
     try {
       for (let i = 0; i < expenses.length; i++) {
         const element = expenses[i];
+        console.log(element)
         const section = await prisma.section.findFirst({
           where: {
             name: element.section.name,
@@ -113,7 +113,7 @@ export class CreateBillService {
           data: {
             materialName: element.materialName,
             date: element.date,
-            totalcost: element.cost,
+            totalcost: element.totalcost,
             day: element.day,
 
             ProjectBill: {
