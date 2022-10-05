@@ -70,7 +70,7 @@ export class CreateBillService {
           clientAddress: body.clientAddress,
           clientName: body.clientName || null,
           date: body.date || null,
-          officePrecentage: body.officePrecentage || null,
+          officePrecentage: body.officePrecentage || 0 ,
         },
       });
     } catch (e) {
