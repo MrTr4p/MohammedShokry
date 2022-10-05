@@ -474,7 +474,7 @@ const anotherPaymentsBillStore: StateCreator<
 		} = get();
 
 		let { message, error } = await axios({
-			url: "https://localhost:3000/create/bill/anotherBill",
+			url: "http://localhost:3000/create/bill/anotherBill",
 			method: "post",
 			data: {
 				amount,
