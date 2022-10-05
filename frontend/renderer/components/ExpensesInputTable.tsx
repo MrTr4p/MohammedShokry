@@ -47,7 +47,7 @@ function ExpensesInputTable() {
 									البند
 								</th>
 								<th className="p-2 text-start whitespace-nowrap">
-									أسم المادة
+									البيان
 								</th>
 								<th className="p-2 text-start whitespace-nowrap">
 									السعر الكلى
@@ -192,7 +192,7 @@ function ExpensesInputTable() {
 															e.target.value,
 													})
 												}
-												placeholder={"أسم المادة"}
+												placeholder={"البيان"}
 											></Input>
 										</td>
 										<td className="p-2">
