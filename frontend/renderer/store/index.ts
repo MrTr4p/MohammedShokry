@@ -400,6 +400,110 @@ const projectBillSlice: StateCreator<
 	},
 });
 
+export interface AnotherPaymentsBill {
+	id: number;
+	projectName: string;
+	amount: number;
+	date: string;
+	inReturn: string;
+	description?: string;
+}
+
+export interface AnotherPaymentsBillStore {
+	id: number;
+	projectName: string;
+	amount: number;
+	date: string;
+	inReturn: string;
+	description?: string;
+	resetState: () => void;
+	saveBill: () => Promise<{ message: string }>;
+	editBill: () => Promise<{ message: string }>;
+	setProjectName: (name: string) => void;
+	setAmount: (amount: number) => void;
+	setDate: (date: string) => void;
+	setInReturn: (inReturn: string) => void;
+	setDescription: (description: string) => void;
+}
+
+const anotherPaymentsBillStore: StateCreator<
+	AnotherPaymentsBillStore,
+	[["zustand/devtools", never]],
+	[],
+	AnotherPaymentsBillStore
+> = (set, get) => ({
+	id: -1,
+	amount: 0,
+	date: "",
+	inReturn: "",
+	projectName: "",
+	description: "",
+
+	resetState: () => {
+		set(() => ({
+			id: -1,
+			amount: 0,
+			date: "",
+			description: "",
+			inReturn: "",
+			projectName: "",
+		}));
+	},
+	editBill: async () => {
+		const {
+			amount,
+			date,
+			id,
+			inReturn,
+			projectName,
+			description,
+			resetState,
+		} = get();
+
+		return { message: "done" };
+	},
+	saveBill: async () => {
+		const {
+			amount,
+			date,
+			id,
+			inReturn,
+			projectName,
+			description,
+			resetState,
+		} = get();
+
+		let { message, error } = await axios({
+			url: "https://localhost:3000/create/bill/anotherBill",
+			method: "post",
+			data: {
+				amount,
+				date,
+				id,
+				inReturn,
+				projectName,
+				description,
+			},
+		})
+			.then(({ data }) => ({ message: data.message, error: false }))
+			.catch((err) => ({
+				message: err?.reponse?.data?.message,
+				error: true,
+			}));
+
+		return { message, error };
+	},
+	setProjectName: (name: string) => set({ projectName: name }),
+	setAmount: (amount: number) => set({ amount }),
+	setDate: (date: string) => set({ date }),
+	setInReturn: (inReturn: string) => set({ inReturn }),
+	setDescription: (description: string) => set({ description }),
+});
+
+export const useAnotherPaymentsBillStore = create<AnotherPaymentsBillStore>()(
+	devtools(anotherPaymentsBillStore, { name: "another-bill-storage" }),
+);
+
 export const useStore = create<State & newProjectBill>()(
 	devtools((...a) => ({ ...storeSlice(...a), ...projectBillSlice(...a) }), {
 		name: "app-storage",
