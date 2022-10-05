@@ -18,7 +18,7 @@ async function Validation(body) {
       console.log(!element.project.date)
       if (!element.project.date || !element.project.salary)
         throw new HttpException(
-          "يبدو انك قمت باضافة عمال . تحقق منها و تاكد انها ليست فارغة",
+          "يبدو انك قمت باضافة عمال . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
         );
     }
@@ -32,7 +32,7 @@ async function Validation(body) {
         !element.totalcost
       )
         throw new HttpException(
-          "يبدو انك قمت باضافة مصروفات . تحقق منها و تاكد انها ليست فارغة",
+          "يبدو انك قمت باضافة مصروفات . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
         );
     }
@@ -43,10 +43,15 @@ async function Validation(body) {
       console.log(element)
       if (!element.amount || !element.date)
         throw new HttpException(
-          "يبدو انك قمت باضافة ارادات . تحقق منها و تاكد انها ليست فارغة",
+          "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
         );
     }
+  }else{
+    throw new HttpException(
+      "لقد حدث خطأ ما , يرجي التاكد من المدخلات",
+      HttpStatus.NOT_ACCEPTABLE,
+    );
   }
 }
 
