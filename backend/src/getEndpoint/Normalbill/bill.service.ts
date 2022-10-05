@@ -8,6 +8,13 @@ async function getBill(reqParam) {
     where: {
       name: reqParam.name,
     },
+    include:{
+      expenses: true,
+      workers:true,
+      revenues:true,
+      sections:true,
+      _count:true
+    }
   });
   return bill;
 }

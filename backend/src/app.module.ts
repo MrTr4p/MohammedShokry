@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { CreateModule } from './createEndpoint/create.module';
 import { GetModule } from './getEndpoint/get.module';
 import { SearchModule } from './searchEndpoint/app.module';
+import { UpdateModule } from './updateEndpoint/create.module';
 
 @Module({
-  imports: [CreateModule , GetModule, SearchModule],
+  imports: [CreateModule , GetModule, SearchModule , UpdateModule],
   controllers: [AppController],
   providers: [AppService],
 })

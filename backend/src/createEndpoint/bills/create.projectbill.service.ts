@@ -38,16 +38,17 @@ export class CreateBillService {
 
     for (let i = 0; i < workers.length; i++) {
       const element = workers[i];
-      for (let i = 0; i < workers.length; i++) {
         await prisma.workerSalary.create({
           data: {
             Worker: {
               connect: {
-                id: workers[i].id,
+                id: workers[i].worker.id,
               },
             },
-            date: element.data,
+            date: element.date,
             amount: element.amount,
+            //@ts-ignore
+            precentage: element.precentage || 0,
             ProjectBill: {
               connect: {
                 id: projectBill.id,
@@ -56,7 +57,77 @@ export class CreateBillService {
           },
         });
       }
-    }
+    
+
+        const expenses = body.expenses
+        console.log(expenses)
+        for (let i = 0; i < expenses.length; i++) {
+          const element = expenses[i];
+          console.log(element)
+
+          const section = await prisma.section.findFirst({
+            where:{
+              projectBillId: projectBill.id,
+              name: element.section.name
+            }
+          })
+          if(section)
+          {
+            await prisma.expenses.create({
+              data:{
+                materialName: element.materialName, 
+                date:element.date,
+                totalcost: element.cost,
+                day:element.day,
+                section:{
+                  connect:{
+                    id:element.section.id
+                  }
+                },
+                ProjectBill: {
+                  connect:{
+                    id: projectBill.id
+                  }
+                }
+              }
+            })
+          }else {
+            console.log('new section')
+            const newSection = await prisma.section.create({
+              data:{
+                name: element.section.name    ,
+                ProjectBill: {
+                  connect:{
+                    id:projectBill.id
+                  }
+                }
+                  
+              }
+            })
+
+            await prisma.expenses.create({
+              data:{
+                materialName: element.materialName, 
+                date:element.date,
+                totalcost: element.cost,
+                day:element.day,
+                section:{
+                  connect:{
+                    id:newSection.id
+                  }
+                },
+                ProjectBill: {
+                  connect:{
+                    id: projectBill.id
+                  }
+                }
+              }
+            })
+
+          }
+
+          
+        }
 
     return { message: "تم اضافة فاتورة مشروع بنجاح" };
   }

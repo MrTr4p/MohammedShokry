@@ -11,7 +11,7 @@ export class AppService {
         select: { clientName: true, name: true },
       }),
       await prisma.anotherPaymentsBill.findMany({
-        select: { name: true },
+        select: { projectName: true },
       }),
     ]);
 

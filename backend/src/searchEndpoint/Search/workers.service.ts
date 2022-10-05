@@ -24,7 +24,7 @@ export class WorkerService {
       throw new HttpException("يجب ملئ ايدى العامل", HttpStatus.BAD_REQUEST);
     let worker = await prisma.worker.findUnique({ where: { id } });
     if (!worker)
-      throw new HttpException("لا يجود هذه العامل", HttpStatus.NOT_FOUND);
+      throw new HttpException("لا يجود هذا العامل", HttpStatus.NOT_FOUND);
     return worker;
   }
 }

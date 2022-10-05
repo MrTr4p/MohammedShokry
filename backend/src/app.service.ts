@@ -30,7 +30,8 @@ interface result {
   };
 }
 
-async function filter(pageReq, limitReq, bpageReq, blimitReq) {
+async function filter(pageReq : number, limitReq : number, bpageReq : number, blimitReq : number) {
+  console.log('/home')
   let anotherBills = { pagination: {}, data: {} } as any;
   let projectbill = { pagination: {}, data: {} } as any;
   let result = {};
@@ -42,8 +43,8 @@ async function filter(pageReq, limitReq, bpageReq, blimitReq) {
   const bindex = bpageReq * blimitReq;
   const bskipindex = (bpageReq - 1) * blimitReq;
   const abskipindex = (pageReq - 1) * limitReq;
-  const totalabPages = aBCount / limitReq;
-  const totalBPages = bCount / blimitReq;
+  const totalabPages = aBCount / Number(limitReq);
+  const totalBPages = bCount / Number(blimitReq);
 
   anotherBills.pagination.currentPage = Number(pageReq);
   anotherBills.pagination.pageSize = Number(limitReq);
@@ -70,7 +71,7 @@ async function filter(pageReq, limitReq, bpageReq, blimitReq) {
   try {
     projectbill.data = await prisma.projectBill.findMany({
       take: Number(blimitReq),
-      skip: bskipindex,
+      skip: Number(bskipindex),
     });
   } catch (e) {
     throw new Error(e);
@@ -79,16 +80,19 @@ async function filter(pageReq, limitReq, bpageReq, blimitReq) {
   try {
     anotherBills.data = await prisma.anotherPaymentsBill.findMany({
       take: Number(pageReq),
-      skip: abskipindex,
+      skip: Number(abskipindex),
     });
+    
   } catch (e) {
-    throw new Error(e);
+    throw new HttpException(e , HttpStatus.BAD_REQUEST);
   }
+  
 
-  return (result = {
+   result = {
     projectBills: projectbill,
     anotherBills: anotherBills,
-  });
+  };
+  return result
 }
 
 @Injectable()

@@ -55,6 +55,13 @@ export class AggregateBilService {
         if (workersArray.includes(workers[i].Worker.work)) {
           workerCost = workerCost + workers[i].amount;
         }
+<<<<<<< Updated upstream
+=======
+        finalWorkersBill.push({
+          work:  "مصنعية " + workersArray[i] ,
+          totalCost: workerCost
+        })
+>>>>>>> Stashed changes
       }
       finalWorkersBill.push({
         work: workersArray[i],

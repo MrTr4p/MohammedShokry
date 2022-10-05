@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 @Injectable()
 export class CreateSectionService {
   async createSecion(req , param){
-    const par = param.name
     const body = req.body
     const projectBill = await prisma.projectBill.findFirst({
       where:{
@@ -15,7 +14,7 @@ export class CreateSectionService {
       }
     })
     try{
-    await prisma.section.create({
+    const rev = await prisma.section.create({
       data:{
         name:body.name,
         ProjectBill:{
@@ -25,10 +24,11 @@ export class CreateSectionService {
         }
       }
     })
+    console.log(rev)
     return "لقد تم اضافة بند بنجاح"
   }
     catch(e){
-
+      console.log(e)
     }
   }
 }
