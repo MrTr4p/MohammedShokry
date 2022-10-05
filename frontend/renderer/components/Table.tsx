@@ -33,9 +33,9 @@ function Table({ data, title }: { title?: string; data: ProjectBill[] }) {
 						return (
 							<tr className="" key={row.id + row.clientName}>
 								<td className="p-2 flex items-center gap-2">
-									<Link href={`/edit/public/${row.id}`}>
+									<Link href={`/edit/public?id=${row.id}`}>
 										<a
-											href={`/edit/bill/public/${row.id}`}
+											href={`/edit/bill/public?id=${row.id}`}
 											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-2 py-1"
 										>
 											<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
