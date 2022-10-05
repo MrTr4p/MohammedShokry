@@ -35,7 +35,7 @@ export class CreateBillService {
   async updatePublicBill(req, id: number) {
     const body = req.body;
     const workers = (await req.body.workers) || [];
-
+    console.log(body)
     const oldProject = await prisma.projectBill.findFirst({
       where: {
         id: id,
