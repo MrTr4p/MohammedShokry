@@ -103,7 +103,7 @@ export class CreateBillService {
     try {
       for (let i = 0; i < expenses.length; i++) {
         const element = expenses[i];
-        console.log(element)
+        console.log(element);
         const section = await prisma.section.findFirst({
           where: {
             name: element.section.name,
