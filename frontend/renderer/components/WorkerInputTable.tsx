@@ -10,7 +10,7 @@ import {
 import { useStore, Worker } from "../store";
 import Input from "./Input";
 import axios from "axios";
-import CreateNewWorkerModal from "./CreateNewWorkerModal";
+import CreateNewWorkerModal from "./CreateNewSectionModal";
 
 function WorkerInputTable() {
 	const [searchQuery, setSearchQuery] = useState("");

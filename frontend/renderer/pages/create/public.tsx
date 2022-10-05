@@ -11,6 +11,8 @@ import {
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import WorkerInputTable from "../../components/WorkerInputTable";
+import ExpensesInputTable from "../../components/ExpensesInputTable";
+import RevenuesInputTable from "../../components/RevenuesInputTable";
 function Public() {
 	const {
 		clientName,
@@ -96,6 +98,8 @@ function Public() {
 						></Input>
 					</div>
 					<WorkerInputTable></WorkerInputTable>
+					<ExpensesInputTable></ExpensesInputTable>
+					<RevenuesInputTable></RevenuesInputTable>
 				</div>
 			</main>
 		</div>

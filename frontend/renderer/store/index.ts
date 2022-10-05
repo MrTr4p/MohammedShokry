@@ -43,15 +43,14 @@ export interface Revenue {
 export interface Section {
 	id: string;
 	name: string;
-	expenses: Expense[];
 }
 
 export interface Expense {
 	id: string;
+	section?: Section;
 	materialName: string;
 	totalcost: number;
 	day: string;
-	section?: Section;
 	date: string;
 }
 
@@ -127,7 +126,7 @@ export interface newProjectBill {
 	addExpense: (sectionId: string) => void;
 	updateExpense: (id: string, data: RecursivePartial<Expense>) => void;
 	removeExpense: (id: string) => void;
-	addSection: () => void;
+	addSection: (data: RecursivePartial<Section>) => void;
 	updateSection: (id: string, data: RecursivePartial<Section>) => void;
 	removeSection: (id: string) => void;
 }
@@ -242,10 +241,10 @@ const newProjectBillSlice: StateCreator<
 			}),
 		);
 	},
-	addSection: () => {
+	addSection: (data) => {
 		set(
 			produce<State & newProjectBill>((draft) => {
-				draft.sections.push({ id: v4(), expenses: [], name: "" });
+				draft.sections.push({ id: v4(), name: data.name });
 			}),
 		);
 	},
@@ -288,7 +287,6 @@ const newProjectBillSlice: StateCreator<
 					totalcost: 0,
 				};
 				draft.expenses.push(newExpense);
-				draft.sections[sectionIndex].expenses.push(newExpense);
 			}),
 		);
 	},
@@ -311,22 +309,8 @@ const newProjectBillSlice: StateCreator<
 				let expenseIndex = draft.expenses.findIndex(
 					(expense) => expense.id === expenseId,
 				);
-				let sectionIndex = draft.sections.findIndex(
-					(section) => section.id === draft.expenses[expenseIndex].id,
-				);
 
 				draft.expenses.splice(expenseIndex, 1);
-
-				let expenseIndexInSectionExpenses = draft.sections[
-					sectionIndex
-				].expenses.findIndex(
-					(expense) => expense.id === draft.expenses[expenseIndex].id,
-				);
-
-				draft.sections[sectionIndex].expenses.splice(
-					expenseIndexInSectionExpenses,
-					1,
-				);
 			}),
 		);
 	},
