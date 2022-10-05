@@ -417,8 +417,8 @@ export interface AnotherPaymentsBillStore {
 	inReturn: string;
 	description?: string;
 	resetState: () => void;
-	saveBill: () => Promise<{ message: string }>;
-	editBill: () => Promise<{ message: string }>;
+	saveBill: () => Promise<{ message: string; error: boolean }>;
+	editBill: () => Promise<{ message: string; error: boolean }>;
 	setProjectName: (name: string) => void;
 	setAmount: (amount: number) => void;
 	setDate: (date: string) => void;
@@ -460,7 +460,7 @@ const anotherPaymentsBillStore: StateCreator<
 			resetState,
 		} = get();
 
-		return { message: "done" };
+		return { message: "done", error: false };
 	},
 	saveBill: async () => {
 		const {
@@ -474,7 +474,7 @@ const anotherPaymentsBillStore: StateCreator<
 		} = get();
 
 		let { message, error } = await axios({
-			url: "https://localhost:3000/create/bill/anotherBill",
+			url: "http://localhost:3000/create/bill/anotherBill",
 			method: "post",
 			data: {
 				amount,

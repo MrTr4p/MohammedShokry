@@ -1,14 +1,12 @@
-import { Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
-import { CreateBillService } from './create.projectbill.service';
+import { Controller, Get, Param, Post, Query, Req } from "@nestjs/common";
+import { CreateBillService } from "./create.projectbill.service";
 
-
-@Controller('/create/bill')
+@Controller("/create/bill")
 export class CreateBillController {
-  constructor(private readonly appService: CreateBillService ) {}
+  constructor(private readonly appService: CreateBillService) {}
 
-  @Post('/project')
-  createProject(@Req() req ) {
+  @Post("/project")
+  createProject(@Req() req) {
     return this.appService.createPublicBill(req);
-  } 
-
+  }
 }
