@@ -225,9 +225,9 @@ const newProjectBillSlice: StateCreator<
 					(revenue) => revenue.id === revenueId,
 				);
 				draft.revenues[revenueIndex] = _.merge<
-					Partial<Revenue>,
-					Revenue
-				>(data, draft.revenues[revenueIndex]);
+					Revenue,
+					Partial<Revenue>
+				>(draft.revenues[revenueIndex], data);
 			}),
 		);
 	},
@@ -256,9 +256,9 @@ const newProjectBillSlice: StateCreator<
 					(section) => section.id === sectionId,
 				);
 				draft.sections[sectionIndex] = _.merge<
-					RecursivePartial<Section>,
-					Section
-				>(data, draft.sections[sectionIndex]);
+					Section,
+					RecursivePartial<Section>
+				>(draft.sections[sectionIndex], data);
 			}),
 		);
 	},
@@ -299,9 +299,9 @@ const newProjectBillSlice: StateCreator<
 					(expense) => expense.id === expenseId,
 				);
 				draft.expenses[expenseIndex] = _.merge<
-					RecursivePartial<Expense>,
-					Expense
-				>(data, draft.expenses[expenseIndex]);
+					Expense,
+					RecursivePartial<Expense>
+				>(draft.expenses[expenseIndex], data);
 			}),
 		);
 	},
