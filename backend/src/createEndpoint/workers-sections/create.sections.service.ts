@@ -25,7 +25,7 @@ export class CreateSectionService {
       }
     })
     console.log(rev)
-    return "لقد تم اضافة بند بنجاح"
+    return { message: "لقد تم اضافة بند بنجاح", error: false}
   }
     catch(e){
       console.log(e)
