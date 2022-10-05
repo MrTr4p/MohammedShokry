@@ -38,7 +38,7 @@ function Public() {
 			})
 			.catch((err) =>{
 				setInfoMessage({
-					message: err.response.data.error,
+					message: err.response.data.message,
 					error: true,
 				})},
 			
