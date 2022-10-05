@@ -9,6 +9,22 @@ module.exports = {
 		container: {
 			center: true,
 			padding: "1rem",
+			screens: {
+				sm: "940px",
+				// => @media (min-width: 640px) { ... }
+
+				md: "1068px",
+				// => @media (min-width: 768px) { ... }
+
+				lg: "1224px",
+				// => @media (min-width: 1024px) { ... }
+
+				xl: "1480px",
+				// => @media (min-width: 1280px) { ... }
+
+				"2xl": "1536px",
+				// => @media (min-width: 1536px) { ... }
+			},
 		},
 		extend: {
 			fontFamily: {

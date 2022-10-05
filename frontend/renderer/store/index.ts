@@ -63,7 +63,7 @@ export interface State {
 	setHomePublicBills: (projectBills: ProjectBill[]) => void;
 	setHomeOfficeBills: (projectBills: ProjectBill[]) => void;
 	setDropdownWorkers: (workers: Worker[]) => void;
-	newDropdownWorker: (worker: Worker) => void;
+	newDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
 	setSearchState: (state: "empty" | "loading" | "found") => void;
 }
 
@@ -80,13 +80,23 @@ const storeSlice: StateCreator<
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
 	setDropdownWorkers: (workers) =>
-		set((state) => ({
-			dropdownWorkers: [...state.dropdownWorkers, ...workers],
-		})),
-	newDropdownWorker: (worker) =>
+		set(
+			produce<State & newProjectBill>((draft) => {
+				draft.dropdownWorkers =
+					(workers || []).length > 0 ? workers : [];
+			}),
+		),
+	newDropdownWorker: async (workerData) => {
+		let { data } = await axios({
+			url: "http://localhost:3000/create/worker",
+			method: "POST",
+			data: workerData,
+		});
+
 		set((state) => {
-			return { workers: [...state.workers, worker] };
-		}),
+			return { dropdownWorkers: [...state.dropdownWorkers, data] };
+		});
+	},
 	setSearchState: (state) => set(() => ({ searchState: state })),
 });
 
@@ -107,7 +117,8 @@ export interface newProjectBill {
 	setClientAddress: (address: string) => void;
 	setOfficePrecentage: (precentage: number) => void;
 	setDate: (date: string) => void;
-	addWorker: (workerId: string) => void;
+
+	addWorker: (workerId?: string) => void;
 	updateWorker: (workerId: string, data: RecursivePartial<Worker>) => void;
 	removeWorker: (id: string) => void;
 	addRevenue: () => void;
@@ -145,17 +156,33 @@ const newProjectBillSlice: StateCreator<
 		set(() => ({ officePrecentage: precentage })),
 	setDate: (date) => set(() => ({ date: date })),
 	addWorker: async (workerId) => {
-		let { data }: { data: undefined | Worker } = await axios({
-			url:
-				"http://localhost:3000/search/workers/get/single?id=" +
-				workerId,
-		});
-		set(
-			produce<State & newProjectBill>((draft) => {
-				if (!data) return;
-				draft.workers.push(data);
-			}),
-		);
+		if (workerId) {
+			let { data }: { data: undefined | Worker } = await axios({
+				url:
+					"http://localhost:3000/search/workers/get/single?id=" +
+					workerId,
+			});
+			set(
+				produce<State & newProjectBill>((draft) => {
+					if (!data) return;
+					draft.workers.push({
+						...data,
+						project: { date: "", salary: 0, precentage: 0 } as any,
+					});
+				}),
+			);
+		} else {
+			set(
+				produce<State & newProjectBill>((draft) => {
+					draft.workers.push({
+						id: v4(),
+						name: "",
+						work: "",
+						project: { date: "", salary: 0, precentage: 0 } as any,
+					});
+				}),
+			);
+		}
 	},
 	updateWorker: (workerId, data) => {
 		set(
@@ -164,20 +191,19 @@ const newProjectBillSlice: StateCreator<
 					(worker) => worker.id === workerId,
 				);
 				draft.workers[workerIndex] = _.merge<
-					RecursivePartial<Worker>,
-					Worker
-				>(data, draft.workers[workerIndex]);
+					Worker,
+					RecursivePartial<Worker>
+				>(draft.workers[workerIndex], data);
 			}),
 		);
 	},
 	removeWorker: (workerId) => {
 		set(
 			produce<State & newProjectBill>((draft) => {
-				let workerIndex = draft.workers.findIndex(
-					(worker) => worker.id === workerId,
+				draft.workers = draft.workers.filter(
+					(worker) => worker.id !== workerId,
 				);
-				if (workerIndex)
-					draft.workers = draft.workers.splice(workerIndex, 1);
+				//console.log(draft.workers, workerId);
 			}),
 		);
 	},

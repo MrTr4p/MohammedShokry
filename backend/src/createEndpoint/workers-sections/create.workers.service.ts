@@ -9,13 +9,13 @@ export class CreateWorkerService {
   async createWorker(reqB) {
     const body = reqB.body;
     try {
-      await prisma.worker.create({
+      let worker = await prisma.worker.create({
         data: {
           name: body.name,
           work: body.work,
         },
       });
-      return "تم عمل العامل بنجاح"
+      return worker;
     } catch (e) {
       throw new HttpException(
         {

@@ -11,12 +11,12 @@ export class WorkerService {
     const workersResult = workersFuse.search(query).map((x) => x.item);
 
     return {
-      workers: workersResult,
+      workers: workersResult.slice(0, 15),
     };
   }
 
   async getWorkers() {
-    return await prisma.worker.findMany({ take: 50 });
+    return await prisma.worker.findMany({ take: 25 });
   }
 
   async getWorker(id: string): Promise<Worker> {
