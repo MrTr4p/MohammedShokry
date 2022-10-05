@@ -10,7 +10,7 @@ import {
 import { useStore, Worker } from "../store";
 import Input from "./Input";
 import axios from "axios";
-import CreateNewWorkerModal from "./CreateNewSectionModal";
+import CreateNewWorkerModal from "./CreateNewWorkerModal";
 import TableDeleteButton from "./TableDeleteButton";
 
 function WorkerInputTable() {
@@ -137,7 +137,7 @@ function WorkerInputTable() {
 														leaveFrom="transform opacity-100 scale-100"
 														leaveTo="transform opacity-0 scale-95"
 													>
-														<Combobox.Options className="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+														<Combobox.Options className="z-50 absolute px-2 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
 															{dropdownWorkers
 																.filter(
 																	(worker) =>
@@ -208,7 +208,7 @@ function WorkerInputTable() {
 																		</Combobox.Option>
 																	),
 																)}
-															<div className="m-2">
+															<div className="my-2">
 																<button
 																	className="btn-primary w-full "
 																	onClick={() =>
