@@ -24,7 +24,7 @@ export class UpdateAnotherBillService {
       }
     })
 
-    return "تم اضافة فاتورة خاصة بنجاح";
+    return "تم تعديل فاتورة خاصة بنجاح";
   }
   catch(e){
     throw new HttpException("يجب ملئ كل المدخلات" , HttpStatus.NOT_ACCEPTABLE)
