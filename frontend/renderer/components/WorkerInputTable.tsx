@@ -11,6 +11,7 @@ import { useStore, Worker } from "../store";
 import Input from "./Input";
 import axios from "axios";
 import CreateNewWorkerModal from "./CreateNewSectionModal";
+import TableDeleteButton from "./TableDeleteButton";
 
 function WorkerInputTable() {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -38,10 +39,6 @@ function WorkerInputTable() {
 			}).then(({ data }) => {
 				setDropdownWorkers(data);
 			});
-		}
-
-		if (workers.length <= 0) {
-			addWorker();
 		}
 	}, []);
 
@@ -279,14 +276,11 @@ function WorkerInputTable() {
 											></Input>
 										</td>
 										<td className="p-2 w-8">
-											<button
-												className="p-1.5 bg-red-500 rounded-md flex justify-center"
+											<TableDeleteButton
 												onClick={() =>
 													removeWorker(worker.id)
 												}
-											>
-												<TrashIcon className=" text-white h-6 w-6"></TrashIcon>
-											</button>
+											></TableDeleteButton>
 										</td>
 									</tr>
 								);

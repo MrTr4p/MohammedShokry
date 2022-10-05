@@ -1,15 +1,9 @@
 import axios from "axios";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import Input from "../../components/Input";
-import { useStore, Worker } from "../../store";
-import { Combobox } from "@headlessui/react";
-import {
-	CheckIcon,
-	ChevronUpDownIcon,
-	TrashIcon,
-	XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { useStore } from "../../store";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import WorkerInputTable from "../../components/WorkerInputTable";
 import ExpensesInputTable from "../../components/ExpensesInputTable";
 import RevenuesInputTable from "../../components/RevenuesInputTable";
@@ -18,32 +12,16 @@ function Public() {
 		clientName,
 		clientAddress,
 		name,
-		revenues,
-		workers,
 		date,
 		officePrecentage,
-		sections,
-		expenses,
-		dropdownWorkers,
 		setClientAddress,
 		setDate,
 		setClientName,
 		setName,
-		addSection,
-		removeSection,
-		updateSection,
-		addExpense,
-		updateExpense,
-		removeExpense,
-		addRevenue,
-		updateRevenue,
-		removeRevenue,
-		addWorker,
-		updateWorker,
-		removeWorker,
 		setOfficePrecentage,
-		setDropdownWorkers,
 	} = useStore((state) => state);
+
+	
 
 	return (
 		<div className="space-y-12">
@@ -61,8 +39,8 @@ function Public() {
 					</a>
 				</Link>
 			</header>
-			<main>
-				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md space-y-6">
+			<main className="">
+				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md space-y-6 relative ">
 					<div className="flex gap-4 w-full">
 						<Input
 							onChange={(e) => setClientName(e.target.value)}
@@ -100,6 +78,10 @@ function Public() {
 					<WorkerInputTable></WorkerInputTable>
 					<ExpensesInputTable></ExpensesInputTable>
 					<RevenuesInputTable></RevenuesInputTable>
+					<div></div>
+					<div className="bg-secondary p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
+						<button className="btn-primary px-12">حفظ</button>
+					</div>
 				</div>
 			</main>
 		</div>

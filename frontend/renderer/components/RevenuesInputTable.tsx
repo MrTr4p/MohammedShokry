@@ -2,17 +2,12 @@ import React, { useEffect } from "react";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useStore } from "../store";
 import Input from "./Input";
+import TableDeleteButton from "./TableDeleteButton";
 
 function RevenuesInputTable() {
 	const { revenues, addRevenue, updateRevenue, removeRevenue } = useStore(
 		(state) => state,
 	);
-
-	useEffect(() => {
-		if (revenues.length <= 0) {
-			addRevenue();
-		}
-	}, []);
 
 	return (
 		<>
@@ -63,14 +58,11 @@ function RevenuesInputTable() {
 											></Input>
 										</td>
 										<td className="p-2 w-8">
-											<button
-												className="p-1.5 bg-red-500 rounded-md flex justify-center"
+											<TableDeleteButton
 												onClick={() =>
 													removeRevenue(revenue.id)
 												}
-											>
-												<TrashIcon className=" text-white h-6 w-6"></TrashIcon>
-											</button>
+											></TableDeleteButton>
 										</td>
 									</tr>
 								);

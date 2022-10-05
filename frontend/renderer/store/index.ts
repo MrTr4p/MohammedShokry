@@ -116,7 +116,7 @@ export interface newProjectBill {
 	setClientAddress: (address: string) => void;
 	setOfficePrecentage: (precentage: number) => void;
 	setDate: (date: string) => void;
-
+	sendToBackend: () => Promise<void>;
 	addWorker: (workerId?: string) => void;
 	updateWorker: (workerId: string, data: RecursivePartial<Worker>) => void;
 	removeWorker: (id: string) => void;
@@ -136,7 +136,7 @@ const newProjectBillSlice: StateCreator<
 	[["zustand/devtools", never]],
 	[],
 	newProjectBill
-> = (set) => ({
+> = (set, get) => ({
 	id: 0,
 	officePrecentage: 0,
 	name: "",
@@ -148,6 +148,10 @@ const newProjectBillSlice: StateCreator<
 	sections: [],
 	workers: [],
 
+	sendToBackend: async () => {
+		let bill = get();
+		axios({ url: "" })
+	},
 	setName: (name) => set(() => ({ name })),
 	setClientName: (name) => set(() => ({ clientName: name })),
 	setClientAddress: (address) => set(() => ({ clientAddress: address })),
@@ -233,11 +237,9 @@ const newProjectBillSlice: StateCreator<
 	removeRevenue: (revenueId) => {
 		set(
 			produce<State & newProjectBill>((draft) => {
-				let revenueIndex = draft.revenues.findIndex(
-					(revenue) => revenue.id === revenueId,
+				draft.revenues = draft.revenues.filter(
+					(revenue) => revenue.id !== revenueId,
 				);
-				if (revenueIndex)
-					draft.revenues = draft.revenues.splice(revenueIndex, 1);
 			}),
 		);
 	},

@@ -20,7 +20,7 @@ model AnotherPaymentsBill {
 }
 
 model ProjectBill {
-  id               Int         @id @default(autoincrement())
+  id               Int            @id @default(autoincrement())
   name             String         @unique
   officePrecentage Int?
   date             String
@@ -30,13 +30,17 @@ model ProjectBill {
   sections         Section[]
   clientName       String
   clientAddress    String
+  updatedAt        DateTime       @updatedAt
+  createdAt        DateTime       @default(now())
 }
 
 model Worker {
-  id      String         @id @default(uuid())
-  name    String         @unique
-  work    String
-  project WorkerSalary[]
+  id        String         @id @default(uuid())
+  name      String         @unique
+  work      String
+  project   WorkerSalary[]
+  updatedAt DateTime       @updatedAt
+  createdAt DateTime       @default(now())
 }
 
 model WorkerSalary {
@@ -48,6 +52,8 @@ model WorkerSalary {
   WorkerId      String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
   projectBillId Int
+  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
 }
 
 model Revenue {
@@ -56,6 +62,8 @@ model Revenue {
   date          String
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
   projectBillId Int
+  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
 }
 
 model Section {
@@ -64,6 +72,8 @@ model Section {
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
   projectBillId Int?
   expenses      Expenses[]
+  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime     @default(now())
 }
 
 model Expenses {
@@ -76,4 +86,6 @@ model Expenses {
   day           String
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
   projectBillId Int?
+  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime     @default(now())
 }
