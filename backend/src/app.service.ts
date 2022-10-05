@@ -74,6 +74,7 @@ async function filter(pageReq : number, limitReq : number, bpageReq : number, bl
       skip: Number(bskipindex),
     });
   } catch (e) {
+    console.log(e)
     throw new Error(e);
   }
 
@@ -84,6 +85,7 @@ async function filter(pageReq : number, limitReq : number, bpageReq : number, bl
     });
     
   } catch (e) {
+    console.log(e)
     throw new HttpException(e , HttpStatus.BAD_REQUEST);
   }
   
@@ -92,6 +94,7 @@ async function filter(pageReq : number, limitReq : number, bpageReq : number, bl
     projectBills: projectbill,
     anotherBills: anotherBills,
   };
+  console.log(result)
   return result
 }
 

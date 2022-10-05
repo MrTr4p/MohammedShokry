@@ -36,11 +36,12 @@ function Public() {
 				setInfoMessage({ message: result.message, error: false });
 				router.push("/");
 			})
-			.catch((err) =>
+			.catch((err) =>{
 				setInfoMessage({
-					message: err.response.data.message,
+					message: err.response.data.error,
 					error: true,
-				}),
+				})},
+			
 			);
 	}
 
