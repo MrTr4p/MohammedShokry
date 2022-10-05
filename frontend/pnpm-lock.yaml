@@ -18,6 +18,7 @@ specifiers:
   electron-is-dev: ^1.2.0
   electron-next: ^3.1.5
   framer-motion: ^7.5.1
+  fuse.js: ^6.6.2
   immer: ^9.0.15
   lodash: ^4.17.21
   next: latest
@@ -44,6 +45,7 @@ dependencies:
   electron-is-dev: 1.2.0
   electron-next: 3.1.5
   framer-motion: 7.5.1_biqbaboplfbrettd7655fr4n2y
+  fuse.js: 6.6.2
   immer: 9.0.15
   lodash: 4.17.21
   postcss: 8.4.17
@@ -1803,6 +1805,11 @@ packages:
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
+
+  /fuse.js/6.6.2:
+    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+    engines: {node: '>=10'}
+    dev: false
 
   /get-caller-file/2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}

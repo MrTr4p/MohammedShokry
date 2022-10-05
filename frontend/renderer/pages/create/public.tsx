@@ -20,7 +20,7 @@ function Public() {
 		setClientName,
 		setName,
 		setOfficePrecentage,
-		sendToBackend,
+		saveBill,
 		restState,
 	} = useStore((state) => state);
 	const [infoMessage, setInfoMessage] = useState({
@@ -31,7 +31,7 @@ function Public() {
 	const router = useRouter();
 
 	async function handleSave() {
-		sendToBackend()
+		saveBill()
 			.then((result) => {
 				setInfoMessage({ message: result.message, error: false });
 				router.push("/");

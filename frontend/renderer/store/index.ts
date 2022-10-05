@@ -111,13 +111,15 @@ export interface newProjectBill {
 	sections: Section[];
 	date: string;
 
+	setState: (data: ProjectBill) => void;
 	restState: () => void;
 	setName: (name: string) => void;
 	setClientName: (name: string) => void;
 	setClientAddress: (address: string) => void;
 	setOfficePrecentage: (precentage: number) => void;
 	setDate: (date: string) => void;
-	sendToBackend: () => Promise<any>;
+	saveBill: () => Promise<any>;
+	editBill: () => Promise<any>;
 	addWorker: (workerId?: string) => void;
 	updateWorker: (workerId: string, data: RecursivePartial<Worker>) => void;
 	removeWorker: (id: string) => void;
@@ -132,13 +134,13 @@ export interface newProjectBill {
 	removeSection: (id: string) => void;
 }
 
-const newProjectBillSlice: StateCreator<
+const projectBillSlice: StateCreator<
 	State & newProjectBill,
 	[["zustand/devtools", never]],
 	[],
 	newProjectBill
 > = (set, get) => ({
-	id: 0,
+	id: -1,
 	officePrecentage: 0,
 	name: "",
 	clientName: "",
@@ -149,7 +151,10 @@ const newProjectBillSlice: StateCreator<
 	sections: [],
 	workers: [],
 
-	sendToBackend: async () => {
+	setState: (data) => {
+		set((state) => data);
+	},
+	saveBill: async () => {
 		let {
 			clientAddress,
 			clientName,
@@ -164,6 +169,39 @@ const newProjectBillSlice: StateCreator<
 		let { data } = await axios({
 			url: "http://localhost:3000/create/bill/project",
 			method: "post",
+			data: {
+				clientAddress,
+				clientName,
+				date,
+				expenses,
+				workers,
+				sections,
+				name,
+				revenues,
+			},
+		});
+
+		restState();
+		console.log(data);
+		return data;
+	},
+	editBill: async () => {
+		let {
+			id,
+			clientAddress,
+			clientName,
+			date,
+			expenses,
+			workers,
+			sections,
+			name,
+			revenues,
+			restState,
+		} = get();
+
+		let { data } = await axios({
+			url: "http://localhost:3000/update/bill/project?id=" + id,
+			method: "put",
 			data: {
 				clientAddress,
 				clientName,
@@ -359,10 +397,7 @@ const newProjectBillSlice: StateCreator<
 });
 
 export const useStore = create<State & newProjectBill>()(
-	devtools(
-		(...a) => ({ ...storeSlice(...a), ...newProjectBillSlice(...a) }),
-		{
-			name: "app-storage",
-		},
-	),
+	devtools((...a) => ({ ...storeSlice(...a), ...projectBillSlice(...a) }), {
+		name: "app-storage",
+	}),
 );

@@ -3,49 +3,48 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 
-async function deleteStage(projectBill){
-  console.log(projectBill.id)
+async function deleteStage(projectBill) {
+  console.log(projectBill.id);
   try {
     await prisma.revenue.deleteMany({
-      where:{
-        projectBillId: projectBill.id
-      }
-    })
-  }
-  catch(e){}
-  
-try{ await prisma.expenses.deleteMany({
-  where:{
-    projectBillId: projectBill.id
-  }
-})}
-catch(e){}
- 
-try{await prisma.workerSalary.deleteMany({
-  where:{
-    projectBillId: projectBill.id
-  }
-})}catch(e){
-  
-}
-  
-}
+      where: {
+        projectBillId: projectBill.id,
+      },
+    });
+  } catch (e) {}
 
+  try {
+    await prisma.expenses.deleteMany({
+      where: {
+        projectBillId: projectBill.id,
+      },
+    });
+  } catch (e) {}
+
+  try {
+    await prisma.workerSalary.deleteMany({
+      where: {
+        projectBillId: projectBill.id,
+      },
+    });
+  } catch (e) {}
+}
 
 @Injectable()
 export class CreateBillService {
-  async updatePublicBill(req, param) {
+  async updatePublicBill(req, id: number) {
     const body = req.body;
-    const name = param.name
     const workers = (await req.body.workers) || [];
+
     const oldProject = await prisma.projectBill.findFirst({
-      where:{
-        name:name
-      }
-    })
+      where: {
+        id: id,
+      },
+    });
+
     const projectBill = await prisma.projectBill.update({
-      where:{
-        id:oldProject.id
+      where: {
+        id: oldProject.id,
       },
       data: {
         name: body.name || oldProject.name,
@@ -56,11 +55,11 @@ export class CreateBillService {
       },
     });
 
-    await deleteStage(projectBill)
+    await deleteStage(projectBill);
     //not essential it is optional
     try {
       const revenues = body.revenues || [];
-      console.log(revenues)
+      console.log(revenues);
       for (let i = 0; i < revenues.length; i++) {
         await prisma.revenue.create({
           data: {
@@ -74,10 +73,10 @@ export class CreateBillService {
           },
         });
       }
-      
     } catch (e) {}
-    try{ for (let i = 0; i < workers.length; i++) {
-      const element = workers[i];
+    try {
+      for (let i = 0; i < workers.length; i++) {
+        const element = workers[i];
         const worker = await prisma.workerSalary.create({
           data: {
             Worker: {
@@ -95,47 +94,44 @@ export class CreateBillService {
             },
           },
         });
-        console.log(worker)
-      }}
-      catch(e){
-        console.log(e)
+        console.log(worker);
       }
-   
-    
+    } catch (e) {
+      console.log(e);
+    }
 
-        const expenses = body.expenses
-        try{ for (let i = 0; i < expenses.length; i++) {
-          const element = expenses[i];
-          const section = await prisma.section.findFirst({
-            where:{
-              name: element.section.name
-            }
-          })
-          await prisma.expenses.create({
-            data:{
-              materialName: element.materialName, 
-              date:element.date,
-              totalcost: element.cost,
-              day:element.day,
-              
-              ProjectBill: {
-                connect:{
-                  id: projectBill.id
-                }
+    const expenses = body.expenses;
+    try {
+      for (let i = 0; i < expenses.length; i++) {
+        const element = expenses[i];
+        const section = await prisma.section.findFirst({
+          where: {
+            name: element.section.name,
+          },
+        });
+        await prisma.expenses.create({
+          data: {
+            materialName: element.materialName,
+            date: element.date,
+            totalcost: element.cost,
+            day: element.day,
+
+            ProjectBill: {
+              connect: {
+                id: projectBill.id,
               },
-              section:{
-                connect:{
-                  id: section.id
-                }
-              }
-            }
-          })
-        }
+            },
+            section: {
+              connect: {
+                id: section.id,
+              },
+            },
+          },
+        });
       }
-      catch(e){
-        console.log(e)
-      }
-       
+    } catch (e) {
+      console.log(e);
+    }
 
     return "تم تعديل علي فاتورة مشروع بنجاح";
   }

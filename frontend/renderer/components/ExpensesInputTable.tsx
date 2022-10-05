@@ -5,13 +5,15 @@ import {
 	ChevronUpDownIcon,
 	PlusIcon,
 } from "@heroicons/react/24/outline";
-import { useStore, Worker } from "../store";
+import { Section, useStore, Worker } from "../store";
 import Input from "./Input";
 import CreateNewWorkerModal from "./CreateNewSectionModal";
 import TableDeleteButton from "./TableDeleteButton";
+import Fuse from "fuse.js";
 
 function ExpensesInputTable() {
 	const [searchQuery, setSearchQuery] = useState("");
+	const [searchResults, setSearchResults] = useState<Section[]>([]);
 	const [modalOpen, setModalOpen] = useState(false);
 	const {
 		expenses,
@@ -21,6 +23,12 @@ function ExpensesInputTable() {
 		sections,
 		addSection,
 	} = useStore((state) => state);
+
+	useEffect(() => {
+		if (!searchQuery) return setSearchResults(sections);
+		const sectionsFuse = new Fuse(sections, { keys: ["name"] });
+		setSearchResults(sectionsFuse.search(searchQuery).map((x) => x.item));
+	}, [searchQuery, sections]);
 
 	return (
 		<>
@@ -100,7 +108,7 @@ function ExpensesInputTable() {
 														leaveTo="transform opacity-0 scale-95"
 													>
 														<Combobox.Options className="z-50 absolute mt-1 max-h-60 w-full px-2 overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-															{sections.map(
+															{searchResults.map(
 																(section) => (
 																	<Combobox.Option
 																		key={
@@ -166,8 +174,7 @@ function ExpensesInputTable() {
 																		)
 																	}
 																>
-																	أضف مصروف
-																	جديد
+																	أضف بند جديد
 																</button>
 															</div>
 														</Combobox.Options>

@@ -31,8 +31,11 @@ function Table({ data, title }: { title?: string; data: ProjectBill[] }) {
 				<tbody>
 					{data.map((row) => {
 						return (
-							<tr className="" key={row.id + row.clientName}>
-								<td className="p-2 flex items-center gap-2">
+							<tr
+								className=" align-middle"
+								key={row.id + row.clientName}
+							>
+								<td className="p-2 flex items-center gap-2 ">
 									<Link href={`/edit/public?id=${row.id}`}>
 										<a
 											href={`/edit/bill/public?id=${row.id}`}
@@ -43,15 +46,17 @@ function Table({ data, title }: { title?: string; data: ProjectBill[] }) {
 									</Link>
 									<span>{row.id}#</span>
 								</td>
-								<td className="p-2">
+								<td className="p-2 ">
 									<span>{row.clientName}</span>
 								</td>
-								<td className="p-2">
+								<td className="p-2 ">
 									<span>{row.name}</span>
 								</td>
-								<td className="p-2 flex items-center gap-2">
-									<CalendarDaysIcon className="w-6 h-6"></CalendarDaysIcon>
-									{row.date}
+								<td className="p-2  ">
+									<div className="flex items-center gap-2">
+										<CalendarDaysIcon className="w-5 h-5"></CalendarDaysIcon>
+										<span>{row.date}</span>
+									</div>
 								</td>
 							</tr>
 						);

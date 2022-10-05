@@ -1,14 +1,12 @@
-import { Controller, Get, Param, Post, Put, Query, Req } from '@nestjs/common';
-import { CreateBillService } from './update.projectbill.service';
+import { Controller, Get, Param, Post, Put, Query, Req } from "@nestjs/common";
+import { CreateBillService } from "./update.projectbill.service";
 
-
-@Controller('/update')
+@Controller("/update")
 export class CreateBillController {
-  constructor(private readonly appService: CreateBillService ) {}
+  constructor(private readonly appService: CreateBillService) {}
 
-  @Put('/bill/:name')
-  updatePublicBill(@Req() req , @Param() param) {
-    return this.appService.updatePublicBill(req , param);
-  } 
-
+  @Put("/bill/project")
+  updatePublicBill(@Req() req, @Query("id") id: number) {
+    return this.appService.updatePublicBill(req, Number(id));
+  }
 }

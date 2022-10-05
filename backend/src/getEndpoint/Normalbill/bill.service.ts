@@ -3,18 +3,26 @@ import { PrismaClient } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
 const prisma = new PrismaClient();
 
-async function getBill(reqParam) {
+async function getBill(id: number) {
   const bill = await prisma.projectBill.findFirst({
     where: {
-      name: reqParam.name,
+      id: id,
     },
-    include:{
-      expenses: true,
-      workers:true,
-      revenues:true,
-      sections:true,
-      _count:true
-    }
+    include: {
+      expenses: {
+        include: {
+          section: true,
+        },
+      },
+      workers: {
+        include: {
+          Worker: true,
+        },
+      },
+      revenues: true,
+      sections: true,
+      _count: true,
+    },
   });
   return bill;
 }
@@ -22,7 +30,7 @@ async function getBill(reqParam) {
 @Injectable()
 export class NormalBilService {
   async getBill(param) {
-    const bill = await getBill(param)
-    return bill
+    const bill = await getBill(param);
+    return bill;
   }
 }
