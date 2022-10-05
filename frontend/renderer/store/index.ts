@@ -156,6 +156,7 @@ const projectBillSlice: StateCreator<
 	},
 	saveBill: async () => {
 		let {
+			officePrecentage,
 			clientAddress,
 			clientName,
 			date,
@@ -170,6 +171,7 @@ const projectBillSlice: StateCreator<
 			url: "http://localhost:3000/create/bill/project",
 			method: "post",
 			data: {
+				officePrecentage,
 				clientAddress,
 				clientName,
 				date,
@@ -188,6 +190,7 @@ const projectBillSlice: StateCreator<
 	editBill: async () => {
 		let {
 			id,
+			officePrecentage,
 			clientAddress,
 			clientName,
 			date,
@@ -203,6 +206,7 @@ const projectBillSlice: StateCreator<
 			url: "http://localhost:3000/update/bill/project?id=" + id,
 			method: "put",
 			data: {
+				officePrecentage,
 				clientAddress,
 				clientName,
 				date,
