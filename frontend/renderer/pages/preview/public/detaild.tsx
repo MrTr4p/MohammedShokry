@@ -11,7 +11,7 @@ function detaild({ billData }: { billData: Expense[] }) {
 	}, []);
 	return (
 		<div>
-			<DetailedBillTable></DetailedBillTable>
+			<DetailedBillTable readOnly={true}></DetailedBillTable>
 		</div>
 	);
 }
