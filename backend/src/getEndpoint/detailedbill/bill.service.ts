@@ -12,7 +12,7 @@ export class DetailedBilService {
     let result = []
       const bill = await this.prisma.projectBill.findFirst({
         where: {
-          id: param.id,
+          id: Number(param.id),
         },
       });
     
