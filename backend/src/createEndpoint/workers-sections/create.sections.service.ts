@@ -2,19 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient, ProjectBill } from '@prisma/client';
 import { HttpException, HttpStatus } from "@nestjs/common";
 import Fuse from 'fuse.js';
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 @Injectable()
 export class CreateSectionService {
+  constructor(private prisma : PrismaService) {}
   async createSecion(req , param){
     const body = req.body
-    const projectBill = await prisma.projectBill.findFirst({
+    const projectBill = await this.prisma.projectBill.findFirst({
       where:{
         name:param.name
       }
     })
     try{
-    const rev = await prisma.section.create({
+    const rev = await this.prisma.section.create({
       data:{
         name:body.name,
         ProjectBill:{

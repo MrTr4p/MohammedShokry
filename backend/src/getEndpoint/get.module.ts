@@ -7,11 +7,12 @@ import { DetailedBilService } from './detailedbill/bill.service';
 import { NormalBilService } from './Normalbill/bill.service';
 import { GetService } from './Worker-section/bill.service';
 import { GetController } from './Worker-section/bill.controller';
+import { PrismaService } from 'src/prisma.service';
 
 
 @Module({ 
   imports: [],
   controllers: [DetailedBillController, AggregateBillController , NormalBillController, GetController],
-  providers: [AggregateBilService, DetailedBilService, NormalBilService , GetService]
+  providers: [AggregateBilService, DetailedBilService, NormalBilService , GetService , PrismaService]
 })
 export class GetModule {}

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 async function Validation(body){
   if(body.name){
@@ -34,12 +34,12 @@ async function Validation(body){
 
 @Injectable()
 export class CreateAnotherBillService {
+  constructor(private prisma: PrismaService) {}
   async createPublicBill(req) {
-    
     const body = req.body
     await Validation(body)
     try {
-    await prisma.anotherPaymentsBill.create({
+    await this.prisma.anotherPaymentsBill.create({
       data:{
         projectName: body.projectName,
         date:body.date,

@@ -2,14 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import Fuse from "fuse.js";
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 @Injectable()
 export class CreateWorkerService {
+  constructor(private prisma : PrismaService) {}
   async createWorker(reqB) {
     const body = reqB.body;
     try {
-      let worker = await prisma.worker.create({
+      let worker = await this.prisma.worker.create({
         data: {
           name: body.name,
           work: body.work,
