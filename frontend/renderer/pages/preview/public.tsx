@@ -15,10 +15,9 @@ import Input from "../../components/Input";
 import WorkerInputTable from "../../components/WorkerInputTable";
 import ExpensesInputTable from "../../components/ExpensesInputTable";
 import RevenuesInputTable from "../../components/RevenuesInputTable";
-import { useRouter } from "next/router";
+import BillPrintTypeModal from "../../components/BillPrintTypeModal";
 
 function Public({ billData }: { billData: ProjectBill }) {
-	const router = useRouter();
 	const {
 		clientName,
 		clientAddress,
@@ -104,11 +103,9 @@ function Public({ billData }: { billData: ProjectBill }) {
 			<header className="flex justify-between items-start">
 				<div className="flex flex-col items-start gap-2">
 					<h1 className="text-black font-bold text-3xl">
-						تعديل فاتورة عامة
+						عرض فاتورة عامة
 					</h1>
-					<p>
-						هنا يمكنك ملئ الحقول لتعديل فاتورة عامة (فاتورة مشروع)
-					</p>
+					<p>هنا يمكنك عرض فاتورة عامة (فاتورة مشروع)</p>
 				</div>
 				<Link href="/">
 					<a href="" className="btn-outline px-6" onClick={restState}>
@@ -163,12 +160,7 @@ function Public({ billData }: { billData: ProjectBill }) {
 					<RevenuesInputTable readOnly={true}></RevenuesInputTable>
 					<div></div>
 					<div className="bg-secondary flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
-						<button
-							className="btn-primary px-12"
-							onClick={handlePrint}
-						>
-							طبع
-						</button>
+						<BillPrintTypeModal></BillPrintTypeModal>
 						{infoMessage.message && (
 							<h1
 								className={`font-bold text-center text-lg ${

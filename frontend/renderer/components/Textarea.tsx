@@ -10,8 +10,11 @@ function TextArea({
 	error,
 	iclassName,
 	lclassName,
+	disabled,
 }: {
 	required?: boolean;
+	disabled?: boolean;
+
 	iref?: any;
 	label?: string;
 	placeholder?: string;
@@ -41,6 +44,7 @@ function TextArea({
 			</div>
 
 			<textarea
+				disabled={disabled}
 				ref={iref}
 				required={required}
 				value={value}

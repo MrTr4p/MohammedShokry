@@ -43,24 +43,16 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 
 	const router = useRouter();
 
-	async function handleSave() {
-		editBill().then((result) => {
-			setInfoMessage({ message: result.message, error: result.error });
-			if (!result.error) {
-				resetState();
-				router.push("/");
-			}
-		});
-	}
+	async function handlePrint() {}
 
 	return (
 		<div className="space-y-12">
 			<header className="flex justify-between items-start">
 				<div className="flex flex-col items-start gap-2">
 					<h1 className="text-black font-bold text-3xl">
-						أضافة فاتورة خاصة جديدة
+						عرض فاتورة خاصة
 					</h1>
-					<p>هنا يمكنك ملئ الحقول لصنع فاتورة خاصة (فاتورة اخرى)</p>
+					<p>هنا يمكنك عرض فاتورة خاصة (فاتورة اخرى)</p>
 				</div>
 				<Link href="/">
 					<a
@@ -77,24 +69,28 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md space-y-6 relative ">
 					<div className="flex gap-4 w-full">
 						<Input
+							disabled={true}
 							value={projectName}
 							label="أسم المشروع"
 							type={"text"}
 							onChange={(e) => setProjectName(e.target.value)}
 						></Input>
 						<Input
+							disabled={true}
 							value={inReturn}
 							label="مقابل"
 							type={"text"}
 							onChange={(e) => setInReturn(e.target.value)}
 						></Input>
 						<Input
+							disabled={true}
 							value={amount}
 							label="المبلغ"
 							type={"number"}
 							onChange={(e) => setAmount(e.target.value)}
 						></Input>
 						<Input
+							disabled={true}
 							value={date}
 							label="التاريخ"
 							type={"date"}
@@ -102,6 +98,7 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 						></Input>
 					</div>
 					<TextArea
+						disabled={true}
 						label="ملاحظات"
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
@@ -110,9 +107,9 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 					<div className="bg-secondary flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
 						<button
 							className="btn-primary px-12"
-							onClick={handleSave}
+							onClick={handlePrint}
 						>
-							حفظ
+							طبع
 						</button>
 						{infoMessage.message && (
 							<h1
