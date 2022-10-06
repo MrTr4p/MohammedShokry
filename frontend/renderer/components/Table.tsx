@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import { ProjectBill } from "../store";
 
-function Table({ data, title }: { title?: string; data: ProjectBill[] }) {
+function Table({ data, title, type = "public" }: { title?: string; type: "office" | "public"; data: ProjectBill[] }) {
 	return (
 		<div className="flex flex-col items-start gap-4 w-full">
 			{title && <h1 className="text-black font-bold text-xl">{title}</h1>}
