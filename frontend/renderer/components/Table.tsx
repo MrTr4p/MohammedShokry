@@ -1,10 +1,11 @@
 import {
 	CalendarDaysIcon,
+	DocumentMagnifyingGlassIcon,
 	PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
-import { AnotherPaymentsBill, ProjectBill } from "../store";
+import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 
 function Table({
 	data,
@@ -15,6 +16,8 @@ function Table({
 	type: "office" | "public";
 	data: any[];
 }) {
+	const user = useStore((state) => state.user);
+
 	return (
 		<div className="flex flex-col items-start gap-4 w-full">
 			{title && <h1 className="text-black font-bold text-xl">{title}</h1>}
@@ -46,12 +49,26 @@ function Table({
 								key={row.id + row.clientName}
 							>
 								<td className="p-2 flex items-center gap-2 ">
-									<Link href={`/edit/${type}?id=${row.id}`}>
+									{user.accountType === "edit" && (
+										<Link
+											href={`/edit/${type}?id=${row.id}`}
+										>
+											<a
+												href={`/edit/bill/${type}?id=${row.id}`}
+												className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-2 py-1"
+											>
+												<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
+											</a>
+										</Link>
+									)}
+									<Link
+										href={`/preview/${type}?id=${row.id}`}
+									>
 										<a
-											href={`/edit/bill/${type}?id=${row.id}`}
+											href={`/preview/${type}?id=${row.id}`}
 											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-2 py-1"
 										>
-											<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
+											<DocumentMagnifyingGlassIcon className="w-6 h-6"></DocumentMagnifyingGlassIcon>
 										</a>
 									</Link>
 									<span>{row.id}#</span>

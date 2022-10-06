@@ -13,10 +13,15 @@ import axios from "axios";
 import CreateNewWorkerModal from "./CreateNewWorkerModal";
 import TableDeleteButton from "./TableDeleteButton";
 
-function WorkerInputTable() {
+interface IProps {
+	readOnly?: boolean;
+}
+
+function WorkerInputTable({ readOnly = false }: IProps) {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [modalOpen, setModalOpen] = useState(false);
 	const {
+		user,
 		workers,
 		dropdownWorkers,
 		setDropdownWorkers,
@@ -30,6 +35,7 @@ function WorkerInputTable() {
 		addWorker: state.addWorker,
 		updateWorker: state.updateWorker,
 		removeWorker: state.removeWorker,
+		user: state.user,
 	}));
 
 	useEffect(() => {
@@ -85,7 +91,9 @@ function WorkerInputTable() {
 								<th className="p-2 text-start whitespace-nowrap">
 									التاريخ
 								</th>
-								<th className="p-2 text-start whitespace-nowrap"></th>
+								{!readOnly && (
+									<th className="p-2 text-start whitespace-nowrap"></th>
+								)}
 							</tr>
 						</thead>
 						<tbody className="bg-base">
@@ -94,6 +102,7 @@ function WorkerInputTable() {
 									<tr key={worker.id}>
 										<td className="p-2">
 											<Combobox
+												disabled={readOnly}
 												by={"id"}
 												value={worker}
 												onChange={(
@@ -210,6 +219,10 @@ function WorkerInputTable() {
 																)}
 															<div className="my-2">
 																<button
+																	disabled={
+																		user.accountType !==
+																		"edit"
+																	}
 																	className="btn-primary w-full "
 																	onClick={() =>
 																		setModalOpen(
@@ -228,6 +241,7 @@ function WorkerInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"number"}
 												value={worker.project?.salary}
 												onChange={(e) =>
@@ -244,6 +258,7 @@ function WorkerInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"number"}
 												value={
 													worker.project?.precentage
@@ -262,6 +277,7 @@ function WorkerInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"date"}
 												value={worker.project?.date}
 												onChange={(e) =>
@@ -275,13 +291,17 @@ function WorkerInputTable() {
 												placeholder={"التاريخ"}
 											></Input>
 										</td>
-										<td className="p-2 w-8">
-											<TableDeleteButton
-												onClick={() =>
-													removeWorker(worker.id)
-												}
-											></TableDeleteButton>
-										</td>
+
+										{!readOnly && (
+											<td className="p-2 w-8">
+												<TableDeleteButton
+													disabled={readOnly}
+													onClick={() =>
+														removeWorker(worker.id)
+													}
+												></TableDeleteButton>
+											</td>
+										)}
 									</tr>
 								);
 							})}
@@ -292,15 +312,17 @@ function WorkerInputTable() {
 							لا يوجد عمال
 						</div>
 					)}
-					<div className="m-2">
-						<button
-							className="w-full btn-outline py-1"
-							onClick={() => addWorker()}
-						>
-							<PlusIcon className="w-6 h-6"></PlusIcon>
-							أضف حقل جديد
-						</button>
-					</div>
+					{!readOnly && (
+						<div className="m-2">
+							<button
+								className="w-full btn-outline py-1"
+								onClick={() => addWorker()}
+							>
+								<PlusIcon className="w-6 h-6"></PlusIcon>
+								أضف حقل جديد
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

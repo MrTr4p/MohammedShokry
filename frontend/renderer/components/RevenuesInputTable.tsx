@@ -3,8 +3,11 @@ import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useStore } from "../store";
 import Input from "./Input";
 import TableDeleteButton from "./TableDeleteButton";
+interface IProps {
+	readOnly?: boolean;
+}
 
-function RevenuesInputTable() {
+function RevenuesInputTable({ readOnly }: IProps) {
 	const { revenues, addRevenue, updateRevenue, removeRevenue } = useStore(
 		(state) => state,
 	);
@@ -24,7 +27,9 @@ function RevenuesInputTable() {
 								<th className="p-2 text-start whitespace-nowrap">
 									التاريخ
 								</th>
-								<th className="p-2 text-start whitespace-nowrap"></th>
+								{!readOnly && (
+									<th className="p-2 text-start whitespace-nowrap"></th>
+								)}
 							</tr>
 						</thead>
 						<tbody className="bg-base">
@@ -33,6 +38,7 @@ function RevenuesInputTable() {
 									<tr key={revenue.id}>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"number"}
 												value={revenue.amount}
 												onChange={(e) =>
@@ -47,6 +53,7 @@ function RevenuesInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"date"}
 												value={revenue.date}
 												onChange={(e) =>
@@ -57,13 +64,18 @@ function RevenuesInputTable() {
 												placeholder={"التاريخ"}
 											></Input>
 										</td>
-										<td className="p-2 w-8">
-											<TableDeleteButton
-												onClick={() =>
-													removeRevenue(revenue.id)
-												}
-											></TableDeleteButton>
-										</td>
+										{!readOnly && (
+											<td className="p-2 w-8">
+												<TableDeleteButton
+													disabled={readOnly}
+													onClick={() =>
+														removeRevenue(
+															revenue.id,
+														)
+													}
+												></TableDeleteButton>
+											</td>
+										)}
 									</tr>
 								);
 							})}
@@ -74,15 +86,17 @@ function RevenuesInputTable() {
 							لا يوجد ايرادات
 						</div>
 					)}
-					<div className="m-2">
-						<button
-							className="w-full btn-outline py-1"
-							onClick={() => addRevenue()}
-						>
-							<PlusIcon className="w-6 h-6"></PlusIcon>
-							أضف حقل جديد
-						</button>
-					</div>
+					{!readOnly && (
+						<div className="m-2">
+							<button
+								className="w-full btn-outline py-1"
+								onClick={() => addRevenue()}
+							>
+								<PlusIcon className="w-6 h-6"></PlusIcon>
+								أضف حقل جديد
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

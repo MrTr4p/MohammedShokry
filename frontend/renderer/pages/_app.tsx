@@ -13,6 +13,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 	useEffect(() => {
 		if (!user.loggedIn) {
 			if (router.pathname !== "/login") router.push("/login");
+		} else if (user.accountType === "create") {
+			if (router.pathname.includes("/edit")) router.push("/");
 		}
 	}, [user, router]);
 	//	const user = useStore((state) => state.user);

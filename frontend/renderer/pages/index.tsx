@@ -22,7 +22,6 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 	const homePublicBills = useStore((state) => state.homePublicBills);
 	const homeOfficeBills = useStore((state) => state.homeOfficeBills);
 	const searchState = useStore((state) => state.searchState);
-
 	const searchRef = useRef();
 	const setHomePublicBills = useStore((state) => state.setHomePublicBills);
 	const setHomeOfficeBills = useStore((state) => state.setHomeOfficeBills);
