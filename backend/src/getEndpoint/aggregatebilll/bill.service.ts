@@ -10,42 +10,32 @@ export class AggregateBilService {
   constructor(private prisma : PrismaService) {}
   
   async getAggregateBill(param) {
-    
-    async function getBill(reqParam) {
-      const bill = await this.prisma.projectBill.findFirst({
-        where: {
-          name: reqParam.name,
-        },
-      });
-      return bill;
-    }
-    
-    async function getAll(projectBill) {
-      const workers = await this.prisma.workerSalary.findMany({
-        where: {
-          projectBillId: projectBill.id,
-        },
-        include: {
-          Worker: true,
-        },
-      });
-      const expenses = await this.prisma.expenses.findMany({
-        where: {
-          projectBillId: projectBill.id,
-        },
-        include: {
-          section: true,
-        },
-      });
-    
-      return { workers, expenses };
-    }
     let workersArray = [];
     let expensesArray = [];
     let finalWorkersBill = [];
     let finalExpensesBill = [];
-    const projectBill: { id: any } = await getBill(param);
-    const { workers, expenses } = await getAll(projectBill);
+    const bill  = await this.prisma.projectBill.findFirst({
+      where: {
+        name: param.name,
+      },
+    });;
+    const workers = await this.prisma.workerSalary.findMany({
+      where: {
+        projectBillId: bill.id,
+      },
+      include: {
+        Worker: true,
+      },
+    }); ;
+    const expenses = await this.prisma.expenses.findMany({
+      where: {
+        projectBillId: bill.id,
+      },
+      include: {
+        section: true,
+      },
+    }); 
+    
 
     for (let i = 0; i < workers.length; i++) {
       if (!workersArray.includes(workers[i].Worker.work)) {

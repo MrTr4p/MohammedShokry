@@ -3,11 +3,13 @@ import { PrismaClient, ProjectBill } from '@prisma/client';
 import { HttpException, HttpStatus } from "@nestjs/common";
 import Fuse from 'fuse.js';
 import { PrismaService } from "src/prisma.service";
+import { MeiliSearchService } from 'src/meilisearch.service';
 
 @Injectable()
 export class CreateSectionService {
-  constructor(private prisma : PrismaService) {}
+  constructor(private prisma : PrismaService , private meili: MeiliSearchService) {}
   async createSecion(req , param){
+    let revs
     const body = req.body
     const projectBill = await this.prisma.projectBill.findFirst({
       where:{
@@ -25,6 +27,8 @@ export class CreateSectionService {
         }
       }
     })
+    revs.push(rev)
+    this.meili.index('section').addDocuments(revs)
     console.log(rev)
     return { message: "لقد تم اضافة بند بنجاح", error: false}
   }

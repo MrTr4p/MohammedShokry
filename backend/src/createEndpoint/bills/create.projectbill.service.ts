@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 import { PrismaService } from "src/prisma.service";
+import { MeiliSearchService } from "src/meilisearch.service";
 
 async function Validation(body) {
   if (body.name) {
@@ -45,7 +46,7 @@ async function Validation(body) {
         throw new HttpException(
           "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
-          
+
         );
     }
   }else{
@@ -58,10 +59,10 @@ async function Validation(body) {
 
 @Injectable()
 export class CreateBillService {
-  constructor(private prisma : PrismaService) {}
+  constructor(private prisma : PrismaService , private meili : MeiliSearchService) {}
   async createPublicBill(req) {
     const body = req.body;
-    let message = "";
+    let project;
     const workers = (await req.body.workers) || [];
     let projectBill;
     await Validation(body);
@@ -76,6 +77,8 @@ export class CreateBillService {
           officePrecentage: body.officePrecentage || 0 ,
         },
       });
+      project.push(projectBill)
+      this.meili.index('project').addDocuments(project)
     } catch (e) {
       console.log(e)
       throw new HttpException("اسم هذا المشروع مستخدم في فاتورة مشروع مسبقا", HttpStatus.BAD_REQUEST);
