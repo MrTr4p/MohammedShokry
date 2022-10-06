@@ -20,13 +20,7 @@ export class WorkerService {
     };
   }
   catch(e){
-    throw new HttpException(
-      {
-        status: HttpStatus.NOT_FOUND,
-        error: "لا توجد معلومات",
-      },
-      HttpStatus.NOT_FOUND,
-    );
+   return []
   }
 
   
