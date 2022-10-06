@@ -21,6 +21,7 @@ async function Validation(body) {
           HttpStatus.NOT_ACCEPTABLE,
         );
     }
+
     for (let i = 0; i < body.expenses.length; i++) {
       const element = body.expenses[i];
       console.log(element);

@@ -37,7 +37,7 @@ function Office() {
 		saveBill()
 			.then((result) => {
 				setInfoMessage({ message: result.message, error: false });
-				router.push("/");
+				//router.push("/");
 			})
 			.catch((err) => {
 				setInfoMessage({
