@@ -65,7 +65,7 @@ export interface State {
 	homePublicBills: ProjectBill[];
 	homeOfficeBills: ProjectBill[];
 	searchState: "loading" | "empty" | "found";
-	login: (password: string) => void;
+	login: (password: string) => Promise<{ message: string; error: boolean }>;
 	setHomePublicBills: (projectBills: ProjectBill[]) => void;
 	setHomeOfficeBills: (projectBills: ProjectBill[]) => void;
 	setDropdownWorkers: (workers: Worker[]) => void;
@@ -87,8 +87,25 @@ const storeSlice: StateCreator<
 	homePublicBills: [],
 	homeOfficeBills: [],
 	searchState: "empty",
-	login: (password) => {
-		
+	login: async (password) => {
+		let { data } = await axios({
+			url: "http://localhost:3000/login",
+			method: "post",
+			data: {
+				password,
+			},
+		}).catch((err) => err.response);
+
+		if (data.error) return data;
+
+		set(() => ({
+			user: {
+				loggedIn: true,
+				accountType: data.accountType,
+			},
+		}));
+
+		return { message: "الرمز السرى صحيح", error: false };
 	},
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
