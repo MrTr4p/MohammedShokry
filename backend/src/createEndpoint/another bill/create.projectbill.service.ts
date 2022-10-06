@@ -19,7 +19,7 @@ export class CreateAnotherBillService {
       }
     })
 
-    return "تم اضافة فاتورة خاصة بنجاح";
+    return {message : "تم اضافة فاتورة خاصة بنجاح" , error : false};
   }
   catch(e){
     console.log(e)
