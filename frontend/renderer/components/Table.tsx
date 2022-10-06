@@ -4,9 +4,17 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
-import { ProjectBill } from "../store";
+import { AnotherPaymentsBill, ProjectBill } from "../store";
 
-function Table({ data, title, type = "public" }: { title?: string; type: "office" | "public"; data: ProjectBill[] }) {
+function Table({
+	data,
+	title,
+	type = "public",
+}: {
+	title?: string;
+	type: "office" | "public";
+	data: any[];
+}) {
 	return (
 		<div className="flex flex-col items-start gap-4 w-full">
 			{title && <h1 className="text-black font-bold text-xl">{title}</h1>}
@@ -17,9 +25,11 @@ function Table({ data, title, type = "public" }: { title?: string; type: "office
 						<th className="p-2 text-start whitespace-nowrap">
 							رقم الفاتورة
 						</th>
-						<th className="p-2 text-start whitespace-nowrap">
-							أسم العميل
-						</th>
+						{type === "public" && (
+							<th className="p-2 text-start whitespace-nowrap">
+								أسم العميل
+							</th>
+						)}
 						<th className="p-2 text-start whitespace-nowrap">
 							أسم المشروع
 						</th>
@@ -36,9 +46,9 @@ function Table({ data, title, type = "public" }: { title?: string; type: "office
 								key={row.id + row.clientName}
 							>
 								<td className="p-2 flex items-center gap-2 ">
-									<Link href={`/edit/public?id=${row.id}`}>
+									<Link href={`/edit/${type}?id=${row.id}`}>
 										<a
-											href={`/edit/bill/public?id=${row.id}`}
+											href={`/edit/bill/${type}?id=${row.id}`}
 											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-2 py-1"
 										>
 											<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
@@ -46,12 +56,22 @@ function Table({ data, title, type = "public" }: { title?: string; type: "office
 									</Link>
 									<span>{row.id}#</span>
 								</td>
-								<td className="p-2 ">
-									<span>{row.clientName}</span>
-								</td>
-								<td className="p-2 ">
-									<span>{row.name}</span>
-								</td>
+
+								{type === "public" ? (
+									<>
+										<td className="p-2 ">
+											<span>{row.clientName}</span>
+										</td>
+										<td className="p-2 ">
+											<span>{row.name}</span>
+										</td>
+									</>
+								) : (
+									<td className="p-2 ">
+										<span>{row.projectName}</span>
+									</td>
+								)}
+
 								<td className="p-2  ">
 									<div className="flex items-center gap-2">
 										<CalendarDaysIcon className="w-5 h-5"></CalendarDaysIcon>
