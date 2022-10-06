@@ -3,7 +3,7 @@ import { MeiliSearch } from 'meilisearch'
 
 @Injectable()
 export class MeiliSearchService extends MeiliSearch  {
-  // constructor(){
-  //   this({host:'http://localhost:7700'})
-  // } 
+  constructor(){
+    super({host:'http://localhost:7700'})
+  } 
 }
