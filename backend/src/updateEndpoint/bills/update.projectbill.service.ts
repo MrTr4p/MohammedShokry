@@ -56,32 +56,7 @@ async function Validation(body) {
 }
 
 
-async function deleteStage(projectBill) {
-  console.log(projectBill.id);
-  try {
-    await this.prisma.revenue.deleteMany({
-      where: {
-        projectBillId: projectBill.id,
-      },
-    });
-  } catch (e) {}
 
-  try {
-    await this.prisma.expenses.deleteMany({
-      where: {
-        projectBillId: projectBill.id,
-      },
-    });
-  } catch (e) {}
-
-  try {
-    await this.prisma.workerSalary.deleteMany({
-      where: {
-        projectBillId: projectBill.id,
-      },
-    });
-  } catch (e) {}
-}
 
 @Injectable()
 export class CreateBillService {
@@ -110,7 +85,29 @@ export class CreateBillService {
       },
     });
 
-    await deleteStage(projectBill);
+    try {
+      await this.prisma.revenue.deleteMany({
+        where: {
+          projectBillId: projectBill.id,
+        },
+      });
+    } catch (e) {}
+  
+    try {
+      await this.prisma.expenses.deleteMany({
+        where: {
+          projectBillId: projectBill.id,
+        },
+      });
+    } catch (e) {}
+  
+    try {
+      await this.prisma.workerSalary.deleteMany({
+        where: {
+          projectBillId: projectBill.id,
+        },
+      });
+    } catch (e) {}
     //not essential it is optional
     try {
       const revenues = body.revenues || [];

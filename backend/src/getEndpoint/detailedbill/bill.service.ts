@@ -9,19 +9,17 @@ import { PrismaService } from "src/prisma.service";
 export class DetailedBilService {
   constructor(private prisma : PrismaService) {}
   async getDetailedBill(param, request) {
-    async function getBill(reqParam) {
+    let result = []
       const bill = await this.prisma.projectBill.findFirst({
         where: {
-          name: reqParam.name,
+          name: param.name,
         },
       });
-      return bill;
-    }
-    const projectBill : {id: any} = await getBill(param)
-    let result = []
+    
+   
     const section = await this.prisma.section.findFirst({
       where:{
-        projectBillId: projectBill.id,
+        projectBillId: bill.id,
         name:request.body.name
       }
     })
@@ -29,9 +27,10 @@ export class DetailedBilService {
       result = await this.prisma.expenses.findMany({
         where:{
           secionId: section.id,
-          projectBillId: projectBill.id
+          projectBillId: bill.id
         }
       })
+
       return result
     }else{
       throw new HttpException(
