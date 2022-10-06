@@ -35,7 +35,7 @@ function Office() {
 	const router = useRouter();
 
 	async function handleSave() {
-		saveBill()
+		editBill()
 			.then((result) => {
 				setInfoMessage({ message: result.message, error: false });
 				router.push("/");
