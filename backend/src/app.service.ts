@@ -89,6 +89,8 @@ async function filter(
       take: Number(pageReq),
       skip: Number(abskipindex),
     });
+    console.log(Number(pageReq),Number(abskipindex))
+    console.log(anotherBills.data)
   } catch (e) {
     console.log(e);
     throw new HttpException(e, HttpStatus.BAD_REQUEST);
@@ -98,7 +100,8 @@ async function filter(
     projectBills: projectbill,
     anotherBills: anotherBills,
   };
-  console.log(result);
+  //@ts-ignore
+  console.log(result.anotherBills.data);
   return result;
 }
 
@@ -134,8 +137,8 @@ export class AppService {
 
     
     const result = await filter(
-      query.abpage,
       query.ablimit,
+      query.abpage,
       query.bpage,
       query.blimit,
     );
