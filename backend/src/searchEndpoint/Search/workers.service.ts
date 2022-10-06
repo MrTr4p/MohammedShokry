@@ -1,12 +1,15 @@
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaClient, ProjectBill, Worker } from "@prisma/client";
 import Fuse from "fuse.js";
+import { MeiliSearch } from 'meilisearch'
 const prisma = new PrismaClient();
 
 @Injectable()
 export class WorkerService {
   async workersSearch(query: string = "") {
     const workers = await prisma.worker.findMany({});
+    const workersMelie = new MeiliSearch({host: 'http://localhost:7700'})
+    workersMelie.index('workers').addDocuments(workers)
     const workersFuse = new Fuse(workers, { keys: ["name"] });
     const workersResult = workersFuse.search(query).map((x) => x.item);
 
