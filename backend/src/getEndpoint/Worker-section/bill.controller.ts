@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from "@nestjs/common";
+import { Controller, Get, Req, Query } from "@nestjs/common";
 import { GetService } from "./bill.service";
 import { Param } from "@nestjs/common";
 
@@ -17,7 +17,7 @@ export class GetController {
   }
 
   @Get('/worker/:name')
-  async getWorker(@Param() param){
-    return this.appService.getWorker(param)
+  async getWorker(@Query() query , @Req() req){
+    return this.appService.getWorker(query , req)
   }
 }
