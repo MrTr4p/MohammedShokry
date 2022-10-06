@@ -9,6 +9,7 @@ import ExpensesInputTable from "../../components/ExpensesInputTable";
 import RevenuesInputTable from "../../components/RevenuesInputTable";
 import { useRouter } from "next/router";
 import TextArea from "../../components/Textarea";
+import { GetServerSideProps } from "next";
 function Office() {
 	const {
 		amount,
@@ -127,3 +128,17 @@ function Office() {
 }
 
 export default Office;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const id: string = context.query.id as string;
+
+	const { data: billData } = await axios({
+		url: `http://localhost:3000/bill/all/get?id=` + id,
+	});
+
+	return {
+		props: {
+			billData,
+		},
+	};
+};
