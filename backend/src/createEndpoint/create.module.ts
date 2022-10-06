@@ -7,10 +7,11 @@ import { CreateW_SController } from "./workers-sections/create.controller";
 import { CreateAnotherBillController } from "./another bill/create.bill.controller";
 import { CreateAnotherBillService } from "./another bill/create.projectbill.service";
 import { PrismaService } from "src/prisma.service";
+import { MeiliSearchService } from "src/meilisearch.service";
 
 @Module({
   imports: [],
   controllers: [CreateBillController, CreateW_SController , CreateAnotherBillController],
-  providers: [CreateBillService, CreateWorkerService, CreateSectionService , CreateAnotherBillService , PrismaService],
+  providers: [CreateBillService, CreateWorkerService, CreateSectionService , CreateAnotherBillService , PrismaService, MeiliSearchService],
 })
 export class CreateModule {}

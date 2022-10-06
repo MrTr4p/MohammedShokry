@@ -3,19 +3,20 @@ import { PrismaClient } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 
-async function getBill(reqParam) {
-  const bill = await this.prisma.projectBill.findFirst({
-    where: {
-      name: reqParam.name,
-    },
-  });
-  return bill;
-}
+
 
 @Injectable()
 export class DetailedBilService {
   constructor(private prisma : PrismaService) {}
   async getDetailedBill(param, request) {
+    async function getBill(reqParam) {
+      const bill = await this.prisma.projectBill.findFirst({
+        where: {
+          name: reqParam.name,
+        },
+      });
+      return bill;
+    }
     const projectBill : {id: any} = await getBill(param)
     let result = []
     const section = await this.prisma.section.findFirst({

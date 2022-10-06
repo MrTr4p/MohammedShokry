@@ -3,40 +3,43 @@ import { PrismaClient } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 
-async function getBill(reqParam) {
-  const bill = await this.prisma.projectBill.findFirst({
-    where: {
-      name: reqParam.name,
-    },
-  });
-  return bill;
-}
 
-async function getAll(projectBill) {
-  const workers = await this.prisma.workerSalary.findMany({
-    where: {
-      projectBillId: projectBill.id,
-    },
-    include: {
-      Worker: true,
-    },
-  });
-  const expenses = await this.prisma.expenses.findMany({
-    where: {
-      projectBillId: projectBill.id,
-    },
-    include: {
-      section: true,
-    },
-  });
-
-  return { workers, expenses };
-}
 
 @Injectable()
 export class AggregateBilService {
   constructor(private prisma : PrismaService) {}
+  
   async getAggregateBill(param) {
+    
+    async function getBill(reqParam) {
+      const bill = await this.prisma.projectBill.findFirst({
+        where: {
+          name: reqParam.name,
+        },
+      });
+      return bill;
+    }
+    
+    async function getAll(projectBill) {
+      const workers = await this.prisma.workerSalary.findMany({
+        where: {
+          projectBillId: projectBill.id,
+        },
+        include: {
+          Worker: true,
+        },
+      });
+      const expenses = await this.prisma.expenses.findMany({
+        where: {
+          projectBillId: projectBill.id,
+        },
+        include: {
+          section: true,
+        },
+      });
+    
+      return { workers, expenses };
+    }
     let workersArray = [];
     let expensesArray = [];
     let finalWorkersBill = [];
