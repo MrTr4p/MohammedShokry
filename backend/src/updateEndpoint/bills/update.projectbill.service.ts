@@ -1,7 +1,7 @@
 import { Injectable , HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
-const prisma = new PrismaClient();
+import { PrismaService } from '../../prisma.service'
 
 async function Validation(body) {
   if (body.name) {
@@ -59,7 +59,7 @@ async function Validation(body) {
 async function deleteStage(projectBill) {
   console.log(projectBill.id);
   try {
-    await prisma.revenue.deleteMany({
+    await this.prisma.revenue.deleteMany({
       where: {
         projectBillId: projectBill.id,
       },
@@ -67,7 +67,7 @@ async function deleteStage(projectBill) {
   } catch (e) {}
 
   try {
-    await prisma.expenses.deleteMany({
+    await this.prisma.expenses.deleteMany({
       where: {
         projectBillId: projectBill.id,
       },
@@ -75,7 +75,7 @@ async function deleteStage(projectBill) {
   } catch (e) {}
 
   try {
-    await prisma.workerSalary.deleteMany({
+    await this.prisma.workerSalary.deleteMany({
       where: {
         projectBillId: projectBill.id,
       },
@@ -85,17 +85,19 @@ async function deleteStage(projectBill) {
 
 @Injectable()
 export class CreateBillService {
+  constructor(private prisma: PrismaService) {}
   async updatePublicBill(req, id: number) {
+    
     const body = req.body;
     const workers = (await req.body.workers) || [];
     console.log(body)
-    const oldProject = await prisma.projectBill.findFirst({
+    const oldProject = await this.prisma.projectBill.findFirst({
       where: {
         id: id,
       },
     });
     Validation(body)
-    const projectBill = await prisma.projectBill.update({
+    const projectBill = await this.prisma.projectBill.update({
       where: {
         id: oldProject.id,
       },
@@ -114,7 +116,7 @@ export class CreateBillService {
       const revenues = body.revenues || [];
       console.log(revenues);
       for (let i = 0; i < revenues.length; i++) {
-        await prisma.revenue.create({
+        await this.prisma.revenue.create({
           data: {
             amount: revenues[i].amount,
             date: revenues[i].date,
@@ -130,7 +132,7 @@ export class CreateBillService {
     try {
       for (let i = 0; i < workers.length; i++) {
         const element = workers[i];
-        const worker = await prisma.workerSalary.create({
+        const worker = await this.prisma.workerSalary.create({
           data: {
             Worker: {
               connect: {
@@ -157,12 +159,12 @@ export class CreateBillService {
       for (let i = 0; i < expenses.length; i++) {
         const element = expenses[i];
         console.log(element);
-        const section = await prisma.section.findFirst({
+        const section = await this.prisma.section.findFirst({
           where: {
             name: element.section.name,
           },
         });
-        await prisma.expenses.create({
+        await this.prisma.expenses.create({
           data: {
             materialName: element.materialName,
             date: element.date,

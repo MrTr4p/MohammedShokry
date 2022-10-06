@@ -3,11 +3,41 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 
+async function Validation(body){
+  if(body.name){
+    if(!body.date){
+      throw new HttpException(
+        "لقد نسيت ان تضع قيمة ل خانة التاريخ",
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+    if(!body.amount){
+      throw new HttpException(
+        "لقد نسيت ان تضع قيمة ل خانة المبلغ",
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+    if(!body.inReturn){
+      throw new HttpException(
+        "لقد نسيت ان تضع قيمة ل خانة المقابل",
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+  }else{
+    throw new HttpException(
+      "لقد حدث خطأ ما , يرجي التاكد من المدخلات",
+      HttpStatus.NOT_ACCEPTABLE,
+    );
+  }
+}
+
+
 @Injectable()
 export class CreateAnotherBillService {
   async createPublicBill(req) {
     
     const body = req.body
+    await Validation(body)
     try {
     await prisma.anotherPaymentsBill.create({
       data:{
