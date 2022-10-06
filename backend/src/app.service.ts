@@ -43,8 +43,8 @@ async function filter(pageReq : number, limitReq : number, bpageReq : number, bl
   const bindex = bpageReq * blimitReq;
   const bskipindex = (bpageReq - 1) * blimitReq;
   const abskipindex = (pageReq - 1) * limitReq;
-  const totalabPages = aBCount / Number(limitReq);
-  const totalBPages = bCount / Number(blimitReq);
+  const totalabPages = Math.round(aBCount / Number(limitReq));
+  const totalBPages = Math.round(bCount / Number(blimitReq));
 
   anotherBills.pagination.currentPage = Number(pageReq);
   anotherBills.pagination.pageSize = Number(limitReq);
