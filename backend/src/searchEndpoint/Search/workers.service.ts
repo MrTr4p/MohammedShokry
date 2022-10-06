@@ -10,13 +10,13 @@ export class WorkerService {
   constructor (private prisma : PrismaService , private meili : MeiliSearchService) {}
   async workersSearch(query: string = "") {
     const workers = await this.prisma.worker.findMany({});
-    const workersMelie = new MeiliSearch({host: 'http://localhost:7700'})
-    workersMelie.index('workers').addDocuments(workers)
-    const workersFuse = new Fuse(workers, { keys: ["name"] });
-    const workersResult = workersFuse.search(query).map((x) => x.item);
+    this.meili.index('workers').addDocuments(workers)
+    const workersResult = await this.meili.index('workers').search(query , {
+      limit : 25
+    })
 
     return {
-      workers: workersResult.slice(0, 15),
+      workers: workersResult.hits
     };
   }
 

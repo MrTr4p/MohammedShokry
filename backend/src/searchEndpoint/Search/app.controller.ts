@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Req } from "@nestjs/common";
+import { Controller, Get, Param, Query, Req, Post } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { WorkerService } from "./workers.service";
 
