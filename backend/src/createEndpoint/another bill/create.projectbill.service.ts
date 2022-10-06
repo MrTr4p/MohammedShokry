@@ -15,13 +15,14 @@ export class CreateAnotherBillService {
         date:body.date,
         description:body.description || '',
         inReturn: body.inReturn,
-        amount: body.amount
+        amount: Number(body.amount)
       }
     })
 
     return "تم اضافة فاتورة خاصة بنجاح";
   }
   catch(e){
+    console.log(e)
     throw new HttpException("يجب ملئ كل المدخلات" , HttpStatus.NOT_ACCEPTABLE)
   }
   }
