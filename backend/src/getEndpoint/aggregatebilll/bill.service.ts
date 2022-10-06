@@ -16,7 +16,7 @@ export class AggregateBilService {
     let finalExpensesBill = [];
     const bill  = await this.prisma.projectBill.findFirst({
       where: {
-        name: param.name,
+        id: Number(param.id),
       },
     });;
     const workers = await this.prisma.workerSalary.findMany({

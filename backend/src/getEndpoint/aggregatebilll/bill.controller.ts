@@ -6,7 +6,7 @@ import { Param } from "@nestjs/common";
 export class AggregateBillController {
   constructor(private readonly appService: AggregateBilService) {}
 
-  @Get("/get/:name")
+  @Get("/get/:id")
   async getBill(@Param() param) {
     console.log(param);
     return await this.appService.getAggregateBill(param);
