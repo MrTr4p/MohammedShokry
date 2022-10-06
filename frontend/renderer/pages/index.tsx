@@ -164,10 +164,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return {
 		props: {
 			publicBills: projectBills.data,
-			officeBills:
-				anotherBills.data.length > 0
-					? anotherBills.data
-					: projectBills.data,
+			officeBills: anotherBills.data,
 		},
 	};
 };

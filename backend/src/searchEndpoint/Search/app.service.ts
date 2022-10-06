@@ -2,10 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 import { PrismaService } from "src/prisma.service";
+import { MeiliSearchService } from "src/meilisearch.service";
 
 @Injectable()
 export class AppService {
-  constructor (private prisma : PrismaService) {}
+  constructor (private prisma : PrismaService , private meili : MeiliSearchService) {}
   async getSearch(query: string, maxResults = 100) {
     const [projectBills, anotherBills] = await Promise.all([
       await this.prisma.projectBill.findMany({
@@ -16,24 +17,11 @@ export class AppService {
       }),
     ]);
 
-    const projectBillsFuse = new Fuse(projectBills, {
-      keys: ["name", "clientName"],
-    });
-
-    const anotherBillsFuse = new Fuse(anotherBills, {
-      keys: ["name"],
-    });
-
-    const projectBillsResult = projectBillsFuse
-      .search(query)
-      .map((x) => x.item);
-    const anotherBillsResult = anotherBillsFuse
-      .search(query)
-      .map((x) => x.item);
-
+    const projectBillsResult = await this.meili.index('project').search(query)
+    const anotherBillsResult = await this.meili.index('anotherBill').search(query)
     return {
-      projectBills: projectBillsResult.slice(0, maxResults),
-      anotherBills: anotherBillsResult.slice(0, maxResults),
+      projectBills: (await projectBillsResult).hits,
+      anotherBills: (await anotherBillsResult).hits,
     };
   }
 }

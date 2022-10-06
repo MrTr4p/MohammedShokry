@@ -62,7 +62,7 @@ export class CreateBillService {
   constructor(private prisma : PrismaService , private meili : MeiliSearchService) {}
   async createPublicBill(req) {
     const body = req.body;
-    let project;
+    let project = [];
     const workers = (await req.body.workers) || [];
     let projectBill;
     await Validation(body);
@@ -74,7 +74,7 @@ export class CreateBillService {
           clientAddress: body.clientAddress,
           clientName: body.clientName || null,
           date: body.date || null,
-          officePrecentage: body.officePrecentage || 0 ,
+          officePrecentage: Number(body.officePrecentage) || 0 ,
         },
       });
       project.push(projectBill)

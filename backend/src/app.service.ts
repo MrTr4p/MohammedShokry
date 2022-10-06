@@ -106,12 +106,17 @@ export class AppService {
   async login(req) {
     const body = req.body || { password: "" };
     if (body.password == AdminPass || body.password == SecertaryPass) {
-      return { accountType: body.password == AdminPass ? "edit" : "create" };
+      return {
+        status: 200,
+        error: false,
+        accountType: body.password == AdminPass ? "edit" : "create",
+      };
     } else {
       throw new HttpException(
         {
           status: HttpStatus.UNAUTHORIZED,
-          error: "لا يوجد حساب ب هذا الرمز",
+          message: "لا يوجد حساب ب هذا الرمز",
+          error: true,
         },
         HttpStatus.UNAUTHORIZED,
       );

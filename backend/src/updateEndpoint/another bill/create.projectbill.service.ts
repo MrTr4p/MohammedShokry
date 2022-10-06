@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 import { PrismaService } from '../../prisma.service'
+import { MeiliSearchService } from "src/meilisearch.service";
 
 async function Validation(body){
   if(body.projectName){
@@ -33,18 +34,19 @@ async function Validation(body){
 
 @Injectable()
 export class UpdateAnotherBillService {
-  constructor(private prisma : PrismaService) {}
+  constructor(private prisma : PrismaService, private meili : MeiliSearchService) {}
   async createPublicBill(req) {
     
     const body = req.body
     await Validation(body)
+    const result = []
     const oldBill = await this.prisma.anotherPaymentsBill.findFirst({
       where:{
         id:body.id
       }
     })
     try {
-    await this.prisma.anotherPaymentsBill.create({
+    const res = await this.prisma.anotherPaymentsBill.create({
       data:{
         projectName: body.name || oldBill.projectName,
         date:body.date || oldBill.date,
@@ -53,6 +55,9 @@ export class UpdateAnotherBillService {
         amount: body.amount || oldBill.amount
       }
     })
+    result.push(res)
+    this.meili.index('anotherBill').addDocuments(result)
+
     return { message: "تم تعديل فاتورة خاصة بنجاح", error: false}
   }
   catch(e){

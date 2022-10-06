@@ -2,9 +2,11 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 import { PrismaService } from "src/prisma.service";
+import { MeiliSearchService } from "src/meilisearch.service";
 
 async function Validation(body){
-  if(body.name){
+  if(body.projectName){
+    
     if(!body.date){
       throw new HttpException(
         "لقد نسيت ان تضع قيمة ل خانة التاريخ",
@@ -34,12 +36,12 @@ async function Validation(body){
 
 @Injectable()
 export class CreateAnotherBillService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private meili : MeiliSearchService) {}
   async createPublicBill(req) {
     const body = req.body
+    let ab = []
     await Validation(body)
-    try {
-    await this.prisma.anotherPaymentsBill.create({
+    const res = await this.prisma.anotherPaymentsBill.create({
       data:{
         projectName: body.projectName,
         date:body.date,
@@ -48,12 +50,10 @@ export class CreateAnotherBillService {
         amount: Number(body.amount)
       }
     })
-
+    console.log(ab)
+    ab.push(res)
+    this.meili.index('anotherBill').addDocuments(ab)
     return {message : "تم اضافة فاتورة خاصة بنجاح" , error : false};
   }
-  catch(e){
-    console.log(e)
-    throw new HttpException("يجب ملئ كل المدخلات" , HttpStatus.NOT_ACCEPTABLE)
   }
-  }
-}
+

@@ -9,7 +9,7 @@ import { MeiliSearchService } from "src/meilisearch.service";
 export class CreateWorkerService {
   constructor(private prisma : PrismaService , private meili : MeiliSearchService) {}
   async createWorker(reqB) {
-    let workers
+    let workers = []
     const body = reqB.body;
     try {
       let worker = await this.prisma.worker.create({

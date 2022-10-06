@@ -2,6 +2,7 @@ import { Injectable , HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 import { PrismaService } from '../../prisma.service'
+import { MeiliSearchService } from "src/meilisearch.service";
 
 async function Validation(body) {
   if (body.name) {
@@ -60,10 +61,11 @@ async function Validation(body) {
 
 @Injectable()
 export class CreateBillService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private meili : MeiliSearchService) {}
   async updatePublicBill(req, id: number) {
     
     const body = req.body;
+    const result = []
     const workers = (await req.body.workers) || [];
     console.log(body)
     const oldProject = await this.prisma.projectBill.findFirst({
@@ -84,7 +86,8 @@ export class CreateBillService {
         officePrecentage: body.officePrecentage || oldProject.officePrecentage,
       },
     });
-
+    result.push(projectBill)
+    this.meili.index('project').addDocuments(result)
     try {
       await this.prisma.revenue.deleteMany({
         where: {
