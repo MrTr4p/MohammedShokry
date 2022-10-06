@@ -503,7 +503,25 @@ const anotherPaymentsBillStore: StateCreator<
 			resetState,
 		} = get();
 
-		return { message: "done", error: false };
+		let { message, error } = await axios({
+			url: "http://localhost:3000/update/anotherBill",
+			method: "post",
+			data: {
+				amount,
+				date,
+				id,
+				inReturn,
+				projectName,
+				description,
+			},
+		})
+			.then(({ data }) => ({ message: data.message, error: false }))
+			.catch((err) => ({
+				message: err?.reponse?.data?.message,
+				error: true,
+			}));
+
+		return { message, error };
 	},
 	saveBill: async () => {
 		const {
