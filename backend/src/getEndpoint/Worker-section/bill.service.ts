@@ -29,4 +29,15 @@ export class GetService {
 
     return sections
   }
+
+  async getWorker(param){
+    const result = await this.prisma.workerSalary.findMany({
+      where:{
+        Worker:{
+          name: param.name
+        }
+      }
+    })
+    return result
+   }
 }

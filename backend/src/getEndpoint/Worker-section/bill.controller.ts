@@ -15,4 +15,9 @@ export class GetController {
   async getWorkers() {
     return this.appService.getWorkers()
   }
+
+  @Get('/worker/:name')
+  async getWorker(@Param() param){
+    return this.appService.getWorker(param)
+  }
 }
