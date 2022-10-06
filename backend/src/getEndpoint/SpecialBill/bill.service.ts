@@ -6,7 +6,7 @@ import { PrismaService } from "src/prisma.service";
 
 
 @Injectable()
-export class NormalBilService {
+export class AnotherBilService {
   constructor(private prisma : PrismaService) {}  
   async getBill(param) {
       const bill = await this.prisma.anotherPaymentsBill.findFirst({
