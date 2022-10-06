@@ -11,7 +11,7 @@ export class CreateAnotherBillService {
     try {
     await prisma.anotherPaymentsBill.create({
       data:{
-        projectName: body.name,
+        projectName: body.projectName,
         date:body.date,
         description:body.description || '',
         inReturn: body.inReturn,
