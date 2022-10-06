@@ -1,11 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 async function Validation(body) {
   if (body.name) {
-    if (!body.date || !body.clientName || !body.clientAddress) {
+    if(!body.date || !body.clientName || !body.clientAddress )
+    {
       throw new HttpException(
         "يجب ملئ مدخلات الصف الاول",
         HttpStatus.NOT_ACCEPTABLE,
@@ -14,17 +15,16 @@ async function Validation(body) {
 
     for (let i = 0; i < body.workers.length; i++) {
       const element = body.workers[i];
-      console.log(!element.project.date);
+      console.log(!element.project.date)
       if (!element.project.date || !element.project.salary)
         throw new HttpException(
           "يبدو انك قمت باضافة عمال . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
         );
     }
-
     for (let i = 0; i < body.expenses.length; i++) {
       const element = body.expenses[i];
-      console.log(element);
+      console.log(element)
       if (
         !element.materialName ||
         !element.date ||
@@ -37,16 +37,18 @@ async function Validation(body) {
         );
     }
 
+   
     for (let i = 0; i < body.revenues.length; i++) {
       const element = body.revenues[i];
-      console.log(element);
+      console.log(element)
       if (!element.amount || !element.date)
         throw new HttpException(
           "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
+          
         );
     }
-  } else {
+  }else{
     throw new HttpException(
       "لقد حدث خطأ ما , يرجي التاكد من المدخلات",
       HttpStatus.NOT_ACCEPTABLE,
@@ -56,33 +58,32 @@ async function Validation(body) {
 
 @Injectable()
 export class CreateBillService {
+  constructor(private prisma : PrismaService) {}
   async createPublicBill(req) {
     const body = req.body;
     let message = "";
     const workers = (await req.body.workers) || [];
     let projectBill;
     await Validation(body);
+    
     try {
-      projectBill = await prisma.projectBill.create({
+      projectBill = await this.prisma.projectBill.create({
         data: {
           name: body.name,
           clientAddress: body.clientAddress,
           clientName: body.clientName || null,
           date: body.date || null,
-          officePrecentage: body.officePrecentage || 0,
+          officePrecentage: body.officePrecentage || 0 ,
         },
       });
     } catch (e) {
-      console.log(e);
-      throw new HttpException(
-        "اسم هذا المشروع مستخدم في فاتورة مشروع مسبقا",
-        HttpStatus.BAD_REQUEST,
-      );
+      console.log(e)
+      throw new HttpException("اسم هذا المشروع مستخدم في فاتورة مشروع مسبقا", HttpStatus.BAD_REQUEST);
     }
 
     const revenues = body.revenues;
     for (let i = 0; i < revenues.length; i++) {
-      const revs = await prisma.revenue.create({
+      const revs = await this.prisma.revenue.create({
         data: {
           amount: revenues[i].amount,
           date: revenues[i].date,
@@ -101,7 +102,7 @@ export class CreateBillService {
     for (let i = 0; i < workers.length; i++) {
       const element = workers[i];
       console.log(element.project.salary);
-      await prisma.workerSalary.create({
+      await this.prisma.workerSalary.create({
         data: {
           Worker: {
             connect: {
@@ -126,7 +127,7 @@ export class CreateBillService {
       const element = expenses[i];
       console.log(element.totalcost);
 
-      const section = await prisma.section.findFirst({
+      const section = await this.prisma.section.findFirst({
         where: {
           projectBillId: projectBill.id,
           name: element.section.name,
@@ -134,7 +135,7 @@ export class CreateBillService {
       });
       console.log(section);
       if (section) {
-        await prisma.expenses.create({
+        await this.prisma.expenses.create({
           data: {
             materialName: element.materialName,
             date: element.date,
@@ -154,7 +155,7 @@ export class CreateBillService {
         });
       } else {
         console.log("new section");
-        const newSection = await prisma.section.create({
+        const newSection = await this.prisma.section.create({
           data: {
             name: element.section.name,
             ProjectBill: {
@@ -165,7 +166,7 @@ export class CreateBillService {
           },
         });
 
-        await prisma.expenses.create({
+        await this.prisma.expenses.create({
           data: {
             materialName: element.materialName,
             date: element.date,

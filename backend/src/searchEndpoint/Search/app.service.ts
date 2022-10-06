@@ -1,16 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 @Injectable()
 export class AppService {
+  constructor (private prisma : PrismaService) {}
   async getSearch(query: string, maxResults = 100) {
     const [projectBills, anotherBills] = await Promise.all([
-      await prisma.projectBill.findMany({
+      await this.prisma.projectBill.findMany({
         select: { clientName: true, name: true },
       }),
-      await prisma.anotherPaymentsBill.findMany({
+      await this.prisma.anotherPaymentsBill.findMany({
         select: { projectName: true },
       }),
     ]);

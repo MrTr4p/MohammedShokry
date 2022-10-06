@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 async function getBill(reqParam) {
-  const bill = await prisma.projectBill.findFirst({
+  const bill = await this.prisma.projectBill.findFirst({
     where: {
       name: reqParam.name,
     },
@@ -13,7 +13,7 @@ async function getBill(reqParam) {
 }
 
 async function getAll(projectBill) {
-  const workers = await prisma.workerSalary.findMany({
+  const workers = await this.prisma.workerSalary.findMany({
     where: {
       projectBillId: projectBill.id,
     },
@@ -21,7 +21,7 @@ async function getAll(projectBill) {
       Worker: true,
     },
   });
-  const expenses = await prisma.expenses.findMany({
+  const expenses = await this.prisma.expenses.findMany({
     where: {
       projectBillId: projectBill.id,
     },
@@ -35,6 +35,7 @@ async function getAll(projectBill) {
 
 @Injectable()
 export class AggregateBilService {
+  constructor(private prisma : PrismaService) {}
   async getAggregateBill(param) {
     let workersArray = [];
     let expensesArray = [];

@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaClient } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
-const prisma = new PrismaClient();
+import { PrismaService } from "src/prisma.service";
 
 async function getBill(reqParam) {
-  const bill = await prisma.projectBill.findFirst({
+  const bill = await this.prisma.projectBill.findFirst({
     where: {
       name: reqParam.name,
     },
@@ -14,17 +14,18 @@ async function getBill(reqParam) {
 
 @Injectable()
 export class DetailedBilService {
+  constructor(private prisma : PrismaService) {}
   async getDetailedBill(param, request) {
     const projectBill : {id: any} = await getBill(param)
     let result = []
-    const section = await prisma.section.findFirst({
+    const section = await this.prisma.section.findFirst({
       where:{
         projectBillId: projectBill.id,
         name:request.body.name
       }
     })
     if(section){
-      result = await prisma.expenses.findMany({
+      result = await this.prisma.expenses.findMany({
         where:{
           secionId: section.id,
           projectBillId: projectBill.id
