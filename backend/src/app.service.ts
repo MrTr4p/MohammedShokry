@@ -30,8 +30,13 @@ interface result {
   };
 }
 
-async function filter(pageReq : number, limitReq : number, bpageReq : number, blimitReq : number) {
-  console.log('/home')
+async function filter(
+  pageReq: number,
+  limitReq: number,
+  bpageReq: number,
+  blimitReq: number,
+) {
+  console.log("/home");
   let anotherBills = { pagination: {}, data: {} } as any;
   let projectbill = { pagination: {}, data: {} } as any;
   let result = {};
@@ -74,7 +79,7 @@ async function filter(pageReq : number, limitReq : number, bpageReq : number, bl
       skip: Number(bskipindex),
     });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     throw new Error(e);
   }
 
@@ -83,58 +88,30 @@ async function filter(pageReq : number, limitReq : number, bpageReq : number, bl
       take: Number(pageReq),
       skip: Number(abskipindex),
     });
-    
   } catch (e) {
-    console.log(e)
-    throw new HttpException(e , HttpStatus.BAD_REQUEST);
+    console.log(e);
+    throw new HttpException(e, HttpStatus.BAD_REQUEST);
   }
-  
 
-   result = {
+  result = {
     projectBills: projectbill,
     anotherBills: anotherBills,
   };
-  console.log(result)
-  return result
+  console.log(result);
+  return result;
 }
 
 @Injectable()
 export class AppService {
   async login(req) {
-    const thetoken = "110ec58a-a0f2-4ac4-8393-c866d813b8d1";
-    const body = req.body || "";
-    const bearer = req.headers["authorization"] || "";
-    console.log(bearer);
-    const token = bearer.split(" ")[1];
-    let pass;
-    try {
-      pass = jwt.verify(bearer, thetoken);
-    } catch (e) {
-      pass = "";
-    }
-    if (pass) {
-      if (pass == AdminPass) {
-        return { accountType: "create" };
-      } else if (pass == SecertaryPass) {
-        return { accountType: "edit" };
-      } else {
-        throw new HttpException(
-          {
-            status: HttpStatus.UNAUTHORIZED,
-            error: "old token",
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      }
-    }
-
+    const body = req.body || { password: "" };
     if (body.password == AdminPass || body.password == SecertaryPass) {
-      return await jwt.sign(body.password, thetoken);
+      return { accountType: body.password == AdminPass ? "edit" : "create" };
     } else {
       throw new HttpException(
         {
           status: HttpStatus.UNAUTHORIZED,
-          error: "لا يوجد حساب ب هذا الحساب",
+          error: "لا يوجد حساب ب هذا الرمز",
         },
         HttpStatus.UNAUTHORIZED,
       );
