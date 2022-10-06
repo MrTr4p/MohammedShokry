@@ -4,7 +4,7 @@ import Fuse from "fuse.js";
 import { PrismaService } from '../../prisma.service'
 
 async function Validation(body){
-  if(body.name){
+  if(body.projectName){
     if(!body.date){
       throw new HttpException(
         "لقد نسيت ان تضع قيمة ل خانة التاريخ",

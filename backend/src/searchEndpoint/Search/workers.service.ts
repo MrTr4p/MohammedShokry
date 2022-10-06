@@ -3,10 +3,11 @@ import { PrismaClient, ProjectBill, Worker } from "@prisma/client";
 import Fuse from "fuse.js";
 import { MeiliSearch } from 'meilisearch'
 import { PrismaService } from "src/prisma.service";
+import { MeiliSearchService } from "src/meilisearch.service";
 
 @Injectable()
 export class WorkerService {
-  constructor (private prisma : PrismaService) {}
+  constructor (private prisma : PrismaService , private meili : MeiliSearchService) {}
   async workersSearch(query: string = "") {
     const workers = await this.prisma.worker.findMany({});
     const workersMelie = new MeiliSearch({host: 'http://localhost:7700'})
