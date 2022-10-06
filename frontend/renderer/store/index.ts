@@ -11,7 +11,7 @@ export type RecursivePartial<T> = {
 
 export interface User {
 	loggedIn: boolean;
-	accountType: "edit" | "create";
+	accountType: "edit" | "create" | "none";
 }
 
 export interface ProjectBill {
@@ -65,6 +65,7 @@ export interface State {
 	homePublicBills: ProjectBill[];
 	homeOfficeBills: ProjectBill[];
 	searchState: "loading" | "empty" | "found";
+	login: (password: string) => void;
 	setHomePublicBills: (projectBills: ProjectBill[]) => void;
 	setHomeOfficeBills: (projectBills: ProjectBill[]) => void;
 	setDropdownWorkers: (workers: Worker[]) => void;
@@ -78,10 +79,17 @@ const storeSlice: StateCreator<
 	[],
 	State
 > = (set) => ({
+	user: {
+		loggedIn: false,
+		accountType: "none",
+	},
 	dropdownWorkers: [],
 	homePublicBills: [],
 	homeOfficeBills: [],
 	searchState: "empty",
+	login: (password) => {
+		
+	},
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
 	setDropdownWorkers: (workers) =>
