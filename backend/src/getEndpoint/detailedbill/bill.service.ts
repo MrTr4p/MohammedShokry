@@ -28,6 +28,9 @@ export class DetailedBilService {
         where:{
           secionId: section.id,
           projectBillId: bill.id
+        },
+        include:{
+          section: true
         }
       })
 
