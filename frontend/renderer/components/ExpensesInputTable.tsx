@@ -11,11 +11,16 @@ import CreateNewWorkerModal from "./CreateNewSectionModal";
 import TableDeleteButton from "./TableDeleteButton";
 import Fuse from "fuse.js";
 
-function ExpensesInputTable() {
+interface IProps {
+	readOnly?: boolean;
+}
+
+function ExpensesInputTable({ readOnly }: IProps) {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchResults, setSearchResults] = useState<Section[]>([]);
 	const [modalOpen, setModalOpen] = useState(false);
 	const {
+		user,
 		expenses,
 		addExpense,
 		updateExpense,
@@ -58,7 +63,9 @@ function ExpensesInputTable() {
 								<th className="p-2 text-start whitespace-nowrap">
 									التاريخ
 								</th>
-								<th className="p-2 text-start whitespace-nowrap"></th>
+								{!readOnly && (
+									<th className="p-2 text-start whitespace-nowrap"></th>
+								)}
 							</tr>
 						</thead>
 						<tbody className="bg-base">
@@ -67,6 +74,7 @@ function ExpensesInputTable() {
 									<tr key={expense.id}>
 										<td className="p-2">
 											<Combobox
+												disabled={readOnly}
 												by={"id"}
 												value={expense.section}
 												onChange={(selected: any) => {
@@ -167,6 +175,10 @@ function ExpensesInputTable() {
 															)}
 															<div className="my-2">
 																<button
+																	disabled={
+																		user.accountType !==
+																		"edit"
+																	}
 																	className="btn-primary w-full "
 																	onClick={() =>
 																		setModalOpen(
@@ -184,6 +196,7 @@ function ExpensesInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"text"}
 												value={expense.materialName}
 												onChange={(e) =>
@@ -197,6 +210,7 @@ function ExpensesInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"number"}
 												value={expense.totalcost}
 												onChange={(e) =>
@@ -211,6 +225,7 @@ function ExpensesInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"text"}
 												value={expense.day}
 												onChange={(e) =>
@@ -223,6 +238,7 @@ function ExpensesInputTable() {
 										</td>
 										<td className="p-2">
 											<Input
+												disabled={readOnly}
 												type={"date"}
 												value={expense.date}
 												onChange={(e) =>
@@ -233,13 +249,19 @@ function ExpensesInputTable() {
 												placeholder={"التاريخ"}
 											></Input>
 										</td>
-										<td className="p-2 w-8">
-											<TableDeleteButton
-												onClick={() =>
-													removeExpense(expense.id)
-												}
-											></TableDeleteButton>
-										</td>
+
+										{!readOnly && (
+											<td className="p-2 w-8">
+												<TableDeleteButton
+													disabled={readOnly}
+													onClick={() =>
+														removeExpense(
+															expense.id,
+														)
+													}
+												></TableDeleteButton>
+											</td>
+										)}
 									</tr>
 								);
 							})}
@@ -250,15 +272,17 @@ function ExpensesInputTable() {
 							لا يوجد مصروفات
 						</div>
 					)}
-					<div className="m-2">
-						<button
-							className="w-full btn-outline py-1"
-							onClick={() => addExpense("")}
-						>
-							<PlusIcon className="w-6 h-6"></PlusIcon>
-							أضف حقل جديد
-						</button>
-					</div>
+					{!readOnly && (
+						<div className="m-2">
+							<button
+								className="w-full btn-outline py-1"
+								onClick={() => addExpense("")}
+							>
+								<PlusIcon className="w-6 h-6"></PlusIcon>
+								أضف حقل جديد
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

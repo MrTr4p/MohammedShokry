@@ -6,13 +6,17 @@ function Input({
 	placeholder,
 	value,
 	onChange,
+	iprops,
 	iref,
 	required,
 	error,
 	iclassName,
 	lclassName,
+	disabled,
 }: {
 	required?: boolean;
+	disabled?: boolean;
+
 	iref?: any;
 	label?: string;
 	placeholder?: string;
@@ -21,6 +25,7 @@ function Input({
 	error?: string;
 	iclassName?: string;
 	lclassName?: string;
+	iprops?: {};
 	onChange?: (e: any) => any;
 }) {
 	return (
@@ -43,12 +48,14 @@ function Input({
 			</div>
 
 			<input
+				{...iprops}
 				ref={iref}
 				required={required}
 				value={value}
 				type={type}
 				placeholder={placeholder}
 				onChange={onChange}
+				disabled={disabled}
 				className={`border-gray-400 border-2 border-dashed w-full h-9 focus:outline-none ${
 					error ? "border-red-600 focus:border-red-600" : ""
 				} focus:border-primary focus:border-solid py-1 px-2 rounded-md transition ${iclassName}`}
