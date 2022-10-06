@@ -28,6 +28,7 @@ export interface ProjectBill {
 }
 
 export interface Worker {
+	rowId: string;
 	id: string;
 	name: string;
 	work: string;
@@ -291,6 +292,7 @@ const projectBillSlice: StateCreator<
 			set(
 				produce<State & newProjectBill>((draft) => {
 					draft.workers.push({
+						rowId: v4(),
 						id: v4(),
 						name: "",
 						work: "",
@@ -300,12 +302,17 @@ const projectBillSlice: StateCreator<
 			);
 		}
 	},
-	updateWorker: (workerId, data) => {
+	updateWorker: (workerRowId, data) => {
 		set(
 			produce<State & newProjectBill>((draft) => {
+				const { workers } = get();
+				const worker = workers.find((row) => row.rowId === workerRowId);
+				const workerId = worker.id;
+
 				let workerIndex = draft.workers.findIndex(
-					(worker) => worker.id === workerId,
+					(worker) => worker.rowId === workerRowId,
 				);
+
 				draft.workers[workerIndex] = _.merge<
 					Worker,
 					RecursivePartial<Worker>
@@ -313,11 +320,11 @@ const projectBillSlice: StateCreator<
 			}),
 		);
 	},
-	removeWorker: (workerId) => {
+	removeWorker: (workerRowId) => {
 		set(
 			produce<State & newProjectBill>((draft) => {
 				draft.workers = draft.workers.filter(
-					(worker) => worker.id !== workerId,
+					(worker) => worker.rowId !== workerRowId,
 				);
 				//console.log(draft.workers, workerId);
 			}),

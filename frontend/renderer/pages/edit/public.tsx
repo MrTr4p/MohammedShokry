@@ -16,6 +16,7 @@ import WorkerInputTable from "../../components/WorkerInputTable";
 import ExpensesInputTable from "../../components/ExpensesInputTable";
 import RevenuesInputTable from "../../components/RevenuesInputTable";
 import { useRouter } from "next/router";
+import { v4 } from "uuid";
 
 function Public({ billData }: { billData: ProjectBill }) {
 	const router = useRouter();
@@ -42,6 +43,7 @@ function Public({ billData }: { billData: ProjectBill }) {
 	useEffect(() => {
 		const formattedWorkers: Worker[] = billData.workers.map(
 			(data: any) => ({
+				rowId: v4(),
 				id: data.Worker.id,
 				name: data.Worker.name,
 				work: data.Worker.work,

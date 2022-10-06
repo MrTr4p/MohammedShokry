@@ -10,12 +10,13 @@ import {
 	Section,
 	useStore,
 	Worker,
-} from "../../store";
-import Input from "../../components/Input";
-import WorkerInputTable from "../../components/WorkerInputTable";
-import ExpensesInputTable from "../../components/ExpensesInputTable";
-import RevenuesInputTable from "../../components/RevenuesInputTable";
-import BillPrintTypeModal from "../../components/BillPrintTypeModal";
+} from "../../../store";
+import Input from "../../../components/Input";
+import WorkerInputTable from "../../../components/WorkerInputTable";
+import ExpensesInputTable from "../../../components/ExpensesInputTable";
+import RevenuesInputTable from "../../../components/RevenuesInputTable";
+import BillPrintTypeModal from "../../../components/BillPrintTypeModal";
+import { v4 } from "uuid";
 
 function Public({ billData }: { billData: ProjectBill }) {
 	const {
@@ -41,6 +42,7 @@ function Public({ billData }: { billData: ProjectBill }) {
 	useEffect(() => {
 		const formattedWorkers: Worker[] = billData.workers.map(
 			(data: any) => ({
+				rowId: v4(),
 				id: data.Worker.id,
 				name: data.Worker.name,
 				work: data.Worker.work,
