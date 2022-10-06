@@ -11,13 +11,25 @@ export class WorkerService {
   async workersSearch(query: string = "") {
     const workers = await this.prisma.worker.findMany({});
     this.meili.index('workers').addDocuments(workers)
+    try{
     const workersResult = await this.meili.index('workers').search(query , {
       limit : 25
     })
-
     return {
       workers: workersResult.hits
     };
+  }
+  catch(e){
+    throw new HttpException(
+      {
+        status: HttpStatus.NOT_FOUND,
+        error: "لا توجد معلومات",
+      },
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  
   }
 
   async getWorkers() {

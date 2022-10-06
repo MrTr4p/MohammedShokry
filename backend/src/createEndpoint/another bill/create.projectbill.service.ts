@@ -52,7 +52,9 @@ export class CreateAnotherBillService {
     })
     console.log(ab)
     ab.push(res)
+
     this.meili.index('anotherBill').addDocuments(ab)
+
     return {message : "تم اضافة فاتورة خاصة بنجاح" , error : false};
   }
   }
