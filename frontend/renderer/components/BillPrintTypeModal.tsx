@@ -6,7 +6,7 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
-function BillPrintTypeModal() {
+function BillPrintTypeModal({ id }: { id: number }) {
 	const [value, setValue] = useState<"default" | "detaild" | "aggregate">(
 		"default",
 	);
@@ -99,14 +99,14 @@ function BillPrintTypeModal() {
 										<Link
 											href={
 												value
-													? `/preview/public/${value}`
+													? `/preview/public/${value}?id=${id}`
 													: "/"
 											}
 										>
 											<a
 												href={
 													value
-														? `/preview/public/${value}`
+														? `/preview/public/${value}?id=${id}`
 														: "/"
 												}
 											>

@@ -143,6 +143,7 @@ export interface newProjectBill {
 	sections: Section[];
 	date: string;
 
+	setExpenses: (data: Expense[]) => void;
 	setState: (data: ProjectBill) => void;
 	restState: () => void;
 	setName: (name: string) => void;
@@ -266,6 +267,12 @@ const projectBillSlice: StateCreator<
 			sections: [],
 			workers: [],
 		})),
+
+	setExpenses: (data) => {
+		set(() => ({
+			expenses: data,
+		}));
+	},
 	setName: (name) => set(() => ({ name })),
 	setClientName: (name) => set(() => ({ clientName: name })),
 	setClientAddress: (address) => set(() => ({ clientAddress: address })),
