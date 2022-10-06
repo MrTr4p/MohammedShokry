@@ -6,6 +6,7 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 const SecertaryPass = "sh2022";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
+import { MeiliSearchService } from "src/meilisearch.service";
 
 interface result {
   projectBills?: {
@@ -103,6 +104,7 @@ async function filter(
 
 @Injectable()
 export class AppService {
+  constructor(private meili : MeiliSearchService){}
   async login(req) {
     const body = req.body || { password: "" };
     if (body.password == AdminPass || body.password == SecertaryPass) {
@@ -123,6 +125,14 @@ export class AppService {
     }
   }
   async getAll(query) {
+    await Promise.all([
+      await this.meili.index('project').addDocuments(await prisma.projectBill.findMany()),
+      await this.meili.index('anotherBill').addDocuments(await prisma.anotherPaymentsBill.findMany()),
+      await this.meili.index('workers').addDocuments(await prisma.worker.findMany()),
+      await this.meili.index('section').addDocuments(await prisma.section.findMany()),
+    ]);
+
+    
     const result = await filter(
       query.abpage,
       query.ablimit,
