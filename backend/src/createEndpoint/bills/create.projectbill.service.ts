@@ -3,6 +3,7 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 import Fuse from "fuse.js";
 import { PrismaService } from "src/prisma.service";
 import { MeiliSearchService } from "src/meilisearch.service";
+import e from "express";
 
 async function Validation(body) {
   if (body.name) {
@@ -42,7 +43,7 @@ async function Validation(body) {
     for (let i = 0; i < body.revenues.length; i++) {
       const element = body.revenues[i];
       console.log(element)
-      if (!element.amount || !element.date)
+      if (!element.amount || !element.date || !element.section)
         throw new HttpException(
           "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
