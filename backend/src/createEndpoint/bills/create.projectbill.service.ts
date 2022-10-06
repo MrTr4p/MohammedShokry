@@ -5,8 +5,7 @@ const prisma = new PrismaClient();
 
 async function Validation(body) {
   if (body.name) {
-    if(!body.date || !body.clientName || !body.clientAddress )
-    {
+    if (!body.date || !body.clientName || !body.clientAddress) {
       throw new HttpException(
         "يجب ملئ مدخلات الصف الاول",
         HttpStatus.NOT_ACCEPTABLE,
@@ -15,7 +14,7 @@ async function Validation(body) {
 
     for (let i = 0; i < body.workers.length; i++) {
       const element = body.workers[i];
-      console.log(!element.project.date)
+      console.log(!element.project.date);
       if (!element.project.date || !element.project.salary)
         throw new HttpException(
           "يبدو انك قمت باضافة عمال . تحقق و تاكد ان المدخلات ليست فارغة",
@@ -24,7 +23,7 @@ async function Validation(body) {
     }
     for (let i = 0; i < body.expenses.length; i++) {
       const element = body.expenses[i];
-      console.log(element)
+      console.log(element);
       if (
         !element.materialName ||
         !element.date ||
@@ -37,17 +36,16 @@ async function Validation(body) {
         );
     }
 
-   
     for (let i = 0; i < body.revenues.length; i++) {
       const element = body.revenues[i];
-      console.log(element)
+      console.log(element);
       if (!element.amount || !element.date)
         throw new HttpException(
           "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
         );
     }
-  }else{
+  } else {
     throw new HttpException(
       "لقد حدث خطأ ما , يرجي التاكد من المدخلات",
       HttpStatus.NOT_ACCEPTABLE,
@@ -70,12 +68,15 @@ export class CreateBillService {
           clientAddress: body.clientAddress,
           clientName: body.clientName || null,
           date: body.date || null,
-          officePrecentage: body.officePrecentage || 0 ,
+          officePrecentage: body.officePrecentage || 0,
         },
       });
     } catch (e) {
-      console.log(e)
-      throw new HttpException("اسم هذا المشروع مستخدم في فاتورة مشروع مسبقا", HttpStatus.BAD_REQUEST);
+      console.log(e);
+      throw new HttpException(
+        "اسم هذا المشروع مستخدم في فاتورة مشروع مسبقا",
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const revenues = body.revenues;
