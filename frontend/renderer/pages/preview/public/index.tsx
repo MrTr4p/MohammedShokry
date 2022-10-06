@@ -18,7 +18,7 @@ import RevenuesInputTable from "../../../components/RevenuesInputTable";
 import BillPrintTypeModal from "../../../components/BillPrintTypeModal";
 import { v4 } from "uuid";
 
-function Public({ billData }: { billData: ProjectBill }) {
+function Public({ billData, id }: { billData: ProjectBill, id: number }) {
 	const {
 		clientName,
 		clientAddress,
@@ -162,7 +162,7 @@ function Public({ billData }: { billData: ProjectBill }) {
 					<RevenuesInputTable readOnly={true}></RevenuesInputTable>
 					<div></div>
 					<div className="bg-secondary flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
-						<BillPrintTypeModal></BillPrintTypeModal>
+						<BillPrintTypeModal id={id}></BillPrintTypeModal>
 						{infoMessage.message && (
 							<h1
 								className={`font-bold text-center text-lg ${
@@ -193,6 +193,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return {
 		props: {
 			billData,
+			id
 		},
 	};
 };
