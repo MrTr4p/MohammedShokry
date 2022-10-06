@@ -96,10 +96,12 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 					}`}
 				>
 					<Table
+						type="public"
 						title={"الفواتير العامة"}
 						data={homePublicBills}
 					></Table>
 					<Table
+						type="office"
 						title={"الفواتير الخاصة"}
 						data={homeOfficeBills}
 					></Table>

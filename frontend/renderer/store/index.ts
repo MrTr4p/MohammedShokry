@@ -5,9 +5,14 @@ import { produce } from "immer";
 import { v4 } from "uuid";
 import _ from "lodash";
 
-type RecursivePartial<T> = {
+export type RecursivePartial<T> = {
 	[P in keyof T]?: RecursivePartial<T[P]>;
 };
+
+export interface User {
+	loggedIn: boolean;
+	accountType: "edit" | "create";
+}
 
 export interface ProjectBill {
 	id: number;
@@ -55,6 +60,7 @@ export interface Expense {
 }
 
 export interface State {
+	user: User;
 	dropdownWorkers: Worker[];
 	homePublicBills: ProjectBill[];
 	homeOfficeBills: ProjectBill[];
@@ -416,6 +422,7 @@ export interface AnotherPaymentsBillStore {
 	date: string;
 	inReturn: string;
 	description?: string;
+	setState: (data: AnotherPaymentsBill) => void;
 	resetState: () => void;
 	saveBill: () => Promise<{ message: string; error: boolean }>;
 	editBill: () => Promise<{ message: string; error: boolean }>;
@@ -447,6 +454,17 @@ const anotherPaymentsBillStore: StateCreator<
 			description: "",
 			inReturn: "",
 			projectName: "",
+		}));
+	},
+
+	setState: (data) => {
+		set(() => ({
+			id: data.id,
+			amount: data.amount,
+			date: data.date,
+			description: data.description,
+			inReturn: data.inReturn,
+			projectName: data.projectName,
 		}));
 	},
 	editBill: async () => {
