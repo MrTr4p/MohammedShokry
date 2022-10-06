@@ -99,7 +99,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 						<tbody className="bg-base">
 							{workers.map((worker, workerNumber) => {
 								return (
-									<tr key={worker.id}>
+									<tr key={worker.rowId}>
 										<td className="p-2">
 											<Combobox
 												disabled={readOnly}
@@ -109,7 +109,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 													selected: Worker,
 												) => {
 													updateWorker(
-														worker.id,
+														worker.rowId,
 														selected,
 													);
 												}}
@@ -147,76 +147,63 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 														leaveTo="transform opacity-0 scale-95"
 													>
 														<Combobox.Options className="z-50 absolute px-2 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-															{dropdownWorkers
-																.filter(
-																	(worker) =>
-																		!workers.some(
-																			(
-																				newBillWorker,
-																			) =>
-																				newBillWorker.id ===
-																				worker.id,
-																		),
-																)
-																.map(
-																	(
-																		worker,
-																	) => (
-																		<Combobox.Option
-																			key={
-																				worker.id
-																			}
-																			className={({
-																				selected,
-																				active,
-																			}) =>
-																				`relative cursor-default select-none py-2 my-0.5 pl-10 pr-4 rounded-md ${
-																					selected
-																						? "bg-primary text-white"
-																						: active
-																						? "bg-primary-hover text-white"
-																						: "text-gray-900"
-																				}`
-																			}
-																			value={
-																				worker
-																			}
-																		>
-																			{({
-																				selected,
-																				active,
-																			}) => (
-																				<>
+															{dropdownWorkers.map(
+																(worker) => (
+																	<Combobox.Option
+																		key={
+																			worker.rowId
+																		}
+																		className={({
+																			selected,
+																			active,
+																		}) =>
+																			`relative cursor-default select-none py-2 my-0.5 pl-10 pr-4 rounded-md ${
+																				selected
+																					? "bg-primary text-white"
+																					: active
+																					? "bg-primary-hover text-white"
+																					: "text-gray-900"
+																			}`
+																		}
+																		value={
+																			worker
+																		}
+																	>
+																		{({
+																			selected,
+																			active,
+																		}) => (
+																			<>
+																				<span
+																					className={`block truncate ${
+																						selected
+																							? "font-medium"
+																							: "font-normal"
+																					}`}
+																				>
+																					{
+																						worker.name
+																					}
+																				</span>
+																				{selected && (
 																					<span
-																						className={`block truncate ${
+																						className={`absolute px-3 inset-y-0 left-0 flex items-center  ${
 																							selected
-																								? "font-medium"
-																								: "font-normal"
+																								? "text-white"
+																								: "text-primary"
 																						}`}
 																					>
-																						{
-																							worker.name
-																						}
+																						<CheckIcon
+																							className="h-5 w-5"
+																							aria-hidden="true"
+																						/>
 																					</span>
-																					{selected && (
-																						<span
-																							className={`absolute px-3 inset-y-0 left-0 flex items-center  ${
-																								selected
-																									? "text-white"
-																									: "text-primary"
-																							}`}
-																						>
-																							<CheckIcon
-																								className="h-5 w-5"
-																								aria-hidden="true"
-																							/>
-																						</span>
-																					)}
-																				</>
-																			)}
-																		</Combobox.Option>
-																	),
-																)}
+																				)}
+																			</>
+																		)}
+																	</Combobox.Option>
+																),
+															)}
 															<div className="my-2">
 																<button
 																	disabled={
@@ -245,7 +232,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 												type={"number"}
 												value={worker.project?.salary}
 												onChange={(e) =>
-													updateWorker(worker.id, {
+													updateWorker(worker.rowId, {
 														project: {
 															salary: Number(
 																e.target.value,
@@ -264,7 +251,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 													worker.project?.precentage
 												}
 												onChange={(e) =>
-													updateWorker(worker.id, {
+													updateWorker(worker.rowId, {
 														project: {
 															precentage: Number(
 																e.target.value,
@@ -281,7 +268,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 												type={"date"}
 												value={worker.project?.date}
 												onChange={(e) =>
-													updateWorker(worker.id, {
+													updateWorker(worker.rowId, {
 														project: {
 															date: e.target
 																.value,
@@ -297,7 +284,9 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 												<TableDeleteButton
 													disabled={readOnly}
 													onClick={() =>
-														removeWorker(worker.id)
+														removeWorker(
+															worker.rowId,
+														)
 													}
 												></TableDeleteButton>
 											</td>

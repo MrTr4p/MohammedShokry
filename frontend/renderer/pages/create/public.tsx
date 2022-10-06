@@ -1,6 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../components/Input";
 import { useStore } from "../../store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -28,6 +28,8 @@ function Public() {
 		error: false,
 	});
 
+	useEffect(() => restState(), []);
+
 	const router = useRouter();
 
 	async function handleSave() {
@@ -36,13 +38,12 @@ function Public() {
 				setInfoMessage({ message: result.message, error: false });
 				router.push("/");
 			})
-			.catch((err) =>{
+			.catch((err) => {
 				setInfoMessage({
 					message: err.response.data.message,
 					error: true,
-				})},
-			
-			);
+				});
+			});
 	}
 
 	return (

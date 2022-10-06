@@ -56,7 +56,6 @@ function BillPrintTypeModal() {
 											{ en: "detaild", ar: "تفصيلية" },
 											{ en: "aggregate", ar: "مجمعية" },
 											{ en: "worker", ar: "عمال" },
-
 										].map((el) => {
 											let selected = el.en == value;
 											return (
@@ -99,10 +98,18 @@ function BillPrintTypeModal() {
 									<div className="flex gap-2 w-full">
 										<Link
 											href={
-												value ? `/create/${value}` : "/"
+												value
+													? `/preview/public/${value}`
+													: "/"
 											}
 										>
-											<a href={`/create/${value}`}>
+											<a
+												href={
+													value
+														? `/preview/public/${value}`
+														: "/"
+												}
+											>
 												<Dialog.Close className="btn-primary px-6 h-full">
 													أكمل
 												</Dialog.Close>
