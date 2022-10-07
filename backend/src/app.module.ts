@@ -7,11 +7,12 @@ import { SearchModule } from './searchEndpoint/app.module';
 import { UpdateModule } from './updateEndpoint/create.module';
 import { PrismaService } from './prisma.service';
 import { DeleteModule } from './deleteEndpoint/get.module';
+import { MeiliSearchService } from './meilisearch.service';
 
 
 @Module({
   imports: [CreateModule , GetModule, SearchModule , UpdateModule, DeleteModule],
   controllers: [AppController],
-  providers: [AppService , PrismaService ],
+  providers: [AppService , PrismaService , MeiliSearchService],
 })
 export class AppModule {}

@@ -8,6 +8,6 @@ export class NormalBillController {
 
   @Delete("/bill")
   async getBill(@Query("id") id: number) {
-    return await this.appService.getBill(Number(id));
+    return await this.appService.deleteBill(Number(id));
   }
 }
