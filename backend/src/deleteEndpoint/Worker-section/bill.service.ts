@@ -10,27 +10,36 @@ import { PrismaService } from "src/prisma.service";
 export class GetService {
   constructor (private prisma : PrismaService) {}
   async deleteWorker(id:string){
+
+    await this.prisma.workerSalary.deleteMany({
+      where:{
+        WorkerId:id
+      }
+     })
    await this.prisma.worker.delete({
     where:{
       id: id
-    },
-    include:{
-      project:true
     }
    })
+
+   
   }
 
   async deleteSection(id: string){
+    
+    await this.prisma.expenses.deleteMany({
+      where:{
+        secionId: id
+      }
+    })
 
-
-      await this.prisma.section.delete({
+      const section = await this.prisma.section.delete({
         where:{
           id: id
-        },
-        include:{
-          expenses:true
         }
       })
+
+      
     }
       
     
