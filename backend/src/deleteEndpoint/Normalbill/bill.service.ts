@@ -4,14 +4,19 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 
 @Injectable()
-export class AnotherBilService {
+export class NormalBilService {
   constructor(private prisma: PrismaService) {}
-  async getBill(id: number) {
-    const bill = await this.prisma.anotherPaymentsBill.findFirst({
-      where: {
-        id: id,
+  async deleteBill(id: number) {
+    await this.prisma.projectBill.delete({
+      where:{
+        id:id
       },
-    });
-    return bill;
+      include: {
+        expenses:true,
+        revenues:true,
+        sections:true,
+        workers:true
+      }
+    })
   }
 }

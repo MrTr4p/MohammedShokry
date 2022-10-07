@@ -38,7 +38,7 @@ function AggregateBillTable({ readOnly }: IProps) {
 				setOpen={setModalOpen}
 			></CreateNewWorkerModal>
 			<div className="space-y-2">
-				<h1 className="text-black font-bold text-xl">المصروفات</h1>
+				<h1 className="text-black font-bold text-xl">المجمعية</h1>
 
 				<div className="border-2 border-secondary rounded-md">
 					<table className="table-auto w-full">
@@ -56,11 +56,13 @@ function AggregateBillTable({ readOnly }: IProps) {
 							</tr>
 						</thead>
 						<tbody className="bg-base">
-							
+                                    
 						</tbody>
 					</table>
 					{!readOnly && (
 						<div className="m-2">
+
+                            
 							<button
 								className="w-full btn-outline py-1"
 								onClick={() => addExpense("")}
