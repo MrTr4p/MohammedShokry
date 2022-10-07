@@ -1,7 +1,6 @@
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import React, { useEffect } from "react";
-import DetailedBillTable from "../../../components/DetailedBillTable";
 import { Expense, useStore } from "../../../store";
 
 function detaild({ billData }: { billData: Expense[] }) {
@@ -9,11 +8,7 @@ function detaild({ billData }: { billData: Expense[] }) {
 	useEffect(() => {
 		setExpenses(billData);
 	}, []);
-	return (
-		<div>
-			<DetailedBillTable readOnly={true}></DetailedBillTable>
-		</div>
-	);
+	return <div></div>;
 }
 
 export default detaild;

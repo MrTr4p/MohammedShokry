@@ -1,12 +1,9 @@
-import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import Input from "../../components/Input";
-import { useAnotherPaymentsBillStore, useStore } from "../../store";
+import { useAnotherPaymentsBillStore } from "../../store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import WorkerInputTable from "../../components/WorkerInputTable";
-import ExpensesInputTable from "../../components/ExpensesInputTable";
-import RevenuesInputTable from "../../components/RevenuesInputTable";
+
 import { useRouter } from "next/router";
 import TextArea from "../../components/Textarea";
 function Office() {
@@ -16,7 +13,6 @@ function Office() {
 		inReturn,
 		projectName,
 		description,
-		editBill,
 		saveBill,
 		setAmount,
 		setDate,
@@ -34,17 +30,13 @@ function Office() {
 	const router = useRouter();
 
 	async function handleSave() {
-		saveBill()
-			.then((result) => {
-				setInfoMessage({ message: result.message, error: false });
+		saveBill().then((result) => {
+			setInfoMessage({ message: result.message, error: result.error });
+			if (!result.error) {
+				resetState();
 				router.push("/");
-			})
-			.catch((err) => {
-				setInfoMessage({
-					message: err.response.data.message,
-					error: true,
-				});
-			});
+			}
+		});
 	}
 
 	return (

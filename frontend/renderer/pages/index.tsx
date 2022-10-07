@@ -89,7 +89,7 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 				</form>
 
 				<div
-					className={`flex flex-col lg:flex-row md:gap-4 lg:gap-6 relative ${
+					className={`flex flex-col lg:flex-row gap-4 lg:gap-6 relative ${
 						searchState === "loading" &&
 						"select-none pointer-events-none"
 					}`}

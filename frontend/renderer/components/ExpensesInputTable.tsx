@@ -31,7 +31,7 @@ function ExpensesInputTable({ readOnly }: IProps) {
 
 	useEffect(() => {
 		if (!searchQuery) return setSearchResults(sections);
-		const sectionsFuse = new Fuse(sections, { keys: ["name"] });
+		const sectionsFuse = new Fuse<Section>(sections, { keys: ["name"] });
 		setSearchResults(sectionsFuse.search(searchQuery).map((x) => x.item));
 	}, [searchQuery, sections]);
 

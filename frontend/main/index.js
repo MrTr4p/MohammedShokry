@@ -19,6 +19,7 @@ electron_1.app.on("ready", async () => {
         width: 800,
         height: 800,
         minWidth: 650,
+        minHeight: 450,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: false,

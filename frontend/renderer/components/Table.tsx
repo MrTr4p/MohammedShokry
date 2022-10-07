@@ -2,7 +2,9 @@ import {
 	CalendarDaysIcon,
 	DocumentMagnifyingGlassIcon,
 	PencilSquareIcon,
+	TrashIcon,
 } from "@heroicons/react/24/outline";
+import axios from "axios";
 import Link from "next/link";
 import React from "react";
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
@@ -17,14 +19,33 @@ function Table({
 	data: any[];
 }) {
 	const user = useStore((state) => state.user);
+	const removeHomePublicBill = useStore(
+		(state) => state.removeHomePublicBill,
+	);
+	const removeHomeOfficeBill = useStore(
+		(state) => state.removeHomeOfficeBill,
+	);
+
+	async function handleDelete(id: number) {
+		if (type === "office") {
+			removeHomeOfficeBill(id);
+		} else {
+			removeHomePublicBill(id);
+		}
+
+		console.log(type, id);
+	}
 
 	return (
-		<div className="flex flex-col items-start gap-4 w-full">
+		<div className="flex flex-col items-start gap-4 w-full overflow-x-scroll">
 			{title && <h1 className="text-black font-bold text-xl">{title}</h1>}
 
-			<table className="table-auto w-full border-2 border-secondary rounded-md">
+			<table className="table-auto w-full border-2 border-secondary rounded-md ">
 				<thead className="bg-secondary">
 					<tr className="">
+						<th className="p-2 text-start whitespace-nowrap">
+							الأعدادات
+						</th>
 						<th className="p-2 text-start whitespace-nowrap">
 							رقم الفاتورة
 						</th>
@@ -46,31 +67,50 @@ function Table({
 						return (
 							<tr
 								className=" align-middle"
-								key={row.id + row.clientName}
+								key={`${row.clientName}/${row.id}`}
 							>
-								<td className="p-2 flex items-center gap-2 ">
+								<td
+									className={`p-2 flex items-center gap-2 ${
+										user.accountType === "edit"
+											? "w-32"
+											: "w-8"
+									}`}
+								>
 									{user.accountType === "edit" && (
-										<Link
-											href={`/edit/${type}?id=${row.id}`}
-										>
-											<a
-												href={`/edit/bill/${type}?id=${row.id}`}
-												className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-2 py-1"
+										<>
+											<button
+												onClick={() =>
+													handleDelete(row.id)
+												}
+												className="transition bg-red-500 border border-black/25 hover:bg-red-400 justify-center text-base active:bg-red-600 drop-shadow rounded-md px-1 py-1"
 											>
-												<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
-											</a>
-										</Link>
+												<TrashIcon className="w-6 h-6"></TrashIcon>
+											</button>
+											<Link
+												href={`/edit/${type}?id=${row.id}`}
+											>
+												<a
+													href={`/edit/bill/${type}?id=${row.id}`}
+													className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1"
+												>
+													<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
+												</a>
+											</Link>
+										</>
 									)}
 									<Link
 										href={`/preview/${type}?id=${row.id}`}
 									>
 										<a
 											href={`/preview/${type}?id=${row.id}`}
-											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-2 py-1"
+											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1"
 										>
 											<DocumentMagnifyingGlassIcon className="w-6 h-6"></DocumentMagnifyingGlassIcon>
 										</a>
 									</Link>
+								</td>
+
+								<td className="p-2 ">
 									<span>{row.id}#</span>
 								</td>
 
@@ -88,7 +128,6 @@ function Table({
 										<span>{row.projectName}</span>
 									</td>
 								)}
-
 								<td className="p-2  ">
 									<div className="flex items-center gap-2">
 										<CalendarDaysIcon className="w-5 h-5"></CalendarDaysIcon>

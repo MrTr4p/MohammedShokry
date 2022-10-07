@@ -11,7 +11,7 @@ export type RecursivePartial<T> = {
 
 export interface User {
 	loggedIn: boolean;
-	accountType: "edit" | "create" | "none";
+	accountType: "edit" | "create";
 }
 
 export interface ProjectBill {
@@ -72,6 +72,8 @@ export interface State {
 	setDropdownWorkers: (workers: Worker[]) => void;
 	newDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
 	setSearchState: (state: "empty" | "loading" | "found") => void;
+	removeHomePublicBill: (billId: number) => Promise<void>;
+	removeHomeOfficeBill: (billId: number) => Promise<void>;
 }
 
 const storeSlice: StateCreator<
@@ -108,6 +110,31 @@ const storeSlice: StateCreator<
 
 		return { message: "الرمز السرى صحيح", error: false };
 	},
+
+	removeHomePublicBill: async (billId) => {
+		let { data } = await axios({
+			url: `http://localhost:3000/delete/bill?id=${billId}`,
+			method: "delete",
+		});
+
+		set((state) => ({
+			homePublicBills: state.homePublicBills.filter(
+				(bill) => bill.id !== billId,
+			),
+		}));
+	},
+	removeHomeOfficeBill: async (billId) => {
+		let { data } = await axios({
+			url: `http://localhost:3000/delete/bill/another?id=${billId}`,
+			method: "delete",
+		});
+		set((state) => ({
+			homeOfficeBills: state.homeOfficeBills.filter(
+				(bill) => bill.id !== billId,
+			),
+		}));
+	},
+
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
 	setDropdownWorkers: (workers) =>

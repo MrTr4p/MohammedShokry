@@ -49,21 +49,19 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 	}, []);
 
 	useEffect(() => {
-		if (!searchQuery) return;
-		let searchDebounce = setTimeout(
-			() =>
-				axios({
-					url:
-						"http://localhost:3000/search/workers?query=" +
-						encodeURIComponent(searchQuery),
-				}).then(({ data }) => {
-					console.log(data);
-					setDropdownWorkers(data.workers);
-				}),
-			350,
-		);
+		const controller = new AbortController();
 
-		return () => clearTimeout(searchDebounce);
+		axios({
+			url:
+				"http://localhost:3000/search/workers?query=" +
+				encodeURIComponent(searchQuery),
+			signal: controller.signal,
+		}).then(({ data }) => {
+			console.log(data);
+			setDropdownWorkers(data.workers);
+		});
+
+		return () => controller.abort();
 	}, [searchQuery]);
 
 	return (
