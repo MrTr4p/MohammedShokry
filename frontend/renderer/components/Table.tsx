@@ -8,6 +8,7 @@ import axios from "axios";
 import Link from "next/link";
 import React from "react";
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 function Table({
 	data,
@@ -78,14 +79,15 @@ function Table({
 								>
 									{user.accountType === "edit" && (
 										<>
-											<button
-												onClick={() =>
+											<ConfirmDeleteModal
+												onConfirm={() =>
 													handleDelete(row.id)
 												}
-												className="transition bg-red-500 border border-black/25 hover:bg-red-400 justify-center text-base active:bg-red-600 drop-shadow rounded-md px-1 py-1"
 											>
-												<TrashIcon className="w-6 h-6"></TrashIcon>
-											</button>
+												<div className="transition bg-red-500 border border-black/25 hover:bg-red-400 justify-center text-base active:bg-red-600 drop-shadow rounded-md px-1 py-1">
+													<TrashIcon className="w-6 h-6"></TrashIcon>
+												</div>
+											</ConfirmDeleteModal>
 											<Link
 												href={`/edit/${type}?id=${row.id}`}
 											>
