@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			{user.loggedIn && <Navbar></Navbar>}
-			<div className="container mt-12">
+			<div className="container print:max-w-full mt-12">
 				<Component {...pageProps} />
 			</div>
 		</>

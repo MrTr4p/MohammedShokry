@@ -56,7 +56,7 @@ function Input({
 				placeholder={placeholder}
 				onChange={onChange}
 				disabled={disabled}
-				className={`border-gray-400 border-2 border-dashed w-full h-9 focus:outline-none ${
+				className={`border-gray-400 print:border-solid text-right border-2 border-dashed w-full h-9 focus:outline-none ${
 					error ? "border-red-600 focus:border-red-600" : ""
 				} focus:border-primary focus:border-solid py-1 px-2 rounded-md transition ${iclassName}`}
 			/>

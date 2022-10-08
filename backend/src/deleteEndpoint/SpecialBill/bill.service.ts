@@ -6,7 +6,7 @@ import { PrismaService } from "src/prisma.service";
 @Injectable()
 export class AnotherBilService {
   constructor(private prisma: PrismaService) {}
-  async deleteBill(id : number) {
+  async deleteBill(id: number) {
     await this.prisma.anotherPaymentsBill.delete({
       where: {
         id: id,

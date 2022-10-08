@@ -50,7 +50,7 @@ function TextArea({
 				value={value}
 				placeholder={placeholder}
 				onChange={onChange}
-				className={`border-gray-400 border-2 border-dashed w-full h-40 focus:outline-none ${
+				className={`border-gray-400 print:border-solid border-2 border-dashed w-full h-40 focus:outline-none ${
 					error ? "border-red-600 focus:border-red-600" : ""
 				} focus:border-primary focus:border-solid py-1 px-2 rounded-md transition ${iclassName}`}
 			/>

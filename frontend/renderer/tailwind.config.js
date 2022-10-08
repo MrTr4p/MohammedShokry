@@ -27,6 +27,9 @@ module.exports = {
 			},
 		},
 		extend: {
+			backgroundImage: {
+				"bill-background": "url('/images/bill-background.png')",
+			},
 			fontFamily: {
 				cairo: ["Cairo", "sans-serif"],
 			},

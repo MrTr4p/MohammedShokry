@@ -58,9 +58,9 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 			<header className="flex justify-between items-start">
 				<div className="flex flex-col items-start gap-2">
 					<h1 className="text-black font-bold text-3xl">
-						أضافة فاتورة خاصة جديدة
+						تعديل فاتورة خاصة
 					</h1>
-					<p>هنا يمكنك ملئ الحقول لصنع فاتورة خاصة (فاتورة اخرى)</p>
+					<p>هنا يمكنك ملئ الحقول لتعديل فاتورة خاصة (فاتورة اخرى)</p>
 				</div>
 				<Link href="/">
 					<a
