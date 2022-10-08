@@ -46,7 +46,11 @@ export class UpdateAnotherBillService {
       }
     })
     try {
-    const res = await this.prisma.anotherPaymentsBill.create({
+    const res = await this.prisma.anotherPaymentsBill.update({
+      where:{
+        id: oldBill.id
+
+      },
       data:{
         projectName: body.name || oldBill.projectName,
         date:body.date || oldBill.date,
