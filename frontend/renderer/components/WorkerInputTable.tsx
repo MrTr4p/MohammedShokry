@@ -12,7 +12,7 @@ import Input from "./Input";
 import axios from "axios";
 import CreateNewWorkerModal from "./CreateNewWorkerModal";
 import TableDeleteButton from "./TableDeleteButton";
-
+import DeleteWorkerButton from "./DeleteWorkerButton"
 interface IProps {
 	readOnly?: boolean;
 }
@@ -172,6 +172,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 																			active,
 																		}) => (
 																			<>
+																				<div className="flex">
 																				<span
 																					className={`block truncate ${
 																						selected
@@ -182,10 +183,14 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 																					{
 																						worker.name
 																					}
+																					
 																				</span>
+																				
+																				</div>
+																				<div className="flex row">
 																				{selected && (
 																					<span
-																						className={`absolute px-3 inset-y-0 left-0 flex items-center  ${
+																						className={`absolute px-12 inset-y-0 left-0 flex items-center  ${
 																							selected
 																								? "text-white"
 																								: "text-primary"
@@ -197,6 +202,17 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 																						/>
 																					</span>
 																				)}
+																				{!readOnly && (
+											<td className="absolute px-3 inset-y-0 left-0 flex items-center">
+												<DeleteWorkerButton
+													disabled={readOnly}
+													onClick={() =>
+														console.log(worker.name)
+													}
+												></DeleteWorkerButton>
+											</td>
+										)}
+																				</div>
 																			</>
 																		)}
 																	</Combobox.Option>
