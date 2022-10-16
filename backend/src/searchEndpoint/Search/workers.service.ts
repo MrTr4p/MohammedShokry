@@ -27,7 +27,9 @@ export class WorkerService {
   }
 
   async getWorkers() {
-    return await this.prisma.worker.findMany({ take: 25 });
+    const workers = await this.prisma.worker.findMany({ take: 25 });
+    console.log(workers)
+    return workers
   }
 
   async getWorker(id: string): Promise<Worker> {

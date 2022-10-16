@@ -38,7 +38,7 @@ model Worker {
   id        String         @id @default(uuid())
   name      String         @unique
   work      String
-  project   WorkerSalary[]
+  project   WorkerSalary[] 
   updatedAt DateTime       @updatedAt
   createdAt DateTime       @default(now())
 }
@@ -48,8 +48,8 @@ model WorkerSalary {
   amount        Int
   precentage    Int?
   date          String
-  Worker        Worker      @relation(fields: [WorkerId], references: [id])
-  WorkerId      String
+  Worker        Worker      @relation(fields: [WorkerId], references: [id] , onDelete: Cascade)
+  WorkerId      String      
   ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
   projectBillId Int
   updatedAt     DateTime    @updatedAt
