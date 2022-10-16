@@ -8,7 +8,11 @@ function detaild({ billData }: { billData: Expense[] }) {
 	useEffect(() => {
 		setExpenses(billData);
 	}, []);
-	return <div></div>;
+	return <div>
+		<button className="mx-auto pa-12">
+			TRY THIS ASSHOLE
+		</button>
+	</div>;
 }
 
 export default detaild;

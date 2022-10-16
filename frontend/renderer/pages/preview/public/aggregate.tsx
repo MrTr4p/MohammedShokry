@@ -5,9 +5,16 @@ import AggregateBillTable from "../../../components/AggregateBillTable";
 import { Expense, useStore } from "../../../store";
 
 function aggregate({ billData }: { billData: Expense[] }) {
+	function tryhere(){
+		alert('u r gay')
+	}
 	return (
 		<div>
 			<AggregateBillTable readOnly={true}></AggregateBillTable>
+
+			<button onClick ={tryhere} className=" flex my-16 outline mx-auto pa-12">
+			TRY THIS ASSHOLE
+		</button>
 		</div>
 	);
 }

@@ -25,11 +25,13 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 		workers,
 		dropdownWorkers,
 		setDropdownWorkers,
+		removeDropdownWorker,
 		addWorker,
 		updateWorker,
 		removeWorker,
 	} = useStore((state) => ({
 		workers: state.workers,
+		removeDropdownWorker:state.removeDropdownWorker,
 		dropdownWorkers: state.dropdownWorkers,
 		setDropdownWorkers: state.setDropdownWorkers,
 		addWorker: state.addWorker,
@@ -207,7 +209,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 												<DeleteWorkerButton
 													disabled={readOnly}
 													onClick={() =>
-														console.log(worker.name)
+														removeDropdownWorker(worker.id)
 													}
 												></DeleteWorkerButton>
 											</td>

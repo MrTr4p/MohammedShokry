@@ -3,22 +3,18 @@ import {
 	DocumentMagnifyingGlassIcon,
 	PencilSquareIcon,
 	TrashIcon,
-} from "@heroicons/react/24/outline";
-import axios from "axios";
-import Link from "next/link";
-import React from "react";
-import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
+	
 
-function Table({
-	data,
-	title,
-	type = "public",
-}: {
-	title?: string;
-	type: "office" | "public";
-	data: any[];
-}) {
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
+import React , {useState} from "react";
+import {useStore } from "../store";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import Pagination from './Pagination'
+import { dataItem } from "react-widgets/cjs/Accessors";
+
+function Table({data,title,type = "public",} : { title?: string;type: "office" | "public";data: any[];}) {
+	console.log(data)
 	const user = useStore((state) => state.user);
 	const removeHomePublicBill = useStore(
 		(state) => state.removeHomePublicBill,
@@ -26,7 +22,6 @@ function Table({
 	const removeHomeOfficeBill = useStore(
 		(state) => state.removeHomeOfficeBill,
 	);
-
 	async function handleDelete(id: number) {
 		if (type === "office") {
 			removeHomeOfficeBill(id);
@@ -36,6 +31,13 @@ function Table({
 
 		console.log(type, id);
 	}
+	function handlePageClick () {
+
+	  };
+	 
+	
+	
+	  
 
 	return (
 		<div className="flex flex-col items-start gap-4 w-full overflow-x-scroll">
@@ -141,8 +143,12 @@ function Table({
 					})}
 				</tbody>
 			</table>
+			<div className="mx-auto">
+			<Pagination data = {data}></Pagination>
+			</div>
 		</div>
 	);
 }
 
 export default Table;
+

@@ -59,7 +59,32 @@ export interface Expense {
 	day: string;
 	date: string;
 }
-
+export interface pagination{
+	pageNumber : number;
+	
+	
+}
+interface Pagination {
+	totalCount: number;
+	firstPage:boolean;
+    lastPage: boolean;
+    currentPage: number;
+	increase: (by: number) => void
+  }
+  
+  const useBearStore = create<Pagination>()((set) => ({
+	totalCount: 1,
+	firstPage:true,
+	lastPage:false,
+	currentPage:1,
+	fetch: async(totalCount) =>{
+		const response = await axios({
+			url: ``,
+		});
+		set({totalCount : await response.data})
+	},
+	increase: (by) => set((state) => ({ currentPage: state.currentPage + by })),
+  }))
 export interface State {
 	user: User;
 	dropdownWorkers: Worker[];
@@ -70,6 +95,7 @@ export interface State {
 	setHomePublicBills: (projectBills: ProjectBill[]) => void;
 	setHomeOfficeBills: (projectBills: ProjectBill[]) => void;
 	setDropdownWorkers: (workers: Worker[]) => void;
+	removeDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
 	newDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
 	setSearchState: (state: "empty" | "loading" | "found") => void;
 	removeHomePublicBill: (billId: number) => Promise<void>;
@@ -149,6 +175,17 @@ const storeSlice: StateCreator<
 			url: "http://localhost:3000/create/worker",
 			method: "POST",
 			data: workerData,
+		});
+
+		set((state) => {
+			return { dropdownWorkers: [...state.dropdownWorkers, data] };
+		});
+	},
+	removeDropdownWorker: async (workerData) => {
+		console.log(workerData)
+		let { data } = await axios({
+			url: "http://localhost:3000/delete/worker?id=" + workerData,
+			method: "delete",
 		});
 
 		set((state) => {
@@ -292,7 +329,7 @@ const projectBillSlice: StateCreator<
 			expenses: [],
 			revenues: [],
 			sections: [],
-			workers: [],
+			workers: [],	
 		})),
 
 	setExpenses: (data) => {

@@ -11,16 +11,18 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import BillTypeModal from "../components/BillTypeModal";
 import Table from "../components/Table";
-import { ProjectBill, useStore } from "../store";
+import {  AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 
 interface IProps {
 	publicBills: ProjectBill[];
-	officeBills: ProjectBill[];
+	officeBills: AnotherPaymentsBill[];
 }
 
 const IndexPage = ({ publicBills, officeBills }: IProps) => {
+	console.log()
 	const homePublicBills = useStore((state) => state.homePublicBills);
 	const homeOfficeBills = useStore((state) => state.homeOfficeBills);
+	
 	const searchState = useStore((state) => state.searchState);
 	const searchRef = useRef();
 	const setHomePublicBills = useStore((state) => state.setHomePublicBills);
@@ -103,7 +105,8 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 						type="office"
 						title={"الفواتير الخاصة"}
 						data={homeOfficeBills}
-					></Table>
+					>						
+					</Table>
 
 					<AnimatePresence>
 						{searchState === "loading" && (
@@ -151,19 +154,22 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const PAGE_SIZE = 50;
+	const PAGE_SIZE = 5;
 	const PAGE = 1;
 
 	const { data: billsData } = await axios({
 		url: `http://localhost:3000/getAll?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE_SIZE}`,
 	});
-
+	
 	const { projectBills, anotherBills } = billsData;
-
 	return {
 		props: {
 			publicBills: projectBills.data,
 			officeBills: anotherBills.data,
+			publicPagination : projectBills.pagination,
+			officePagination : anotherBills.pagination
 		},
+		
 	};
+
 };
