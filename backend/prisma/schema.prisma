@@ -81,7 +81,7 @@ model Expenses {
   materialName  String
   date          String
   totalcost     Int
-  section       Section?     @relation(fields: [secionId], references: [id])
+  section       Section?     @relation(fields: [secionId], references: [id] , onDelete: Cascade)
   secionId      String?
   day           String
   ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])

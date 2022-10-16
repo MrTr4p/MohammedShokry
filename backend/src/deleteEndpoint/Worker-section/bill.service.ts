@@ -4,52 +4,51 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { MeiliSearchService } from "src/meilisearch.service";
 
-
-
-
 @Injectable()
 export class GetService {
-  constructor (private prisma : PrismaService , private meili : MeiliSearchService) {}
+  constructor(
+    private prisma: PrismaService,
+    private meili: MeiliSearchService,
+  ) {}
 
-  async deleteWorker(id:string){
-    console.log('Delete worker')
+  async deleteWorker(id: string) {
+    console.log("Delete worker");
     const worker = await this.prisma.worker.findFirst({
-      where:{
-        id : id
-      }
-    })
-    console.log(worker)
-    if(worker){
-      await this.prisma.worker.deleteMany({
-        where:{
-          id: worker.id
-        }
-       })
-      await this.meili.index('workers').deleteDocument(worker.id)
+      where: {
+        id: id,
+      },
+    });
+    console.log(worker);
+    if (worker) {
+      await this.prisma.worker.delete({
+        where: {
+          id: worker.id,
+        },
+        include: {
+          project: true,
+        },
+      });
+      await this.meili.index("workers").deleteDocument(worker.id);
     }
-   
   }
 
-  async deleteSection(id: string){
-    
-    await this.prisma.expenses.deleteMany({
-      where:{
-        secionId: id
-      }
-    })
+  async deleteSection(id: string) {
+    const section = await this.prisma.section.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    if (section) {
+      await this.prisma.section.delete({
+        where: {
+          id: id,
+        },
+        include: {
+          expenses: true,
+        },
+      });
 
-      const section = await this.prisma.section.delete({
-        where:{
-          id: id
-        }
-      })
-
-      
+      await this.meili.index("section").deleteDocument(section.id);
     }
-      
-    
-
-    
   }
-
-
+}
