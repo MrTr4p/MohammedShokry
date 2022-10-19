@@ -6,6 +6,7 @@ import {
 }
 from '@heroicons/react/24/outline'
 type Props = {}
+import {GetServerSideProps} from 'next'
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import axios from "axios";
 
@@ -38,3 +39,17 @@ function Pagination ({data} : {data: any[];}) {
 
 export default Pagination
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const id: string = context.query.id as string;
+
+	const { data: billData } = await axios({
+		url: `http://localhost:3000/bill/all/get?id=` + id,
+	});
+
+	return {
+		props: {
+			billData,
+			id
+		},
+	};
+};

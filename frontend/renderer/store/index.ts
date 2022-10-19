@@ -100,6 +100,7 @@ export interface State {
 	setSearchState: (state: "empty" | "loading" | "found") => void;
 	removeHomePublicBill: (billId: number) => Promise<void>;
 	removeHomeOfficeBill: (billId: number) => Promise<void>;
+	removeSectionDropDown: (section: RecursivePartial<Section>) => Promise<void>;
 }
 
 const storeSlice: StateCreator<
@@ -185,6 +186,17 @@ const storeSlice: StateCreator<
 		console.log(workerData)
 		let { data } = await axios({
 			url: "http://localhost:3000/delete/worker?id=" + workerData,
+			method: "delete",
+		});
+
+		set((state) => {
+			return { dropdownWorkers: [...state.dropdownWorkers, data] };
+		});
+	},
+	removeSectionDropDown: async (sectiondata) => {
+		console.log(sectiondata)
+		let { data } = await axios({
+			url: "http://localhost:3000/delete/section?id=" + sectiondata,
 			method: "delete",
 		});
 

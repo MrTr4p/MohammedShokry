@@ -13,6 +13,8 @@ import axios from "axios";
 import CreateNewWorkerModal from "./CreateNewWorkerModal";
 import TableDeleteButton from "./TableDeleteButton";
 import DeleteWorkerButton from "./DeleteWorkerButton"
+import Link from "next/link";
+
 interface IProps {
 	readOnly?: boolean;
 }
@@ -206,12 +208,18 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 																				)}
 																				{!readOnly && (
 											<td className="absolute px-3 inset-y-0 left-0 flex items-center">
+												<Link  href='/'
+                     
+					  >
+												<a>
 												<DeleteWorkerButton
 													disabled={readOnly}
 													onClick={() =>
 														removeDropdownWorker(worker.id)
 													}
 												></DeleteWorkerButton>
+												</a>
+												</Link>
 											</td>
 										)}
 																				</div>

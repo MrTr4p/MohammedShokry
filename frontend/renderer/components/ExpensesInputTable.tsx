@@ -10,6 +10,8 @@ import Input from "./Input";
 import CreateNewWorkerModal from "./CreateNewSectionModal";
 import TableDeleteButton from "./TableDeleteButton";
 import Fuse from "fuse.js";
+import Link from 'next/link'
+import DeleteWorkerButton from './DeleteWorkerButton'
 
 interface IProps {
 	readOnly?: boolean;
@@ -27,6 +29,7 @@ function ExpensesInputTable({ readOnly }: IProps) {
 		removeExpense,
 		sections,
 		addSection,
+		removeSectionDropDown
 	} = useStore((state) => state);
 
 	useEffect(() => {
@@ -154,9 +157,10 @@ function ExpensesInputTable({ readOnly }: IProps) {
 																						section.name
 																					}
 																				</span>
+																				<div className="flex row">
 																				{selected && (
 																					<span
-																						className={`absolute px-3 inset-y-0 left-0 flex items-center  ${
+																						className={`absolute px-12 inset-y-0 left-0 flex items-center  ${
 																							selected
 																								? "text-white"
 																								: "text-primary"
@@ -168,6 +172,21 @@ function ExpensesInputTable({ readOnly }: IProps) {
 																						/>
 																					</span>
 																				)}
+																				{!readOnly && (
+											<td className="absolute px-3 inset-y-0 left-0 flex items-center">
+												<Link  href='/'>
+												<a>
+												<DeleteWorkerButton
+													disabled={readOnly}
+													onClick={() =>
+														removeSectionDropDown(section.id)
+													}
+												></DeleteWorkerButton>
+												</a>
+												</Link>
+											</td>
+										)}
+																				</div>
 																			</>
 																		)}
 																	</Combobox.Option>

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import AggregateBillTable from "../../../components/AggregateBillTable";
 import { Expense, useStore } from "../../../store";
 
-function aggregate({ billData }: { billData: Expense[] }) {
+function aggregate({ billData }: { billData: Worker[] }) {
 	function tryhere(){
 		alert('u r gay')
 	}
