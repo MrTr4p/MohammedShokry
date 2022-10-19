@@ -43,12 +43,15 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 	}));
 
 	useEffect(() => {
+		console.log('//')
 		if (!(dropdownWorkers.length > 0)) {
 			axios({
 				url: "http://localhost:3000/search/workers/get",
 			}).then(({ data }) => {
+				console.log(data)
 				setDropdownWorkers(data);
 			});
+			
 		}
 	}, []);
 
