@@ -11,9 +11,25 @@ import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import axios from "axios";
 
 function Pagination (page) {
-    function handlePageClick (data){
+    async function handlePageClick (data){
             page = data.selected + 1
 			console.log(page)
+			const { data: billsData } = await axios({
+				url: `http://localhost:3000/getAll?abpage=${page}&ablimit=${11}&bpage=${page}&blimit=${10}`,
+			});	
+			const { projectBills, anotherBills } = billsData;
+			console.log(billsData)
+			return {
+				props: {
+					PAGE:page,
+					publicBills: projectBills.data,
+					officeBills: anotherBills.data,
+					publicPagination : projectBills.pagination,
+					officePagination : anotherBills.pagination
+				},
+				
+			};
+			
     }
     function idk (){
         console.log('data')

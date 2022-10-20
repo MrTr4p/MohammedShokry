@@ -8,7 +8,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import BillTypeModal from "../components/BillTypeModal";
 import Pagination from "../components/Pagination";
 import Table from "../components/Table";
@@ -30,7 +30,8 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	const setHomeOfficeBills = useStore((state) => state.setHomeOfficeBills);
 	const pagenumber = pagination.currentPage
 	const setSearchState = useStore((state) => state.setSearchState);
-	
+	const [numberofpages, setnumberofpages] = useState("");
+
 	async function search(e: any) {
 		e.preventDefault();
 		if (searchState === "loading") return;

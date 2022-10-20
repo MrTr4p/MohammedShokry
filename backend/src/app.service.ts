@@ -38,7 +38,7 @@ async function filter(
   bpageReq: number,
   blimitReq: number,
 ) {
-  console.log("/home");
+  console.log(pageReq , limitReq , bpageReq , blimitReq)
   let anotherBills = { pagination: {}, data: {} } as any;
   let projectbill = { pagination: {}, data: {} } as any;
   let result = {};
@@ -147,8 +147,8 @@ export class AppService {
 
     
     const result = await filter(
-      query.ablimit,
       query.abpage,
+      query.ablimit,
       query.bpage,
       query.blimit,
     );
