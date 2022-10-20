@@ -1,20 +1,20 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import Image from "next/image";
-import Logo from "../../../public/images/logo.png";
+import Logo from "../public/images/logo.png";
 
 import {
 	CheckIcon,
 	ChevronUpDownIcon,
 	PlusIcon,
 } from "@heroicons/react/24/outline";
-import { Section, useStore, Worker } from "../../../store";
-import Input from "../../../components/Input";
-import CreateNewWorkerModal from "../../../components/CreateNewSectionModal";
-import TableDeleteButton from "../../../components/TableDeleteButton";
+import { Section, useStore, Worker } from "../store";
+import Input from "./Input";
+import CreateNewWorkerModal from "./CreateNewSectionModal";
+import TableDeleteButton from "./TableDeleteButton";
 import Fuse from "fuse.js";
 import Link from 'next/link'
-import DeleteWorkerButton from '../../../components/DeleteWorkerButton'
+import DeleteWorkerButton from './DeleteWorkerButton'
 
 interface IProps {
 	readOnly?: boolean;

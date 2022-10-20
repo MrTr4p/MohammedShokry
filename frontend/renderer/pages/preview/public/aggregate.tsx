@@ -11,11 +11,23 @@ function aggregate(billData) {
 	}
 	return (
 		<div>
-			<Image src={backgroundImage} layout="fill" />
-			<AggregateBillTable readOnly={true}></AggregateBillTable>
+		
+			<AggregateBillTable Date ={billData} readOnly={true}></AggregateBillTable>
 		</div>
 	);
 }
 
 export default aggregate;
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const id: string = context.query.id as string;
+	const { data: billData } = await axios({
+		url: `http://localhost:3000/bill/aggregate/get?id=` + id,
+	});
+	
+	return {
+		props: {
+			billData
+		},
+	};
+};

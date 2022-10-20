@@ -53,7 +53,7 @@ function BillPrintTypeModal({ id }: { id: number }) {
 										}}
 									>
 										{[
-											{ en: "revenues", ar: "تفصيلية" },
+											{ en: "expenses", ar: "تفصيلية" },
 											{ en: "aggregate", ar: "مجمعية" },
 											{ en: "worker", ar: "عمال" },
 										].map((el) => {

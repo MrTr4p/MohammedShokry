@@ -129,7 +129,11 @@ export class AppService {
   }
   async getAll(query) {
     await Promise.all([
-      await this.meili.index('project').addDocuments(await prisma.projectBill.findMany()),
+      await this.meili.index('project').deleteAllDocuments(),
+      await this.meili.index('anotherBill').deleteAllDocuments(),
+      await this.meili.index('workers').deleteAllDocuments(),
+      await this.meili.index('section').deleteAllDocuments(),
+      await this.meili.index('project').deleteAllDocuments(),
       await this.meili.index('anotherBill').addDocuments(await prisma.anotherPaymentsBill.findMany()),
       await this.meili.index('workers').addDocuments(await prisma.worker.findMany()),
       await this.meili.index('section').addDocuments(await prisma.section.findMany()),

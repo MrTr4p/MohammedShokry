@@ -10,6 +10,8 @@ export class AggregateBilService {
   constructor(private prisma : PrismaService) {}
 
   async getAggregateBill(param) {
+    console.log('//')
+    let result = []
     let workersArray = [];
     let expensesArray = [];
     let finalWorkersBill = [];
@@ -49,11 +51,12 @@ export class AggregateBilService {
           workerCost = workerCost + workers[i].amount;
         }
         finalWorkersBill.push({
-          work:  "مصنعية " + workersArray[i] ,
+          name:  "مصنعية " + workersArray[i] ,
           totalCost: workerCost
         })
     }
   }
+  
     for (let i = 0; i < expenses.length; i++) {
       console.log("//")
       if (!expensesArray.includes(expenses[i].section.name)) {
@@ -71,14 +74,23 @@ export class AggregateBilService {
       }
       console.log(expensesArray[i])
       finalExpensesBill.push({
-        section: expensesArray[i],
+        name: expensesArray[i],
         totalCost: expenseCost,
       });
     }
-    console.log('hi' , finalExpensesBill , finalWorkersBill)
-    return { finalExpensesBill, finalWorkersBill };
+    for (let i = 0; i < finalExpensesBill.length; i++) {
+      const element = finalExpensesBill[i];
+      result.push(element)
+    }
+    for (let i = 0; i < finalWorkersBill.length; i++) {
+      const element = finalWorkersBill[i];
+      result.push(element)
+    }
+    console.log(result)
+    return result;
   }
 }
+
 
     
 

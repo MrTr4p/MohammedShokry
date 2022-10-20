@@ -20,8 +20,8 @@ import { v4 } from "uuid";
 interface IProps {
 	readOnly?: boolean;
 }
-function AggregateBillTable({ readOnly }: IProps, { billData }: { billData: ProjectBill }) {
-
+function AggregateBillTable(Date , { readOnly }: IProps,) {
+	const aggregates = Date.Date.billData;
 	const router = useRouter();
 	const {
 		clientName,
@@ -37,79 +37,38 @@ function AggregateBillTable({ readOnly }: IProps, { billData }: { billData: Proj
 		error: false,
 	});
 
-	async function handleEdit() {
-		editBill()
-			.then((result) => {
-				setInfoMessage({ message: result.message, error: false });
-				router.push("/");
-			})
-			.catch((err) => {
-				setInfoMessage({
-					message: err.response.data.message,
-					error: true,
-				});
-			});
-	}
+
+
 
 	return (
-		<div className="space-y-12">
-			<header className="flex justify-between items-start">
-				<div className="flex flex-col items-start gap-2">
-					<h1 className="text-black font-bold text-3xl">
-						تعديل فاتورة عامة
-					</h1>
-					<p>
-						هنا يمكنك ملئ الحقول لتعديل فاتورة عامة (فاتورة مشروع)
-					</p>
-				</div>
-				<Link href="/">
-					<a href="" className="btn-outline px-6" onClick={restState}>
-						ألغاء
-						<XMarkIcon className="w-6 h-6"></XMarkIcon>
-					</a>
-				</Link>
-			</header>
+		<div className="space-y-6 ">
 			<main className="">
-				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md space-y-6 relative ">
-					<div className="flex gap-4 w-full">
-						<PreviewInput
-							value={clientName}
-							label="أسم العميل"
-							type={"text"}
-							disabled
-						></PreviewInput>
-						<PreviewInput
-							value={clientAddress}
-							label="عنوان العميل"
-							type={"text"}
-							disabled
-						></PreviewInput>
-						<PreviewInput
-							value={name}
-							label="أسم المشروع"
-							type={"text"}
-							disabled
-						></PreviewInput>
-						<PreviewInput
-							value={officePrecentage}
-							label="نسبة المكتب"
-							type={"number"}
-							disabled
+				<div className="border-black border mx-auto mt-[10rem] p-3 w-4/12 bg-base drop-shadow rounded-md space-y-2 relative ">
+					{aggregates.map((aggregate)=>{
+					return(
+					<>
+					<div className="flex justify-center">
+					<PreviewInput className ='mx-16 ' value={aggregate.name}>
+						
+						</PreviewInput>
+						<PreviewInput className ='mx-16 ' value={ aggregate.totalCost}>
 
-						></PreviewInput>
-						<PreviewInput
-							value={date}
-							label="التاريخ"
-							type={"date"}
-							disabled
-						></PreviewInput>
+						</PreviewInput>
 					</div>
-					<PreviewWorker></PreviewWorker>
-					<PreviewExpenses></PreviewExpenses>
-					<PreviewRevenues></PreviewRevenues>
+					</>
+					)
+					})}
+					<div>
+						
+					</div>
 					<div></div>
 					<div className="bg-secondary flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
+						
+						
 						<button
+						onClick={()=>{
+							console.log(aggregates)
+						}}
 							className="btn-primary px-12"
 						>
 							طبع
@@ -123,16 +82,4 @@ function AggregateBillTable({ readOnly }: IProps, { billData }: { billData: Proj
 
 export default AggregateBillTable;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const id: string = context.query.id as string;
 
-	const { data: billData } = await axios({
-		url: `http://localhost:3000/bill/all/get?id=` + id,
-	});
-
-	return {
-		props: {
-			billData,
-		},
-	};
-};
