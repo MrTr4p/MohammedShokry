@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from "@nestjs/common";
+import { Controller, Get, Req , Query } from "@nestjs/common";
 import { AggregateBilService } from "./bill.service";
 import { Param } from "@nestjs/common";
 
@@ -6,9 +6,8 @@ import { Param } from "@nestjs/common";
 export class AggregateBillController {
   constructor(private readonly appService: AggregateBilService) {}
 
-  @Get("/get/:id")
-  async getBill(@Param() param) {
-    console.log(param);
-    return await this.appService.getAggregateBill(param);
+  @Get("/get")
+  async getBill(@Query() query) {
+    return await this.appService.getAggregateBill(query);
   }
 }

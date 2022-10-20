@@ -10,18 +10,18 @@ import {GetServerSideProps} from 'next'
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import axios from "axios";
 
-function Pagination ({data} : {data: any[];}) {
+function Pagination () {
     function handlePageClick (){
             console.log('//')
     }
     function idk (){
-        console.log(data)
+        console.log('data')
     }
   return (
     <div>
         <ReactPaginate
 			previousLabel={<div><ArrowUturnRightIcon className="w-8 h-4 my-2"></ArrowUturnRightIcon></div>}
-			pageCount={10}
+			pageCount={12}
 			onPageChange={idk}
 			nextLabel={<div><ArrowUturnLeftIcon className="w-8 h-4 my-2"></ArrowUturnLeftIcon></div>}
 			marginPagesDisplayed={1}
@@ -39,17 +39,3 @@ function Pagination ({data} : {data: any[];}) {
 
 export default Pagination
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const id: string = context.query.id as string;
-
-	const { data: billData } = await axios({
-		url: `http://localhost:3000/bill/all/get?id=` + id,
-	});
-
-	return {
-		props: {
-			billData,
-			id
-		},
-	};
-};

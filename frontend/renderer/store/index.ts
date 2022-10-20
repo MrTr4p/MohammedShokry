@@ -349,6 +349,7 @@ const projectBillSlice: StateCreator<
 			expenses: data,
 		}));
 	},
+
 	setName: (name) => set(() => ({ name })),
 	setClientName: (name) => set(() => ({ clientName: name })),
 	setClientAddress: (address) => set(() => ({ clientAddress: address })),

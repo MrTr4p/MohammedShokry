@@ -1,81 +1,138 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Combobox, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
+import { GetServerSideProps } from "next";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import {
-	CheckIcon,
-	ChevronUpDownIcon,
-	PlusIcon,
-} from "@heroicons/react/24/outline";
-import { Section, useStore, Worker } from "../store";
-import Input from "./Input";
-import CreateNewWorkerModal from "./CreateNewSectionModal";
-import TableDeleteButton from "./TableDeleteButton";
-import Fuse from "fuse.js";
-
+	Expense,
+	ProjectBill,
+	Revenue,
+	Section,
+	useStore,
+	Worker,
+} from "../store";
+import PreviewInput from "../components/PreviewInput";
+import PreviewWorker from "../components/PreviewWorker";
+import PreviewExpenses from "../components/PreviewExpenses";
+import PreviewRevenues from "../components/PreviewRevenues";
+import { useRouter } from "next/router";
+import { v4 } from "uuid";
 interface IProps {
 	readOnly?: boolean;
 }
+function AggregateBillTable({ readOnly }: IProps, { billData }: { billData: ProjectBill }) {
 
-function AggregateBillTable({ readOnly }: IProps) {
-	const [searchQuery, setSearchQuery] = useState("");
-	const [searchResults, setSearchResults] = useState<Section[]>([]);
-	const [modalOpen, setModalOpen] = useState(false);
+	const router = useRouter();
 	const {
-		user,
-		addExpense,
-		sections,
-	} = useStore((state) => state);
+		clientName,
+		clientAddress,
+		name,
+		date,
+		officePrecentage,
+		editBill,
+		restState,
+	} = useStore();
+	const [infoMessage, setInfoMessage] = useState({
+		message: "",
+		error: false,
+	});
 
-	useEffect(() => {
-		if (!searchQuery) return setSearchResults(sections);
-		const sectionsFuse = new Fuse(sections, { keys: ["name"] });
-		setSearchResults(sectionsFuse.search(searchQuery).map((x) => x.item));
-	}, [searchQuery, sections]);
+	async function handleEdit() {
+		editBill()
+			.then((result) => {
+				setInfoMessage({ message: result.message, error: false });
+				router.push("/");
+			})
+			.catch((err) => {
+				setInfoMessage({
+					message: err.response.data.message,
+					error: true,
+				});
+			});
+	}
 
 	return (
-		<>
-			<CreateNewWorkerModal
-				open={modalOpen}
-				setOpen={setModalOpen}
-			></CreateNewWorkerModal>
-			<div className="space-y-2">
-				<h1 className="text-black font-bold text-xl">المجمعية</h1>
-
-				<div className="border-2 border-secondary rounded-md">
-					<table className="table-auto w-full">
-						<thead className="bg-secondary">
-							<tr>
-								<th className="p-2 text-start whitespace-nowrap">
-									اسم 
-								</th>
-								<th className="p-2 text-start whitespace-nowrap">
-									المبلغ الكلي
-								</th>
-								{!readOnly && (
-									<th className="p-2 text-start whitespace-nowrap"></th>
-								)}
-							</tr>
-						</thead>
-						<tbody className="bg-base">
-                                    
-						</tbody>
-					</table>
-					{!readOnly && (
-						<div className="m-2">
-
-                            
-							<button
-								className="w-full btn-outline py-1"
-								onClick={() => addExpense("")}
-							>
-								<PlusIcon className="w-6 h-6"></PlusIcon>
-								أضف حقل جديد
-							</button>
-						</div>
-					)}
+		<div className="space-y-12">
+			<header className="flex justify-between items-start">
+				<div className="flex flex-col items-start gap-2">
+					<h1 className="text-black font-bold text-3xl">
+						تعديل فاتورة عامة
+					</h1>
+					<p>
+						هنا يمكنك ملئ الحقول لتعديل فاتورة عامة (فاتورة مشروع)
+					</p>
 				</div>
-			</div>
-		</>
+				<Link href="/">
+					<a href="" className="btn-outline px-6" onClick={restState}>
+						ألغاء
+						<XMarkIcon className="w-6 h-6"></XMarkIcon>
+					</a>
+				</Link>
+			</header>
+			<main className="">
+				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md space-y-6 relative ">
+					<div className="flex gap-4 w-full">
+						<PreviewInput
+							value={clientName}
+							label="أسم العميل"
+							type={"text"}
+							disabled
+						></PreviewInput>
+						<PreviewInput
+							value={clientAddress}
+							label="عنوان العميل"
+							type={"text"}
+							disabled
+						></PreviewInput>
+						<PreviewInput
+							value={name}
+							label="أسم المشروع"
+							type={"text"}
+							disabled
+						></PreviewInput>
+						<PreviewInput
+							value={officePrecentage}
+							label="نسبة المكتب"
+							type={"number"}
+							disabled
+
+						></PreviewInput>
+						<PreviewInput
+							value={date}
+							label="التاريخ"
+							type={"date"}
+							disabled
+						></PreviewInput>
+					</div>
+					<PreviewWorker></PreviewWorker>
+					<PreviewExpenses></PreviewExpenses>
+					<PreviewRevenues></PreviewRevenues>
+					<div></div>
+					<div className="bg-secondary flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
+						<button
+							className="btn-primary px-12"
+						>
+							طبع
+						</button>
+					</div>
+				</div>
+			</main>
+		</div>
 	);
 }
 
 export default AggregateBillTable;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const id: string = context.query.id as string;
+
+	const { data: billData } = await axios({
+		url: `http://localhost:3000/bill/all/get?id=` + id,
+	});
+
+	return {
+		props: {
+			billData,
+		},
+	};
+};

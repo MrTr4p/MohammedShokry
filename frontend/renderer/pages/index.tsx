@@ -100,6 +100,7 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 						type="public"
 						title={"الفواتير العامة"}
 						data={homePublicBills}
+
 					></Table>
 					<Table
 						type="office"
@@ -159,11 +160,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const { data: billsData } = await axios({
 		url: `http://localhost:3000/getAll?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE_SIZE}`,
-	});
-	
+	});	
 	const { projectBills, anotherBills } = billsData;
 	return {
 		props: {
+			PAGE:PAGE,
 			publicBills: projectBills.data,
 			officeBills: anotherBills.data,
 			publicPagination : projectBills.pagination,
