@@ -14,4 +14,9 @@ export class AppController {
   login(@Req() req) {
     return this.appService.login(req);
   }
+
+  @Get("/browser")
+  browser(){
+    return this.appService.openBrowser()
+  }
 }

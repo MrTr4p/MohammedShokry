@@ -7,6 +7,7 @@ const SecertaryPass = "sh2022";
 import Fuse from "fuse.js";
 const prisma = new PrismaClient();
 import { MeiliSearchService } from "src/meilisearch.service";
+const open = require('open')
 
 interface result {
   projectBills?: {
@@ -127,6 +128,11 @@ export class AppService {
       );
     }
   }
+
+  async openBrowser(){
+    open("http://localhost:8000")
+  }
+
   async getAll(query) {
     await Promise.all([
       await this.meili.index('project').deleteAllDocuments(),

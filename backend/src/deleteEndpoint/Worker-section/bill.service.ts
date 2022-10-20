@@ -33,11 +33,13 @@ export class GetService {
   }
 
   async deleteSection(id: string) {
+    console.log(id)
     const section = await this.prisma.section.findFirst({
       where: {
-        id: id,
+        id: id
       },
     });
+    console.log(section)
     if (section) {
       await this.prisma.section.delete({
         where: {

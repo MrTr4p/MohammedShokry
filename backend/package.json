@@ -32,6 +32,7 @@
     "fuse": "^0.0.8",
     "jsonwebtoken": "^8.5.1",
     "meilisearch": "^0.28.0",
+    "open": "^8.4.0",
     "pdfjs": "^2.4.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
