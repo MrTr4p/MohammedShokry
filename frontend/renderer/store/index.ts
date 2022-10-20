@@ -59,11 +59,6 @@ export interface Expense {
 	day: string;
 	date: string;
 }
-export interface pagination{
-	pageNumber : number;
-	
-	
-}
 interface Pagination {
 	totalCount: number;
 	firstPage:boolean;
@@ -71,22 +66,9 @@ interface Pagination {
     currentPage: number;
 	increase: (by: number) => void
   }
-  
-  const useBearStore = create<Pagination>()((set) => ({
-	totalCount: 1,
-	firstPage:true,
-	lastPage:false,
-	currentPage:1,
-	fetch: async(totalCount) =>{
-		const response = await axios({
-			url: ``,
-		});
-		set({totalCount : await response.data})
-	},
-	increase: (by) => set((state) => ({ currentPage: state.currentPage + by })),
-  }))
 export interface State {
 	user: User;
+	pagination:Pagination
 	dropdownWorkers: Worker[];
 	homePublicBills: ProjectBill[];
 	homeOfficeBills: ProjectBill[];
@@ -116,6 +98,7 @@ const storeSlice: StateCreator<
 	dropdownWorkers: [],
 	homePublicBills: [],
 	homeOfficeBills: [],
+	pagination:{},
 	searchState: "empty",
 	login: async (password) => {
 		let { data } = await axios({
@@ -137,7 +120,6 @@ const storeSlice: StateCreator<
 
 		return { message: "الرمز السرى صحيح", error: false };
 	},
-
 	removeHomePublicBill: async (billId) => {
 		let { data } = await axios({
 			url: `http://localhost:3000/delete/bill?id=${billId}`,

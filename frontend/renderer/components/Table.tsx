@@ -13,8 +13,7 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import Pagination from './Pagination'
 import { dataItem } from "react-widgets/cjs/Accessors";
 
-function Table({data,title,type = "public",} : {title?: string;type: "office" | "public";data: any[];}) {
-	console.log(data)
+function Table({title,type = "public",  data, page} : {page; title?: string;type: "office" | "public"; data: any[];}) {
 	const user = useStore((state) => state.user);
 	const removeHomePublicBill = useStore(
 		(state) => state.removeHomePublicBill,
@@ -144,7 +143,7 @@ function Table({data,title,type = "public",} : {title?: string;type: "office" | 
 				</tbody>
 			</table>
 			<div className="mx-auto">
-			<Pagination></Pagination>
+			<Pagination page ={page}></Pagination>
 			</div>
 		</div>
 	);

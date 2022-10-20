@@ -3,20 +3,27 @@ import { PrismaClient } from "@prisma/client";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 
-
+interface theFinalResult {
+  result: any[];
+  totalCost: number;
+  totalRevenues: number;
+  officeCost: number;
+}
 
 @Injectable()
 export class AggregateBilService {
-  constructor(private prisma : PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async getAggregateBill(param) {
-    console.log('//')
-    let result = []
+    let theFinalResult: Partial<theFinalResult> = {};
+    let result = [];
+    let totalCost = 0;
+    let totalRevenues = 0;
+    let revenuesArray = [];
     let workersArray = [];
     let expensesArray = [];
-    let finalWorkersBill = [];
-    let finalExpensesBill = [];
-    const bill  = await this.prisma.projectBill.findFirst({
+    let officeCost = 0;
+    const bill = await this.prisma.projectBill.findFirst({
       where: {
         id: Number(param.id),
       },
@@ -36,12 +43,15 @@ export class AggregateBilService {
       include: {
         section: true,
       },
-    }); 
-
+    });
+    const revenues = await this.prisma.revenue.findMany({
+      where: {
+        projectBillId: bill.id,
+      },
+    });
     for (let i = 0; i < workers.length; i++) {
       if (!workersArray.includes(workers[i].Worker.work)) {
         workersArray.push(workers[i].Worker.work);
-        console.log(workersArray)
       }
     }
     for (let i = 0; i < workersArray.length; i++) {
@@ -50,18 +60,29 @@ export class AggregateBilService {
         if (workersArray.includes(workers[i].Worker.work)) {
           workerCost = workerCost + workers[i].amount;
         }
-        finalWorkersBill.push({
-          name:  "مصنعية " + workersArray[i] ,
-          totalCost: workerCost
-        })
+        result.push({
+          name: "مصنعية " + workersArray[i],
+          totalCost: workerCost,
+        });
+      }
     }
-  }
-  
+    for (let i = 0; i < revenues.length; i++) {
+      if (!revenuesArray.includes(revenues[i].date)) {
+        revenuesArray.push(revenues[i].date);
+      }
+    }
+    for (let i = 0; i < revenuesArray.length; i++) {
+      let revenueCost = 0;
+      for (let i = 0; i < revenues.length; i++) {
+        if (revenuesArray.includes(revenues[i].date)) {
+          revenueCost = revenueCost + revenues[i].amount;
+        }
+      }
+      totalRevenues = totalRevenues + revenueCost;
+    }
     for (let i = 0; i < expenses.length; i++) {
-      console.log("//")
       if (!expensesArray.includes(expenses[i].section.name)) {
         expensesArray.push(expenses[i].section.name);
-        console.log(expensesArray)
       }
     }
 
@@ -72,27 +93,21 @@ export class AggregateBilService {
           expenseCost = expenseCost + expenses[i].totalcost;
         }
       }
-      console.log(expensesArray[i])
-      finalExpensesBill.push({
+      result.push({
         name: expensesArray[i],
         totalCost: expenseCost,
       });
     }
-    for (let i = 0; i < finalExpensesBill.length; i++) {
-      const element = finalExpensesBill[i];
-      result.push(element)
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      totalCost = element.totalCost;
     }
-    for (let i = 0; i < finalWorkersBill.length; i++) {
-      const element = finalWorkersBill[i];
-      result.push(element)
-    }
-    console.log(result)
-    return result;
+    console.log("this is result ", result);
+    theFinalResult.officeCost = totalCost * (bill.officePrecentage / 100);
+    theFinalResult.result = result;
+    theFinalResult.totalCost = totalCost;
+    theFinalResult.totalRevenues = totalRevenues;
+    console.log(theFinalResult);
+    return theFinalResult;
   }
 }
-
-
-    
-
-
-  

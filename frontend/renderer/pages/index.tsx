@@ -10,6 +10,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import BillTypeModal from "../components/BillTypeModal";
+import Pagination from "../components/Pagination";
 import Table from "../components/Table";
 import {  AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 
@@ -18,17 +19,18 @@ interface IProps {
 	officeBills: AnotherPaymentsBill[];
 }
 
-const IndexPage = ({ publicBills, officeBills }: IProps) => {
+const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	console.log()
 	const homePublicBills = useStore((state) => state.homePublicBills);
 	const homeOfficeBills = useStore((state) => state.homeOfficeBills);
-	
+	const pagination = useStore((state) => state.pagination)
 	const searchState = useStore((state) => state.searchState);
 	const searchRef = useRef();
 	const setHomePublicBills = useStore((state) => state.setHomePublicBills);
 	const setHomeOfficeBills = useStore((state) => state.setHomeOfficeBills);
+	const pagenumber = pagination.currentPage
 	const setSearchState = useStore((state) => state.setSearchState);
-
+	
 	async function search(e: any) {
 		e.preventDefault();
 		if (searchState === "loading") return;
@@ -97,15 +99,18 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 					}`}
 				>
 					<Table
+						
 						type="public"
 						title={"الفواتير العامة"}
 						data={homePublicBills}
+						page ={PAGE}
 
 					></Table>
 					<Table
 						type="office"
 						title={"الفواتير الخاصة"}
 						data={homeOfficeBills}
+						page ={PAGE}
 					>						
 					</Table>
 
@@ -154,7 +159,7 @@ const IndexPage = ({ publicBills, officeBills }: IProps) => {
 
 export default IndexPage;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (currentPage) => {
 	const PAGE_SIZE = 5;
 	const PAGE = 1;
 

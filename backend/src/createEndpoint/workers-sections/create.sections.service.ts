@@ -9,7 +9,8 @@ import { MeiliSearchService } from 'src/meilisearch.service';
 export class CreateSectionService {
   constructor(private prisma : PrismaService , private meili: MeiliSearchService) {}
   async createSecion(req , param){
-    let revs
+    console.log('create section')
+    let revs = []
     const body = req.body
     const projectBill = await this.prisma.projectBill.findFirst({
       where:{

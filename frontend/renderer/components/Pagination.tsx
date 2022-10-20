@@ -10,9 +10,10 @@ import {GetServerSideProps} from 'next'
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import axios from "axios";
 
-function Pagination () {
-    function handlePageClick (){
-            console.log('//')
+function Pagination (page) {
+    function handlePageClick (data){
+            page = data.selected + 1
+			console.log(page)
     }
     function idk (){
         console.log('data')
@@ -22,7 +23,7 @@ function Pagination () {
         <ReactPaginate
 			previousLabel={<div><ArrowUturnRightIcon className="w-8 h-4 my-2"></ArrowUturnRightIcon></div>}
 			pageCount={12}
-			onPageChange={idk}
+			onPageChange={handlePageClick}
 			nextLabel={<div><ArrowUturnLeftIcon className="w-8 h-4 my-2"></ArrowUturnLeftIcon></div>}
 			marginPagesDisplayed={1}
 			containerClassName={" my-3 flex items-center space-x-3 mx-auto"}

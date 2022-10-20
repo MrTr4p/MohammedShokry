@@ -30,12 +30,12 @@ export class GetService {
     return sections
   }
 
-  async getWorker(param , req){
+  async getWorker(query , req){
     const result = await this.prisma.workerSalary.findMany({
       where:{
-        projectBillId: param.id,
+        projectBillId: query.id,
         Worker:{
-          name: req.name
+          name: req.body.name
         }
       }
     })

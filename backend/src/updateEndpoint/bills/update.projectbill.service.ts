@@ -83,7 +83,7 @@ export class CreateBillService {
         clientAddress: body.clientAddress || oldProject.clientAddress,
         clientName: body.clientName || oldProject.clientName,
         date: body.date || oldProject.date,
-        officePrecentage: body.officePrecentage || oldProject.officePrecentage,
+        officePrecentage: Number(body.officePrecentage) || Number(oldProject.officePrecentage),
       },
     });
     result.push(projectBill)
@@ -118,7 +118,7 @@ export class CreateBillService {
       for (let i = 0; i < revenues.length; i++) {
         await this.prisma.revenue.create({
           data: {
-            amount: revenues[i].amount,
+            amount: Number(revenues[i].amount),
             date: revenues[i].date,
             ProjectBill: {
               connect: {
@@ -140,8 +140,8 @@ export class CreateBillService {
               },
             },
             date: element.project.date,
-            amount: element.project.salary,
-            precentage: element.project.precentage || 0,
+            amount: Number(element.project.salary),
+            precentage: Number(element.project.precentage) || 0,
             ProjectBill: {
               connect: {
                 id: projectBill.id,
@@ -168,7 +168,7 @@ export class CreateBillService {
           data: {
             materialName: element.materialName,
             date: element.date,
-            totalcost: element.totalcost,
+            totalcost: Number(element.totalcost),
             day: element.day,
 
             ProjectBill: {
