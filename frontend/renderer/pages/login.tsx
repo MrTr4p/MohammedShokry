@@ -10,6 +10,7 @@ function Login() {
 	const user = useStore((state) => state.user);
 
 	useEffect(() => {
+		 console.log('//')
 		if (user.loggedIn) router.push("/");
 	}, [user]);
 

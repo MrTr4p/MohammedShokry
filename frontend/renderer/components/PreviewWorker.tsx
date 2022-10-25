@@ -14,6 +14,7 @@ import CreateNewWorkerModal from "./CreateNewWorkerModal";
 import TableDeleteButton from "./TableDeleteButton";
 import DeleteWorkerButton from "./DeleteWorkerButton"
 import Link from "next/link";
+const electron = require('electron')
 
 interface IProps {
 	readOnly?: boolean;

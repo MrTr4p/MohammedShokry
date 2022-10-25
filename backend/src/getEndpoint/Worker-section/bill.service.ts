@@ -30,15 +30,91 @@ export class GetService {
     return sections
   }
 
-  async getWorker(query , req){
-    const result = await this.prisma.workerSalary.findMany({
-      where:{
-        projectBillId: query.id,
-        Worker:{
-          name: req.body.name
+  async getSection(query){
+
+    try{
+      const sections = await this.prisma.expenses.findMany({
+        where:{
+          projectBillId:Number(query.id),
+          section:{
+            name: query.name
+          }
+        },include:{
+          ProjectBill: true
         }
+      })
+      if(sections){
+        const expenses = sections.map(x => {
+          return {
+            name: x.materialName, 
+            date : x.date , 
+            totalCost : x.totalcost
+          }
+        })
+        const result = {
+          projectName : sections[0].ProjectBill.name,
+          section : query.name,
+          data : expenses
+        }
+        return result
+      }else{
+        throw new HttpException(
+          "لا يوجد هذا البند",
+          HttpStatus.NOT_FOUND,
+        );
       }
-    })
-    return result
+    }catch(e){
+      throw new HttpException(
+        "لا يوجد هذا البند",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+   
+   
+  }
+
+  async getWorker(query){
+    try{
+      const workers = await this.prisma.workerSalary.findMany({
+        where:{
+          projectBillId: Number(query.id),
+          Worker:{
+            name: query.name
+          }
+        },include:{
+          Worker :true,
+          ProjectBill:true
+        }
+        
+      })
+     
+      if(workers){
+        const workerSalary = workers.map(x => {
+          return { 
+            date : x.date, 
+            totalCost : x.amount
+          }
+        })
+        const result = {
+          projectName : workers[0].ProjectBill.name,
+          worker : query.name,
+          data : workerSalary
+        }
+        return result
+      }
+      else{
+        throw new HttpException(
+          "لا يوجد هذا عامل",
+          HttpStatus.NOT_FOUND,
+        );
+      }
+    }
+    catch(e){
+      throw new HttpException(
+        "لا يوجد هذا عامل",
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    
    }
 }

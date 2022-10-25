@@ -42,6 +42,7 @@ async function filter(
   let anotherBills = { pagination: {}, data: {} } as any;
   let projectbill = { pagination: {}, data: {} } as any;
   let result = {};
+  console.log(pageReq , limitReq , bpageReq , blimitReq)
   const [aBCount, bCount] = await Promise.all([
     await prisma.anotherPaymentsBill.count(),
     await prisma.projectBill.count(),
@@ -87,11 +88,9 @@ async function filter(
 
   try {
     anotherBills.data = await prisma.anotherPaymentsBill.findMany({
-      take: Number(pageReq),
+      take: Number(limitReq),
       skip: Number(abskipindex),
     });
-    console.log(Number(pageReq),Number(abskipindex))
-    console.log(anotherBills.data)
   } catch (e) {
     console.log(e);
     throw new HttpException(e, HttpStatus.BAD_REQUEST);
@@ -101,14 +100,14 @@ async function filter(
     projectBills: projectbill,
     anotherBills: anotherBills,
   };
-  //@ts-ignore
-  console.log(result.anotherBills.data);
   return result;
 }
 
 @Injectable()
 export class AppService {
   constructor(private meili : MeiliSearchService){}
+
+
   async login(req) {
     const body = req.body || { password: "" };
     if (body.password == AdminPass || body.password == SecertaryPass) {
@@ -129,8 +128,23 @@ export class AppService {
     }
   }
 
-  async openBrowser(){
-    open("http://localhost:8000")
+  async openBrowser(req){
+    const url = 'http://localhost:8000' + req.body.data
+    open(url)
+  }
+
+  async getPageCount(query){
+    const [aBCount, bCount] = await Promise.all([
+      await prisma.anotherPaymentsBill.count(),
+      await prisma.projectBill.count(),
+    ]);
+    const limit = Number(query.limit)
+    const bPage = Math.round(Number(bCount)/limit)
+    const abPage = Math.round(Number(aBCount)/limit)
+    return {
+      office: abPage, 
+      public: bPage
+    }
   }
 
   async getAll(query) {
@@ -143,6 +157,7 @@ export class AppService {
       await this.meili.index('anotherBill').addDocuments(await prisma.anotherPaymentsBill.findMany()),
       await this.meili.index('workers').addDocuments(await prisma.worker.findMany()),
       await this.meili.index('section').addDocuments(await prisma.section.findMany()),
+      await this.meili.index('project').addDocuments(await prisma.projectBill.findMany())
     ]);
 
     
@@ -152,6 +167,7 @@ export class AppService {
       query.bpage,
       query.blimit,
     );
+
     return result;
   }
 }

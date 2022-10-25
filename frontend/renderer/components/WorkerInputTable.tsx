@@ -54,6 +54,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 			
 		}
 	}, []);
+	
 
 	useEffect(() => {
 		const controller = new AbortController();
@@ -88,7 +89,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 									العامل
 								</th>
 								<th className="p-2 text-start whitespace-nowrap">
-									الراتب
+									المبلغ
 								</th>
 								<th className="p-2 text-start whitespace-nowrap">
 									النسبة
@@ -253,6 +254,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 												</div>
 											</Combobox>
 										</td>
+									
 										<td className="p-2">
 											<Input
 												disabled={readOnly}
@@ -267,7 +269,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 														},
 													})
 												}
-												placeholder={"الراتب"}
+												placeholder={"المبلغ"}
 											></Input>
 										</td>
 										<td className="p-2">

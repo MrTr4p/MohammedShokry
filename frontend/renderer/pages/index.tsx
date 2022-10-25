@@ -10,7 +10,6 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import BillTypeModal from "../components/BillTypeModal";
-import Pagination from "../components/Pagination";
 import Table from "../components/Table";
 import {  AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 
@@ -18,20 +17,17 @@ interface IProps {
 	publicBills: ProjectBill[];
 	officeBills: AnotherPaymentsBill[];
 }
-
 const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	console.log()
 	const homePublicBills = useStore((state) => state.homePublicBills);
 	const homeOfficeBills = useStore((state) => state.homeOfficeBills);
-	const pagination = useStore((state) => state.pagination)
 	const searchState = useStore((state) => state.searchState);
 	const searchRef = useRef();
 	const setHomePublicBills = useStore((state) => state.setHomePublicBills);
 	const setHomeOfficeBills = useStore((state) => state.setHomeOfficeBills);
-	const pagenumber = pagination.currentPage
 	const setSearchState = useStore((state) => state.setSearchState);
-	const [numberofpages, setnumberofpages] = useState("");
-
+	const [page, setPage] = useState(0);
+	const pagesize = 25;
 	async function search(e: any) {
 		e.preventDefault();
 		if (searchState === "loading") return;
@@ -61,7 +57,27 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 			}
 		}
 	}
+		async function handlePagination(lalal , paga ){
+		console.log(lalal)
+		console.log('paga'  +  paga)
+	
+		const { data: billsData } = await axios({
+			url: `http://localhost:3000/getAll?abpage=${paga}&ablimit=${pagesize}&bpage=${lalal}&blimit=${pagesize}`,
+		});	
+		const { projectBills, anotherBills } = billsData;
+		setHomePublicBills(projectBills.data);
+		setHomeOfficeBills(anotherBills.data);
+		return {
+			props: {
+				PAGE:PAGE,
+				publicBills: projectBills.data,
+				officeBills: anotherBills.data,
 
+			},
+				
+		};
+		
+		}
 	useEffect(() => {
 		if (searchState === "empty") {
 			setHomePublicBills(publicBills);
@@ -72,8 +88,8 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	useEffect(() => {
 		setHomePublicBills(publicBills);
 		setHomeOfficeBills(officeBills);
-	}, [publicBills, officeBills]);
-
+	},publicBills, officeBills );
+	
 	return (
 		<div className="space-y-12">
 			<header className="flex justify-between items-start">
@@ -105,6 +121,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 						title={"الفواتير العامة"}
 						data={homePublicBills}
 						page ={PAGE}
+						handlePagination ={handlePagination}
 
 					></Table>
 					<Table
@@ -112,6 +129,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 						title={"الفواتير الخاصة"}
 						data={homeOfficeBills}
 						page ={PAGE}
+						handlePagination ={handlePagination}
 					>						
 					</Table>
 
@@ -160,8 +178,9 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 
 export default IndexPage;
 
-export const getServerSideProps: GetServerSideProps = async (currentPage) => {
-	const PAGE_SIZE = 5;
+export const getServerSideProps: GetServerSideProps = async (props) => {
+	
+	const PAGE_SIZE = 25;
 	const PAGE = 1;
 
 	const { data: billsData } = await axios({

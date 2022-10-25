@@ -20,7 +20,8 @@ interface IProps {
 	readOnly?: boolean;
 }
 
-function ExpensesInputTable({ readOnly }: IProps) {
+function ExpensesInputTable(billId, { readOnly }: IProps) {
+	const BillId = billId.billId.billData
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchResults, setSearchResults] = useState<Section[]>([]);
 	const [modalOpen, setModalOpen] = useState(false);
@@ -57,19 +58,15 @@ function ExpensesInputTable({ readOnly }: IProps) {
 				<form
 					className="flex flex-col items-center gap-4"
 				>   
-				{expenses.map((expense) => {
-								return (
-									<tr key={expense.id}>
+							
+									<tr>
 										<td className="p-2">
 											<Combobox
 												disabled={readOnly}
 												by={"id"}
-												value={expense.section}
-												onChange={(selected: any) => {
-													updateExpense(expense.id, {
-														section: selected,
-													});
-												}}
+												
+												
+											
 											>
 												<div className="relative mt-1.5">
 													<div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none">
@@ -104,9 +101,14 @@ function ExpensesInputTable({ readOnly }: IProps) {
 														leaveTo="transform opacity-0 scale-95"
 													>
 														<Combobox.Options className="z-50 absolute mt-1 max-h-60 w-full px-2 overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-															{searchResults.map(
+															{expenses.map(
 																(section) => (
+																	<div>
+																		<Link href={"/preview/public/choose/expenses?name=" + section.section.name + "&id=" + BillId}>
+																		 <a>
+
 																	<Combobox.Option
+																	
 																		key={
 																			section.id
 																		}
@@ -139,7 +141,7 @@ function ExpensesInputTable({ readOnly }: IProps) {
 																					}`}
 																				>
 																					{
-																						section.name
+																						section.section.name
 																					}
 																				</span>
 																				<div className="flex row">
@@ -157,36 +159,31 @@ function ExpensesInputTable({ readOnly }: IProps) {
 																						/>
 																					</span>
 																				)}
-																				
+																	
 																				</div>
 																			</>
 																		)}
 																	</Combobox.Option>
+																	</a>
+																	</Link>
+																</div>
 																),
 															)}
+														
 														</Combobox.Options>
 													</Transition>
 												</div>
 											</Combobox>
 										</td>
-										
-
-					
 									</tr>
-								);
-							})}
-								{!expenses.length && (
+								
+							
+
+							{!expenses.length && (
 						<div className="w-full flex justify-center py-2">
 							لا يوجد مصروفات
 						</div>
 					)}
-							<Link href={ `/preview/public/choose/worker`}>
-                    <a>
-                    <button disabled = {!expenses.length} className="btn-primary py-1" type="submit">
-						سحب البند 
-					</button>
-                    </a>
-                    </Link>
 				</form>
 			</div>
 			</div>

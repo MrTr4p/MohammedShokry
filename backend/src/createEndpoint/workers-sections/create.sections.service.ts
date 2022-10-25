@@ -17,6 +17,8 @@ export class CreateSectionService {
         name:param.name
       }
     })
+    console.log('name: ' , param.name)
+    console.log('project: ' , projectBill)
     try{
     const rev = await this.prisma.section.create({
       data:{

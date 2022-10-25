@@ -59,16 +59,9 @@ export interface Expense {
 	day: string;
 	date: string;
 }
-interface Pagination {
-	totalCount: number;
-	firstPage:boolean;
-    lastPage: boolean;
-    currentPage: number;
-	increase: (by: number) => void
-  }
+
 export interface State {
 	user: User;
-	pagination:Pagination
 	dropdownWorkers: Worker[];
 	homePublicBills: ProjectBill[];
 	homeOfficeBills: ProjectBill[];
@@ -77,7 +70,8 @@ export interface State {
 	setHomePublicBills: (projectBills: ProjectBill[]) => void;
 	setHomeOfficeBills: (projectBills: ProjectBill[]) => void;
 	setDropdownWorkers: (workers: Worker[]) => void;
-	removeDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
+	setPickWorker:(nameWorker : string , idWorker : string) => void;
+ 	removeDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
 	newDropdownWorker: (worker: RecursivePartial<Worker>) => Promise<void>;
 	setSearchState: (state: "empty" | "loading" | "found") => void;
 	removeHomePublicBill: (billId: number) => Promise<void>;
@@ -93,12 +87,11 @@ const storeSlice: StateCreator<
 > = (set) => ({
 	user: {
 		loggedIn: true,
-		accountType: "edit",
+		accountType: "create",
 	},
 	dropdownWorkers: [],
 	homePublicBills: [],
 	homeOfficeBills: [],
-	pagination:{},
 	searchState: "empty",
 	login: async (password) => {
 		let { data } = await axios({
@@ -143,7 +136,13 @@ const storeSlice: StateCreator<
 			),
 		}));
 	},
-
+	setPickWorker : async (nameWorker , idWorker)  =>{
+		console.log(`Worker Name ${nameWorker} and his id is ${idWorker} `)
+		let {data} = await axios({
+			url:`http://localhost:3000/get/worker?name=${nameWorker}&id=${idWorker}`,
+		})
+		return data
+	} ,
 	setHomePublicBills: (bills) => set(() => ({ homePublicBills: bills })),
 	setHomeOfficeBills: (bills) => set(() => ({ homeOfficeBills: bills })),
 	setDropdownWorkers: (workers) =>
@@ -212,6 +211,7 @@ export interface newProjectBill {
 	saveBill: () => Promise<any>;
 	editBill: () => Promise<any>;
 	addWorker: (workerId?: string) => void;
+	pickWorker:(workername? : string) => void;
 	updateWorker: (workerId: string, data: RecursivePartial<Worker>) => void;
 	removeWorker: (id: string) => void;
 	addRevenue: () => void;
@@ -292,7 +292,7 @@ const projectBillSlice: StateCreator<
 			revenues,
 			restState,
 		} = get();
-
+		console.log(sections)
 		let { data } = await axios({
 			url: "http://localhost:3000/update/bill/project?id=" + id,
 			method: "put",
@@ -344,6 +344,35 @@ const projectBillSlice: StateCreator<
 				url:
 					"http://localhost:3000/search/workers/get/single?id=" +
 					workerId,
+			});
+			set(
+				produce<State & newProjectBill>((draft) => {
+					if (!data) return;
+					draft.workers.push({
+						...data,
+						project: { date: "", salary: 0, precentage: 0 } as any,
+					});
+				}),
+			);
+		} else {
+			set(
+				produce<State & newProjectBill>((draft) => {
+					draft.workers.push({
+						rowId: v4(),
+						id: v4(),
+						name: "",
+						work: "",
+						project: { date: "", salary: 0, precentage: 0 } as any,
+					});
+				}),
+			);
+		}
+	},
+	pickWorker: async (workername) => {
+		if (workername) {
+			let { data }: { data: undefined | Worker } = await axios({
+				url:
+					"http://localhost:3000/get/worker?name=" + workername,
 			});
 			set(
 				produce<State & newProjectBill>((draft) => {

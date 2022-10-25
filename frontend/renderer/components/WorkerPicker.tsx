@@ -19,14 +19,21 @@ import {
 	TrashIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { Console } from "console";
 
 interface IProps {
 	readOnly?: boolean;
 }
-function WorkerPicker({ readOnly = false }: IProps) {
+
+
+function WorkerPicker(billId,  { readOnly = false }: IProps) {
+	const BillId = billId.billId.billData
 	const login = useStore((state) => state.login);
 	const passwordRef = useRef();
 	const router = useRouter();
+	let nameWorker : string;
+	let idWorker : string;
+	let workera : string;
     const [searchQuery, setSearchQuery] = useState("");
 	const [modalOpen, setModalOpen] = useState(false);
 	const {
@@ -34,18 +41,11 @@ function WorkerPicker({ readOnly = false }: IProps) {
 		workers,
 		dropdownWorkers,
 		setDropdownWorkers,
-		removeDropdownWorker,
-		addWorker,
-		updateWorker,
-		removeWorker,
+
 	} = useStore((state) => ({
 		workers: state.workers,
-		removeDropdownWorker:state.removeDropdownWorker,
 		dropdownWorkers: state.dropdownWorkers,
 		setDropdownWorkers: state.setDropdownWorkers,
-		addWorker: state.addWorker,
-		updateWorker: state.updateWorker,
-		removeWorker: state.removeWorker,
 		user: state.user,
 	}));
 
@@ -90,27 +90,19 @@ function WorkerPicker({ readOnly = false }: IProps) {
 					<h1 className="font-semibold text-xl mt-2">
 						S.H Steel Construction
 					</h1>
+					
 				</div>
-
+				
 				<form
 					className="flex flex-col items-center gap-4"
 				>   
-							{workers.map((worker, workerNumber) => {
-								return (
-									<tr key={worker.rowId}>
+							
+									<tr >
 										<td className="p-2">
 											<Combobox
 												disabled={readOnly}
 												by={"id"}
-												value={worker}
-												onChange={(
-													selected: Worker,
-												) => {
-													updateWorker(
-														worker.rowId,
-														selected,
-													);
-												}}
+y												
 											>
 												<div className="relative mt-1.5">
 													<div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none">
@@ -145,9 +137,13 @@ function WorkerPicker({ readOnly = false }: IProps) {
 														leaveTo="transform opacity-0 scale-95"
 													>
 														<Combobox.Options className="z-50 absolute px-2 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-															{dropdownWorkers.map(
+															{workers.map(
 																(worker) => (
+																	<div>
+																		<Link href={`/preview/public/choose/workerpicker?name=${worker.name}&id=${BillId}`}>
+																			<a>
 																	<Combobox.Option
+																		
 																		key={
 																			worker.rowId
 																		}
@@ -172,6 +168,7 @@ function WorkerPicker({ readOnly = false }: IProps) {
 																			active,
 																		}) => (
 																			<>
+																			
 																				<div className="flex">
 																				<span
 																					className={`block truncate ${
@@ -180,13 +177,17 @@ function WorkerPicker({ readOnly = false }: IProps) {
 																							: "font-normal"
 																					}`}
 																				>
-																					{
-																						worker.name
-																					}
+																				
+																					
+																					{worker.name}
+																					
+																				
+																					
 																					
 																				</span>
 																				
 																				</div>
+																				
 																				<div className="flex row">
 																				{selected && (
 																					<span
@@ -204,33 +205,36 @@ function WorkerPicker({ readOnly = false }: IProps) {
 																				)}
 																			
 																				</div>
+																				
 																			</>
 																		)}
+																		
 																	</Combobox.Option>
-																),
+																	</a>
+													</Link>
+																	</div>	
+																																),
 															)}
-														
+															
 														</Combobox.Options>
 													</Transition>
+												
 												</div>
 											</Combobox>
 										</td>
 										
 									</tr>
-								);
-							})}
+									
+							
                     	{!workers.length && (
 						<div className="w-full flex justify-center py-2">
 							لا يوجد عمال
 						</div>
 					)}
-					<Link href={ `/preview/public/choose/expenses`}>
-                    <a>
-                    <button disabled ={!workers.length} className="btn-primary py-1" type="submit">
-						سحب الاسم
-					</button>
-                    </a>
-                    </Link>
+					
+				
+                   
+                    
 				</form>
 			</div>
 		</div>

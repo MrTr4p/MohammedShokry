@@ -16,8 +16,7 @@ async function Validation(body) {
 
     for (let i = 0; i < body.workers.length; i++) {
       const element = body.workers[i];
-      console.log(!element.project.date)
-      if (!element.project.date || !element.project.salary)
+      if (!element.project.date || !element.project.salary || !element.work || !element.name)
         throw new HttpException(
           "يبدو انك قمت باضافة عمال . تحقق و تاكد ان المدخلات ليست فارغة",
           HttpStatus.NOT_ACCEPTABLE,
@@ -63,17 +62,16 @@ async function Validation(body) {
 export class CreateBillService {
   constructor(private prisma: PrismaService, private meili : MeiliSearchService) {}
   async updatePublicBill(req, id: number) {
-    
+    console.log("//")
     const body = req.body;
     const result = []
     const workers = (await req.body.workers) || [];
-    console.log(body)
     const oldProject = await this.prisma.projectBill.findFirst({
       where: {
         id: id,
       },
     });
-    Validation(body)
+    await Validation(body)
     const projectBill = await this.prisma.projectBill.update({
       where: {
         id: oldProject.id,
@@ -114,7 +112,6 @@ export class CreateBillService {
     //not essential it is optional
     try {
       const revenues = body.revenues || [];
-      console.log(revenues);
       for (let i = 0; i < revenues.length; i++) {
         await this.prisma.revenue.create({
           data: {
@@ -158,12 +155,26 @@ export class CreateBillService {
     try {
       for (let i = 0; i < expenses.length; i++) {
         const element = expenses[i];
-        console.log(element);
-        const section = await this.prisma.section.findFirst({
+        console.log('hi' , element.section);
+        let section = await this.prisma.section.findFirst({
           where: {
-            name: element.section.name,
+            id: element.section.id,
           },
         });
+        if(!section){
+          section = await this.prisma.section.create({
+            data:{
+              name: element.section.name,
+              ProjectBill : {
+                connect :{
+                  id : projectBill.id
+                }
+              }
+            
+            }
+          })
+        }
+        console.log('this' ,section)
         await this.prisma.expenses.create({
           data: {
             materialName: element.materialName,

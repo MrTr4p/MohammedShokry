@@ -18,7 +18,6 @@ export class AppService {
         select: { projectName: true },
       }),
     ]);
-
     try{
       projectBillsResult = await this.meili.index('project').search(query)
     }
@@ -31,7 +30,6 @@ export class AppService {
     } catch(e){
      return []
     }
-   
     return {
       projectBills: (await projectBillsResult).hits,
       anotherBills: (await anotherBillsResult).hits,

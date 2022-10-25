@@ -15,8 +15,13 @@ export class AppController {
     return this.appService.login(req);
   }
 
-  @Get("/browser")
-  browser(){
-    return this.appService.openBrowser()
+  @Post("/browser")
+  browser(@Req() body){
+    return this.appService.openBrowser(body)
+  }
+
+  @Get('/pageCount')
+  pageCount(@Query() query){
+    return this.appService.getPageCount(query)
   }
 }

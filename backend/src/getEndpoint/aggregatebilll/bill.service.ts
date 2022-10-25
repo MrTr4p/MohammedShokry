@@ -47,38 +47,27 @@ export class AggregateBilService {
     const revenues = await this.prisma.revenue.findMany({
       where: {
         projectBillId: bill.id,
-      },
+      }
     });
     for (let i = 0; i < workers.length; i++) {
       if (!workersArray.includes(workers[i].Worker.work)) {
         workersArray.push(workers[i].Worker.work);
+        
       }
     }
     for (let i = 0; i < workersArray.length; i++) {
-      let workerCost = 0;
-      for (let i = 0; i < workers.length; i++) {
-        if (workersArray.includes(workers[i].Worker.work)) {
-          workerCost = workerCost + workers[i].amount;
+      let workerCost = 0
+      console.log(workersArray)
+      for (let l = 0; l < workers.length; l++) {
+        if(workersArray[i] == workers[l].Worker.work){
+          workerCost = workerCost + workers[l].amount
         }
-        result.push({
-          name: "مصنعية " + workersArray[i],
-          totalCost: workerCost,
-        });
+        
       }
-    }
-    for (let i = 0; i < revenues.length; i++) {
-      if (!revenuesArray.includes(revenues[i].date)) {
-        revenuesArray.push(revenues[i].date);
-      }
-    }
-    for (let i = 0; i < revenuesArray.length; i++) {
-      let revenueCost = 0;
-      for (let i = 0; i < revenues.length; i++) {
-        if (revenuesArray.includes(revenues[i].date)) {
-          revenueCost = revenueCost + revenues[i].amount;
-        }
-      }
-      totalRevenues = totalRevenues + revenueCost;
+      result.push({
+        name:  ' مصنعية ' + workersArray[i],
+        totalCost : workerCost
+      })
     }
     for (let i = 0; i < expenses.length; i++) {
       if (!expensesArray.includes(expenses[i].section.name)) {
@@ -87,27 +76,29 @@ export class AggregateBilService {
     }
 
     for (let i = 0; i < expensesArray.length; i++) {
-      let expenseCost = 0;
-      for (let i = 0; i < expenses.length; i++) {
-        if (expensesArray.includes(expenses[i].section.name)) {
-          expenseCost = expenseCost + expenses[i].totalcost;
+      let expensesCost = 0
+      console.log(workersArray)
+      for (let l = 0; l < expenses.length; l++) {
+        if(expensesArray[i] == expenses[l].section.name){
+          expensesCost = expensesCost + expenses[l].totalcost
         }
+        
       }
       result.push({
-        name: expensesArray[i],
-        totalCost: expenseCost,
-      });
+        name:expensesArray[i],
+        totalCost : expensesCost
+      })
     }
-    for (let i = 0; i < result.length; i++) {
-      const element = result[i];
-      totalCost = element.totalCost;
-    }
-    console.log("this is result ", result);
+    revenues.map(x => {
+      totalRevenues =  totalRevenues + x.amount
+    })
+    result.map(x => {
+      totalCost = totalCost + x.totalCost
+    })
     theFinalResult.officeCost = totalCost * (bill.officePrecentage / 100);
     theFinalResult.result = result;
     theFinalResult.totalCost = totalCost;
     theFinalResult.totalRevenues = totalRevenues;
-    console.log(theFinalResult);
     return theFinalResult;
   }
 }

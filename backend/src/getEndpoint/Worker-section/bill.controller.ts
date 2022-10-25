@@ -11,13 +11,18 @@ export class GetController {
     return this.appService.getSections(param)
   }
 
+  @Get('/section')
+  async getSection(@Query() query){
+    return this.appService.getSection(query)
+  }
+
   @Get("/workers")
   async getWorkers() {
     return this.appService.getWorkers()
   }
 
-  @Get('/worker/:name')
-  async getWorker(@Query() query , @Req() req){
-    return this.appService.getWorker(query , req)
+  @Get('/worker')
+  async getWorker(@Query() query){
+    return this.appService.getWorker(query)
   }
 }

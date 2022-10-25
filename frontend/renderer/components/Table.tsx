@@ -10,10 +10,11 @@ import Link from "next/link";
 import React , {useState} from "react";
 import {useStore } from "../store";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import Pagination from './Pagination'
+import PublicPagination from './PublicPagination'
+import OfficePaginate from './OfficePaginate'
 import { dataItem } from "react-widgets/cjs/Accessors";
 
-function Table({title,type = "public",  data, page} : {page; title?: string;type: "office" | "public"; data: any[];}) {
+function Table({title,type = "public",  data, page, handlePagination } : {handlePagination; page; title?: string;type: "office" | "public"; data: any[];}) {
 	const user = useStore((state) => state.user);
 	const removeHomePublicBill = useStore(
 		(state) => state.removeHomePublicBill,
@@ -67,6 +68,7 @@ function Table({title,type = "public",  data, page} : {page; title?: string;type
 				<tbody>
 					{data.map((row) => {
 						return (
+						
 							<tr
 								className=" align-middle"
 								key={`${row.clientName}/${row.id}`}
@@ -89,26 +91,28 @@ function Table({title,type = "public",  data, page} : {page; title?: string;type
 													<TrashIcon className="w-6 h-6"></TrashIcon>
 												</div>
 											</ConfirmDeleteModal>
-											<Link
-												href={`/edit/${type}?id=${row.id}`}
+										
+										</>
+									)}
+										<Link
+												href={`/Edit/${type}?id=${row.id}`}
 											>
 												<a
-													href={`/edit/bill/${type}?id=${row.id}`}
+													href={`/Edit/bill/${type}?id=${row.id}`}
 													className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1"
 												>
 													<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
 												</a>
 											</Link>
-										</>
-									)}
 									<Link
+									
 										href={`/preview/${type}?id=${row.id}`}
 									>
 										<a
 											href={`/preview/${type}?id=${row.id}`}
 											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1"
 										>
-											<DocumentMagnifyingGlassIcon className="w-6 h-6"></DocumentMagnifyingGlassIcon>
+											<DocumentMagnifyingGlassIcon  className="w-6 h-6"></DocumentMagnifyingGlassIcon>
 										</a>
 									</Link>
 								</td>
@@ -143,7 +147,15 @@ function Table({title,type = "public",  data, page} : {page; title?: string;type
 				</tbody>
 			</table>
 			<div className="mx-auto">
-			<Pagination page ={page}></Pagination>
+			{type === 'office' ? (
+				<OfficePaginate page ={page} type ='office' func = {handlePagination}></OfficePaginate>
+			)
+			:
+			(
+				<PublicPagination page ={page} type ='public' func = {handlePagination}></PublicPagination>
+
+			)
+}
 			</div>
 		</div>
 	);

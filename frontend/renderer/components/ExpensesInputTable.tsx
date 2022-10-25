@@ -239,7 +239,7 @@ function ExpensesInputTable({ readOnly }: IProps) {
 														),
 													})
 												}
-												placeholder={"السعر الكلى"}
+												placeholder={"المبلغ الكلى"}
 											></Input>
 										</td>
 										<td className="p-2">

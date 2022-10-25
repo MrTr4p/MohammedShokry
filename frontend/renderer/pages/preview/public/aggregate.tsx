@@ -11,7 +11,8 @@ function aggregate(billData) {
 	}
 	return (
 		<div>
-		
+						<Image src={backgroundImage} layout="fill" />
+
 			<AggregateBillTable Date ={billData} readOnly={true}></AggregateBillTable>
 		</div>
 	);

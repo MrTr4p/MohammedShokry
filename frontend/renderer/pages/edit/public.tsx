@@ -19,6 +19,8 @@ import { useRouter } from "next/router";
 import { v4 } from "uuid";
 
 function Public({ billData }: { billData: ProjectBill }) {
+	const user = useStore((state) => state.user);
+
 	const router = useRouter();
 	const {
 		clientName,
@@ -106,6 +108,7 @@ function Public({ billData }: { billData: ProjectBill }) {
 				router.push("/");
 			})
 			.catch((err) => {
+				console.log(err)
 				setInfoMessage({
 					message: err.response.data.message,
 					error: true,
@@ -139,18 +142,23 @@ function Public({ billData }: { billData: ProjectBill }) {
 							value={clientName}
 							label="أسم العميل"
 							type={"text"}
+							disabled = {user.accountType === 'create'}
 						></Input>
 						<Input
 							value={clientAddress}
 							label="عنوان العميل"
 							type={"text"}
 							onChange={(e) => setClientAddress(e.target.value)}
+							disabled = {user.accountType === 'create'}
+
 						></Input>
 						<Input
 							value={name}
 							label="أسم المشروع"
 							type={"text"}
 							onChange={(e) => setName(e.target.value)}
+							disabled = {user.accountType === 'create'}
+
 						></Input>
 						<Input
 							value={officePrecentage}
@@ -158,13 +166,18 @@ function Public({ billData }: { billData: ProjectBill }) {
 							type={"number"}
 							onChange={(e) =>
 								setOfficePrecentage(e.target.value)
+								
 							}
+							disabled = {user.accountType === 'create'}
+
 						></Input>
 						<Input
 							value={date}
 							label="التاريخ"
 							type={"date"}
 							onChange={(e) => setDate(e.target.value)}
+							disabled = {user.accountType === 'create'}
+
 						></Input>
 					</div>
 					<WorkerInputTable></WorkerInputTable>
