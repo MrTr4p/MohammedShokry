@@ -1,41 +1,39 @@
-const { app, BrowserWindow } = require("electron");
-const path = require("path");
-const url = require("url");
-
-let win;
-
-function createWindow() {
-  win = new BrowserWindow({ autoHideMenuBar: true,
-    maximizable: true,
-    width: 800,
-    height: 800,
-    minWidth: 650,
-    minHeight: 450, });
-
-  win.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html`),
-      protocol: "file:",
-      slashes: true
-    })
-  );
-
-  win.on("closed", () => {
-    win = null;
-  });
-}
-
-app.on("ready", createWindow);
-
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// Native
+const path_1 = require("path");
+const url_1 = require("url");
+// Packages
+const electron_1 = require("electron");
+const electron_is_dev_1 = __importDefault(require("electron-is-dev"));
+const electron_next_1 = __importDefault(require("electron-next"));
+// Prepare the renderer once the app is ready
+electron_1.app.on("ready", async () => {
+    await (0, electron_next_1.default)("./renderer");
+    const mainWindow = new electron_1.BrowserWindow({
+        autoHideMenuBar: true,
+        maximizable: true,
+        width: 800,
+        height: 800,
+        minWidth: 650,
+        minHeight: 450,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: false,
+            preload: (0, path_1.join)(__dirname, "preload.js"),
+        },
+    });
+    const url = electron_is_dev_1.default
+        ? "http://localhost:8000/"
+        : (0, url_1.format)({
+            pathname: (0, path_1.join)(__dirname, "../renderer/out/index.html"),
+            protocol: "file:",
+            slashes: true,
+        });
+    mainWindow.loadURL(url);
 });
-
-app.on("activate", () => {
-  if (win === null) {
-    createWindow();
-  }
-});
- 
+// Quit the app once all windows are closed
+electron_1.app.on("window-all-closed", electron_1.app.quit);
