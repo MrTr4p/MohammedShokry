@@ -219,6 +219,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 												<DeleteWorkerButton
 													disabled={readOnly}
 													onClick={() =>
+														//@ts-ignore
 														removeDropdownWorker(worker.id)
 													}
 												></DeleteWorkerButton>

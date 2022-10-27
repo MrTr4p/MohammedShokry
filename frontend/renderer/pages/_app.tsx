@@ -23,7 +23,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 		<>
 			{user.loggedIn && <Navbar></Navbar>}
 			<div className="container print:max-w-full mt-12">
-				<Component {...pageProps} />
+			{
+				//@ts-ignore
+					<Component {...pageProps} />
+			}
 			</div>
 		</>
 	);

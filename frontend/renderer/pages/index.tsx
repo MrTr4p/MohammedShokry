@@ -17,6 +17,7 @@ interface IProps {
 	publicBills: ProjectBill[];
 	officeBills: AnotherPaymentsBill[];
 }
+//@ts-ignore
 const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	console.log()
 	const homePublicBills = useStore((state) => state.homePublicBills);
@@ -81,13 +82,19 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	useEffect(() => {
 		if (searchState === "empty") {
 			setHomePublicBills(publicBills);
+			//@ts-ignore
+
 			setHomeOfficeBills(officeBills);
 		}
 	}, [searchState]);
 
 	useEffect(() => {
 		setHomePublicBills(publicBills);
+		//@ts-ignore
+
 		setHomeOfficeBills(officeBills);
+		//@ts-ignore
+
 	},publicBills, officeBills );
 	
 	return (
@@ -125,14 +132,14 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 
 					></Table>
 					<Table
+						
 						type="office"
 						title={"الفواتير الخاصة"}
 						data={homeOfficeBills}
 						page ={PAGE}
 						handlePagination ={handlePagination}
-					>						
-					</Table>
 
+					></Table>
 					<AnimatePresence>
 						{searchState === "loading" && (
 							<motion.div

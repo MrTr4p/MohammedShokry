@@ -101,8 +101,7 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 										<td className="p-2">
 											<Combobox
 												disabled={readOnly}
-												by={"id"}
-y												
+												by={"id"}											
 											>
 												<div className="relative mt-1.5">
 													<div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none">
@@ -116,6 +115,7 @@ y
 															}
 															displayValue={(
 																worker: Worker,
+																//@ts-ignore
 															) => worker?.name}
 														/>
 

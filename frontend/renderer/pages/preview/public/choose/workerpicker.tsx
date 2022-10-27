@@ -33,14 +33,23 @@ function workerpicker(billData) {
 				<main>
 					<div className="lg:flex md:flex mx-auto p-3 w-full justify-center rounded-md relative">
 				<div className="lg:ml-4 md:ml-4 w-full">
-				<ChooseInput iclassName="border-dotted"  label="اسم الفاتورة" value={WorkerData.projectName}>
-
-</ChooseInput>
+				<ChooseInput
+												disabled
+												type={"name"}
+												value={WorkerData.projectName}
+												iclassName="border-dotted"
+												label="اسم الفاتورة"
+					></ChooseInput>
+				
 				</div>
 					<div className="lg:mr-4 md:mr-4	w-full">
-					<ChooseInput iclassName="border-dotted" label="اسم العامل" value={WorkerData.worker}>
-
-</ChooseInput>	 
+					<ChooseInput
+												disabled
+												type={"name"}
+												value={WorkerData.worker}
+												iclassName="border-dotted"
+												label="اسم العامل"
+					></ChooseInput>
 					</div>
 					</div>
 					<table className="table-auto w-full border-2 border-secondary rounded-full ">
@@ -61,12 +70,12 @@ function workerpicker(billData) {
 												<tr>
 												<td>
 												
-													<PreviewInput value={worker.totalCost}></PreviewInput>
+													<PreviewInput type={'number'} value={worker.totalCost}></PreviewInput>
 												
 												</td>
 												<td>
 												
-												<PreviewInput value={worker.date}></PreviewInput>
+												<PreviewInput type={'date'} value={worker.date}></PreviewInput>
 											
 											</td>
 											

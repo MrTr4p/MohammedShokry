@@ -53,12 +53,20 @@ function AggregateBillTable(Date , { readOnly }: IProps,) {
 					return(
 					<>
 					<div className="flex justify-center">
-					<PreviewInput disabled className ='mx-16 ' value={aggregate.name}>
-						
-						</PreviewInput>
-						<PreviewInput disabled className ='mx-16 ' value={ aggregate.totalCost}>
-
-						</PreviewInput>
+					<PreviewInput
+												disabled
+												type={"text"}
+												value={aggregate.name}
+												
+												placeholder={"الاسم"}
+					></PreviewInput>
+						<PreviewInput
+												disabled
+												type={"text"}
+												value={aggregate.totalCost}
+												
+												placeholder={"ألبملغ"}
+					></PreviewInput>
 					</div>
 					</>
 					)
@@ -68,13 +76,21 @@ function AggregateBillTable(Date , { readOnly }: IProps,) {
 					</div>
 					<div className="bg-secondary  items-start p-4 absolute    rounded-b-md -inset-x-[1px] drop-shadow-md border-black border">
 						<div className="flex justify-start">
-							<PrintAggregateInput disabled className ='' label="البنود الكلي" value={totalrev}>
-
-</PrintAggregateInput>
-								
-							<PrintAggregateInput disabled label="المجموع الكلي" className ='' value = {totalcost}>
-									
-									</PrintAggregateInput>
+						<PrintAggregateInput
+												disabled
+												type={"number"}
+												value={totalrev}
+												
+												label="البنود الكلي"
+					></PrintAggregateInput>
+							
+							<PrintAggregateInput
+												disabled
+												type={"number"}
+												value={totalcost}
+												
+												label="المجموع الكلي"
+					></PrintAggregateInput>
 									<div className=" justify-start mx-auto">
 					<button className=" z-index:100" onClick={()=>{
 			window.print()

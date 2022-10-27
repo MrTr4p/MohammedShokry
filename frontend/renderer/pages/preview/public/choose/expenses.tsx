@@ -21,14 +21,23 @@ function expenses(billData) {
 				<main>
 					<div className="lg:flex md:flex mx-auto p-3 w-full justify-center rounded-md relative">
 				<div className="lg:ml-6 md:ml-6 w-full">
-				<ChooseInput iclassName="border-dotted"  label="اسم الفاتورة" value={ExpenseData.projectName}>
-
-</ChooseInput>
+				<ChooseInput
+												disabled
+												type={"name"}
+												value={ExpenseData.projectName}
+												iclassName="border-dotted"
+												label="اسم الفاتورة"
+					></ChooseInput>
 				</div>
 					<div className="lg:mr-6 md:mr-6	w-full">
-					<ChooseInput iclassName="border-dotted" label="اسم البند" value={ExpenseData.section}>
-
-</ChooseInput>	 
+					<ChooseInput
+												disabled
+												type={"name"}
+												value={ExpenseData.section}
+												iclassName="border-dotted"
+												label="اسم البند"
+					></ChooseInput>
+					
 					</div>
 					
 					</div>
@@ -52,17 +61,17 @@ function expenses(billData) {
 												<tr>
 												<td>
 												
-													<PreviewInput value={expense.name}></PreviewInput>
+													<PreviewInput type={'name'} value={expense.name}></PreviewInput>
 												
 												</td>
 												<td>
 												
-												<PreviewInput value={expense.date}></PreviewInput>
+												<PreviewInput type={'date'} value={expense.date}></PreviewInput>
 											
 											</td>
 											<td>
 												
-												<PreviewInput value={expense.totalCost}></PreviewInput>
+												<PreviewInput type={'number'} value={expense.totalCost}></PreviewInput>
 											
 											</td>
 											</tr>
