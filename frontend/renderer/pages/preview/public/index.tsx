@@ -101,7 +101,7 @@ function Public({ billData, id }: { billData: ProjectBill, id: number }) {
 	async function handlePrint() {}
 
 	return (
-		<div className="space-y-12">
+        <div className="space-y-12">
 			<header className="flex justify-between items-start">
 				<div className="flex flex-col items-start gap-2">
 					<h1 className="text-black font-bold text-3xl">
@@ -109,12 +109,10 @@ function Public({ billData, id }: { billData: ProjectBill, id: number }) {
 					</h1>
 					<p>هنا يمكنك عرض فاتورة عامة (فاتورة مشروع)</p>
 				</div>
-				<Link href="/">
-					<a href="" className="btn-outline px-6" onClick={restState}>
-						ألغاء
-						<XMarkIcon className="w-6 h-6"></XMarkIcon>
-					</a>
-				</Link>
+				<Link href="/" href="" className="btn-outline px-6" onClick={restState}>
+                    ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
+
+                </Link>
 			</header>
 			<main className="">
 				<div className="border-black border p-4 w-full bg-base drop-shadow rounded-md space-y-6 relative ">
@@ -178,7 +176,7 @@ function Public({ billData, id }: { billData: ProjectBill, id: number }) {
 				</div>
 			</main>
 		</div>
-	);
+    );
 }
 
 export default Public;

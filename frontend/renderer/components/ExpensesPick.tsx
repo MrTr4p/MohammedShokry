@@ -42,156 +42,153 @@ function ExpensesInputTable(billId, { readOnly }: IProps) {
 		setSearchResults(sectionsFuse.search(searchQuery).map((x) => x.item));
 	}, [searchQuery, sections]);
 
-	return (
-		<>
-			<div className="absolute inset-x-0 w-full top-14 bottom-0 grid place-items-center">
-			<div className="drop-shadow-lg bg-base max-w-xs rounded-md border-2 gap-4 pb-16 w-full flex flex-col items-center p-4">
-				<div className="flex flex-col items-center mb-4 ">
-					<div className="w-36 h-36 ">
-						<Image src={Logo} className=""></Image>
-					</div>
-					<h1 className="font-semibold text-xl mt-2">
-						S.H Steel Construction
-					</h1>
-				</div>
+	return <>
+        <div className="absolute inset-x-0 w-full top-14 bottom-0 grid place-items-center">
+        <div className="drop-shadow-lg bg-base max-w-xs rounded-md border-2 gap-4 pb-16 w-full flex flex-col items-center p-4">
+            <div className="flex flex-col items-center mb-4 ">
+                <div className="w-36 h-36 ">
+                    <Image src={Logo} className=""></Image>
+                </div>
+                <h1 className="font-semibold text-xl mt-2">
+                    S.H Steel Construction
+                </h1>
+            </div>
 
-				<form
-					className="flex flex-col items-center gap-4"
-				>   
-							
-									<tr>
-										<td className="p-2">
-											<Combobox
-												disabled={readOnly}
-												by={"id"}
-												
-												
-											
-											>
-												<div className="relative mt-1.5">
-													<div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none">
-														<Combobox.Input
-															className="pl-8 border-gray-400 border-2 border-dashed w-full h-9 focus:outline-none focus:border-primary focus:border-solid py-1 px-2 rounded-md transition"
-															onChange={(e) =>
-																setSearchQuery(
-																	e.target
-																		.value,
-																)
-															}
-															displayValue={(
-																expense: Worker,
-															) => expense?.name}
-														/>
+            <form
+                className="flex flex-col items-center gap-4"
+            >   
+                        
+                                <tr>
+                                    <td className="p-2">
+                                        <Combobox
+                                            disabled={readOnly}
+                                            by={"id"}
+                                            
+                                            
+                                        
+                                        >
+                                            <div className="relative mt-1.5">
+                                                <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none">
+                                                    <Combobox.Input
+                                                        className="pl-8 border-gray-400 border-2 border-dashed w-full h-9 focus:outline-none focus:border-primary focus:border-solid py-1 px-2 rounded-md transition"
+                                                        onChange={(e) =>
+                                                            setSearchQuery(
+                                                                e.target
+                                                                    .value,
+                                                            )
+                                                        }
+                                                        displayValue={(
+                                                            expense: Worker,
+                                                        ) => expense?.name}
+                                                    />
 
-														<Combobox.Button className="absolute inset-y-0 left-1 flex items-center">
-															<ChevronUpDownIcon
-																className="h-6 w-6 text-primary"
-																aria-hidden="true"
-															/>
-														</Combobox.Button>
-													</div>
+                                                    <Combobox.Button className="absolute inset-y-0 left-1 flex items-center">
+                                                        <ChevronUpDownIcon
+                                                            className="h-6 w-6 text-primary"
+                                                            aria-hidden="true"
+                                                        />
+                                                    </Combobox.Button>
+                                                </div>
 
-													<Transition
-														as={Fragment}
-														enter="transition ease-out duration-100"
-														enterFrom="transform opacity-0 scale-95"
-														enterTo="transform opacity-100 scale-100"
-														leave="transition ease-in duration-75"
-														leaveFrom="transform opacity-100 scale-100"
-														leaveTo="transform opacity-0 scale-95"
-													>
-														<Combobox.Options className="z-50 absolute mt-1 max-h-60 w-full px-2 overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-															{expenses.map(
-																(section) => (
-																	<div>
-																		<Link href={"/preview/public/choose/expenses?name=" + section.section.name + "&id=" + BillId}>
-																		 <a>
+                                                <Transition
+                                                    as={Fragment}
+                                                    enter="transition ease-out duration-100"
+                                                    enterFrom="transform opacity-0 scale-95"
+                                                    enterTo="transform opacity-100 scale-100"
+                                                    leave="transition ease-in duration-75"
+                                                    leaveFrom="transform opacity-100 scale-100"
+                                                    leaveTo="transform opacity-0 scale-95"
+                                                >
+                                                    <Combobox.Options className="z-50 absolute mt-1 max-h-60 w-full px-2 overflow-auto rounded-md bg-white pt-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                                        {expenses.map(
+                                                            (section) => (
+                                                                <div>
+                                                                    <Link href={"/preview/public/choose/expenses?name=" + section.section.name + "&id=" + BillId}>
 
-																	<Combobox.Option
-																	
-																		key={
-																			section.id
-																		}
-																		className={({
-																			selected,
-																			active,
-																		}) =>
-																			`relative cursor-default select-none py-2 my-0.5 pl-10 pr-4 rounded-md ${
-																				selected
-																					? "bg-primary text-white"
-																					: active
-																					? "bg-primary-hover text-white"
-																					: "text-gray-900"
-																			}`
-																		}
-																		value={
-																			section
-																		}
-																	>
-																		{({
-																			selected,
-																			active,
-																		}) => (
-																			<>
-																				<span
-																					className={`block truncate ${
-																						selected
-																							? "font-medium"
-																							: "font-normal"
-																					}`}
-																				>
-																					{
-																						section.section.name
-																					}
-																				</span>
-																				<div className="flex row">
-																				{selected && (
-																					<span
-																						className={`absolute px-12 inset-y-0 left-0 flex items-center  ${
-																							selected
-																								? "text-white"
-																								: "text-primary"
-																						}`}
-																					>
-																						<CheckIcon
-																							className="h-5 w-5"
-																							aria-hidden="true"
-																						/>
-																					</span>
-																				)}
-																	
-																				</div>
-																			</>
-																		)}
-																	</Combobox.Option>
-																	</a>
-																	</Link>
-																</div>
-																),
-															)}
-														
-														</Combobox.Options>
-													</Transition>
-												</div>
-											</Combobox>
-										</td>
-									</tr>
-								
-							
+                                                                        <Combobox.Option
+                                                                        
+                                                                            key={
+                                                                                section.id
+                                                                            }
+                                                                            className={({
+                                                                                selected,
+                                                                                active,
+                                                                            }) =>
+                                                                                `relative cursor-default select-none py-2 my-0.5 pl-10 pr-4 rounded-md ${
+                                                                                    selected
+                                                                                        ? "bg-primary text-white"
+                                                                                        : active
+                                                                                        ? "bg-primary-hover text-white"
+                                                                                        : "text-gray-900"
+                                                                                }`
+                                                                            }
+                                                                            value={
+                                                                                section
+                                                                            }
+                                                                        >
+                                                                            {({
+                                                                                selected,
+                                                                                active,
+                                                                            }) => (
+                                                                                <>
+                                                                                    <span
+                                                                                        className={`block truncate ${
+                                                                                            selected
+                                                                                                ? "font-medium"
+                                                                                                : "font-normal"
+                                                                                        }`}
+                                                                                    >
+                                                                                        {
+                                                                                            section.section.name
+                                                                                        }
+                                                                                    </span>
+                                                                                    <div className="flex row">
+                                                                                    {selected && (
+                                                                                        <span
+                                                                                            className={`absolute px-12 inset-y-0 left-0 flex items-center  ${
+                                                                                                selected
+                                                                                                    ? "text-white"
+                                                                                                    : "text-primary"
+                                                                                            }`}
+                                                                                        >
+                                                                                            <CheckIcon
+                                                                                                className="h-5 w-5"
+                                                                                                aria-hidden="true"
+                                                                                            />
+                                                                                        </span>
+                                                                                    )}
+                                                                        
+                                                                                    </div>
+                                                                                </>
+                                                                            )}
+                                                                        </Combobox.Option>
 
-							{!expenses.length && (
-						<div className="w-full flex justify-center py-2">
-							لا يوجد مصروفات
-						</div>
-					)}
-				</form>
-			</div>
-			</div>
-						
-							
-				
-		</>
-	);
+                                                                    </Link>
+                                                            </div>
+                                                            ),
+                                                        )}
+                                                    
+                                                    </Combobox.Options>
+                                                </Transition>
+                                            </div>
+                                        </Combobox>
+                                    </td>
+                                </tr>
+                            
+                        
+
+                        {!expenses.length && (
+                    <div className="w-full flex justify-center py-2">
+                        لا يوجد مصروفات
+                    </div>
+                )}
+            </form>
+        </div>
+        </div>
+                    
+                        
+            
+    </>;
 }
 
 export default ExpensesInputTable;

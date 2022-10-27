@@ -10,7 +10,7 @@ function BillTypeModal() {
 	const [value, setValue] = useState<string>("public");
 
 	return (
-		<AnimatePresence initial={true}>
+        <AnimatePresence initial={true}>
 			<Dialog.Root>
 				<Dialog.Trigger className="btn-primary">
 					<span>أضف فاتورة جديدة</span>
@@ -94,16 +94,16 @@ function BillTypeModal() {
 									</ToggleGroup.Root>
 									<div className="flex gap-2 w-full">
 										<Link
-											href={
+                                            href={
 												value ? `/create/${value}` : "/"
 											}
-										>
-											<a href={`/create/${value}`}>
-												<Dialog.Close className="btn-primary px-6 h-full">
-													أكمل
-												</Dialog.Close>
-											</a>
-										</Link>
+                                            href={`/create/${value}`}>
+
+                                            <Dialog.Close className="btn-primary px-6 h-full">
+                                                أكمل
+                                            </Dialog.Close>
+
+                                        </Link>
 										<Dialog.Close className="btn-outline px-6">
 											الغاء
 										</Dialog.Close>
@@ -115,7 +115,7 @@ function BillTypeModal() {
 				</Dialog.Portal>
 			</Dialog.Root>
 		</AnimatePresence>
-	);
+    );
 }
 
 export default BillTypeModal;

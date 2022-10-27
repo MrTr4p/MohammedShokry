@@ -81,7 +81,7 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 	const [info, setInfo] = useState({ message: "", error: false });
 
 	return (
-		<div className="absolute inset-x-0 w-full top-14 bottom-0 grid place-items-center">
+        <div className="absolute inset-x-0 w-full top-14 bottom-0 grid place-items-center">
 			<div className="drop-shadow-lg bg-base max-w-xs rounded-md border-2 gap-4 pb-16 w-full flex flex-col items-center p-4">
 				<div className="flex flex-col items-center mb-4 ">
 					<div className="w-36 h-36 ">
@@ -141,77 +141,77 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 																(worker) => (
 																	<div>
 																		<Link href={`/preview/public/choose/workerpicker?name=${worker.name}&id=${BillId}`}>
-																			<a>
-																	<Combobox.Option
-																		
-																		key={
-																			worker.rowId
-																		}
-																		className={({
-																			selected,
-																			active,
-																		}) =>
-																			`relative cursor-default select-none py-2 my-0.5 pl-10 pr-4 rounded-md ${
-																				selected
-																					? "bg-primary text-white"
-																					: active
-																					? "bg-primary-hover text-white"
-																					: "text-gray-900"
-																			}`
-																		}
-																		value={
-																			worker
-																		}
-																	>
-																		{({
-																			selected,
-																			active,
-																		}) => (
-																			<>
-																			
-																				<div className="flex">
-																				<span
-																					className={`block truncate ${
-																						selected
-																							? "font-medium"
-																							: "font-normal"
-																					}`}
-																				>
-																				
-																					
-																					{worker.name}
-																					
-																				
-																					
-																					
-																				</span>
-																				
-																				</div>
-																				
-																				<div className="flex row">
-																				{selected && (
-																					<span
-																						className={`absolute px-12 inset-y-0 left-0 flex items-center  ${
-																							selected
-																								? "text-white"
-																								: "text-primary"
-																						}`}
-																					>
-																						<CheckIcon
-																							className="h-5 w-5"
-																							aria-hidden="true"
-																						/>
-																					</span>
-																				)}
-																			
-																				</div>
-																				
-																			</>
-																		)}
-																		
-																	</Combobox.Option>
-																	</a>
-													</Link>
+
+                                                                            <Combobox.Option
+                                                                                
+                                                                                key={
+                                                                                    worker.rowId
+                                                                                }
+                                                                                className={({
+                                                                                    selected,
+                                                                                    active,
+                                                                                }) =>
+                                                                                    `relative cursor-default select-none py-2 my-0.5 pl-10 pr-4 rounded-md ${
+                                                                                        selected
+                                                                                            ? "bg-primary text-white"
+                                                                                            : active
+                                                                                            ? "bg-primary-hover text-white"
+                                                                                            : "text-gray-900"
+                                                                                    }`
+                                                                                }
+                                                                                value={
+                                                                                    worker
+                                                                                }
+                                                                            >
+                                                                                {({
+                                                                                    selected,
+                                                                                    active,
+                                                                                }) => (
+                                                                                    <>
+                                                                                    
+                                                                                        <div className="flex">
+                                                                                        <span
+                                                                                            className={`block truncate ${
+                                                                                                selected
+                                                                                                    ? "font-medium"
+                                                                                                    : "font-normal"
+                                                                                            }`}
+                                                                                        >
+                                                                                        
+                                                                                            
+                                                                                            {worker.name}
+                                                                                            
+                                                                                        
+                                                                                            
+                                                                                            
+                                                                                        </span>
+                                                                                        
+                                                                                        </div>
+                                                                                        
+                                                                                        <div className="flex row">
+                                                                                        {selected && (
+                                                                                            <span
+                                                                                                className={`absolute px-12 inset-y-0 left-0 flex items-center  ${
+                                                                                                    selected
+                                                                                                        ? "text-white"
+                                                                                                        : "text-primary"
+                                                                                                }`}
+                                                                                            >
+                                                                                                <CheckIcon
+                                                                                                    className="h-5 w-5"
+                                                                                                    aria-hidden="true"
+                                                                                                />
+                                                                                            </span>
+                                                                                        )}
+                                                                                    
+                                                                                        </div>
+                                                                                        
+                                                                                    </>
+                                                                                )}
+                                                                                
+                                                                            </Combobox.Option>
+
+                                                                        </Link>
 																	</div>	
 																																),
 															)}
@@ -238,7 +238,7 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 				</form>
 			</div>
 		</div>
-	);
+    );
 }
 
 export default WorkerPicker;

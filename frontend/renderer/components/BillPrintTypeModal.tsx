@@ -12,7 +12,7 @@ function BillPrintTypeModal({ id }: { id: number }) {
 	);
 
 	return (
-		<AnimatePresence initial={true}>
+        <AnimatePresence initial={true}>
 			<Dialog.Root>
 				<Dialog.Trigger className="btn-primary px-6">
 					<span>طبع</span>
@@ -97,24 +97,22 @@ function BillPrintTypeModal({ id }: { id: number }) {
 									</ToggleGroup.Root>
 									<div className="flex gap-2 w-full">
 										<Link
-											href={
+                                            href={
 												value
 													? `/preview/public/${value}?id=${id}`
 													: "/"
 											}
-										>
-											<a
-												href={
-													value
-														? `/preview/public/${value}?id=${id}`
-														: "/"
-												}
-											>
-												<Dialog.Close className="btn-primary px-6 h-full">
-													أكمل
-												</Dialog.Close>
-											</a>
-										</Link>
+                                            href={
+                                                value
+                                                    ? `/preview/public/${value}?id=${id}`
+                                                    : "/"
+                                            }>
+
+                                            <Dialog.Close className="btn-primary px-6 h-full">
+                                                أكمل
+                                            </Dialog.Close>
+
+                                        </Link>
 										<Dialog.Close className="btn-outline px-6">
 											الغاء
 										</Dialog.Close>
@@ -126,7 +124,7 @@ function BillPrintTypeModal({ id }: { id: number }) {
 				</Dialog.Portal>
 			</Dialog.Root>
 		</AnimatePresence>
-	);
+    );
 }
 
 export default BillPrintTypeModal;
