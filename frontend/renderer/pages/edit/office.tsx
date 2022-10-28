@@ -61,7 +61,7 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 				</div>
 				<Link href="/" className="btn-outline px-6" onClick={resetState}>
                     <a className="btn-outline px-6"> 
-					ألغاء<XMarkIcon className="btn-outline w-6 h-6"></XMarkIcon>
+					ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
 					</a>
 
                 </Link>

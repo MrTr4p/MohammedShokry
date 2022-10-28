@@ -86,18 +86,21 @@ function workerpicker(billData) {
 											})}
 									</tbody>
 								</table>			
-						<div className="flex justify-end mx-4">
-					<button className="justify-center flex z-40" onClick={()=>{
+					
+				</main>
+				<div>
+				<div className=" print:hidden absolute -inset-x-[1px] bottom-0 mb-2 mx-4 z-0 	">
+					<button className="bg-primary text-white rounded-full p-1 hover:bg-violet-600 active:bg-violet-800 " onClick={()=>{
 			window.print()
 			
 			
 			
 
 		}}>
-			<PrinterIcon className="w-5 h-5 m-1 rounded-full hover:bg-gray-200 active:bg-gray-300"></PrinterIcon>
+			<PrinterIcon className="w-5 h-5 m-1 rounded-full "></PrinterIcon>
 		</button>
 					</div>
-				</main>
+				</div>
 			</div>
 		</>
 	);

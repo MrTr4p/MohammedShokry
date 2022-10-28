@@ -7,7 +7,7 @@ import {
 	useAnotherPaymentsBillStore,
 	useStore,
 } from "../../store";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { PrinterIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import TextArea from "../../components/Textarea";
 import { GetServerSideProps } from "next";
@@ -104,27 +104,21 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
                         onChange={(e) => setDescription(e.target.value)}
                     ></TextArea>
                     <div></div>
-                    <div className="bg-secondary print:hidden flex items-center gap-4 p-4 absolute rounded-b-md -inset-x-[1px] -bottom-16 drop-shadow-md border-black border">
-                        <button
-                            className="btn-primary px-12"
-                            onClick={handlePrint}
-                        >
-                            طبع
-                        </button>
-                        {infoMessage.message && (
-                            <h1
-                                className={`font-bold text-center text-lg ${
-                                    infoMessage.error
-                                        ? "text-red-600"
-                                        : "text-green-600"
-                                }`}
-                            >
-                                {infoMessage.message}
-                            </h1>
-                        )}
-                    </div>
                 </div>
             </main>
+            <div>
+				<div className=" print:hidden absolute -inset-x-[1px] bottom-0 mb-2 mx-4 z-0 	">
+					<button className="bg-primary text-white rounded-full p-1 hover:bg-violet-600 active:bg-violet-800 " onClick={()=>{
+			window.print()
+			
+			
+			
+
+		}}>
+			<PrinterIcon className="w-5 h-5 m-1 rounded-full "></PrinterIcon>
+		</button>
+					</div>
+				</div>
         </div>
     </>;
 }
