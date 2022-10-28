@@ -20,7 +20,6 @@ import { v4 } from "uuid";
 
 function Public({ billData }: { billData: ProjectBill }) {
 	const user = useStore((state) => state.user);
-
 	const router = useRouter();
 	const {
 		clientName,
@@ -128,7 +127,9 @@ function Public({ billData }: { billData: ProjectBill }) {
 					</p>
 				</div>
 				<Link href="/" className="btn-outline px-6" onClick={restState}>
-                    ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
+                    <a className="btn-outline px-6"> 
+					ألغاء<XMarkIcon className=" w-6 h-6"></XMarkIcon>
+					</a>
 
                 </Link>
 			</header>

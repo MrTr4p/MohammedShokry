@@ -110,7 +110,7 @@ function Public({ billData, id }: { billData: ProjectBill, id: number }) {
 					<p>هنا يمكنك عرض فاتورة عامة (فاتورة مشروع)</p>
 				</div>
 				<Link href="/" className="btn-outline px-6" onClick={restState}>
-                    ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
+                   <a className="btn-outline px-6"> ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon></a>
 
                 </Link>
 			</header>

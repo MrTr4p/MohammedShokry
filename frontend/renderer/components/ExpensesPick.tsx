@@ -108,7 +108,7 @@ function ExpensesInputTable(billId, { readOnly }: IProps) {
                                                             (section) => (
                                                                 <div>
                                                                     <Link href={"/preview/public/choose/expenses?name=" + section.section.name + "&id=" + BillId}>
-
+                                                                        <a>
                                                                         <Combobox.Option
                                                                         
                                                                             key={
@@ -166,7 +166,7 @@ function ExpensesInputTable(billId, { readOnly }: IProps) {
                                                                                 </>
                                                                             )}
                                                                         </Combobox.Option>
-
+                                                                        </a>                 
                                                                     </Link>
                                                             </div>
                                                             ),

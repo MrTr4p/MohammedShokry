@@ -11,11 +11,12 @@ function Navbar() {
 					<div className="flex items-center gap-2">
 						<Link href="/" className="relative rounded-md p-1 h-8 w-8">
 
-                          {
-							//@ts-ignore
-							<Image src={LogoPng} layout="fill"></Image>
-						  }
+                        <a className="relative rounded-md p-1 h-8 w-8">
+					
+							<Image src={LogoPng}  layout ='fill'></Image>
+						  
 
+						</a>
                         </Link>
 						<h1 className="font-semibold">
 							شركة أس.أتش للبناء والصلب

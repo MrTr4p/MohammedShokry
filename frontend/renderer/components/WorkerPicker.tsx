@@ -144,7 +144,7 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 																(worker) => (
 																	<div>
 																		<Link href={`/preview/public/choose/workerpicker?name=${worker.name}&id=${BillId}`}>
-
+																			<a>
                                                                             <Combobox.Option
                                                                                 
                                                                                 key={
@@ -213,7 +213,7 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
                                                                                 )}
                                                                                 
                                                                             </Combobox.Option>
-
+																			</a>
                                                                         </Link>
 																	</div>	
 																																),

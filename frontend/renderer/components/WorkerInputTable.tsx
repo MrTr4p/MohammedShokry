@@ -214,14 +214,16 @@ function WorkerInputTable({ readOnly = false }: IProps) {
                                             <Link  href='/'
                  
                   >
-
-                                                <DeleteWorkerButton
+<a>
+    
+<DeleteWorkerButton
 													disabled={readOnly}
 													onClick={() =>
 														//@ts-ignore
 														removeDropdownWorker(worker.id)
 													}
 												></DeleteWorkerButton>
+</a>
 
                                             </Link>
                                         </td>

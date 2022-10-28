@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import ChooseWorkerInput from "../../../../components/ChooseWorkerInput";
 import Logo from "../../../../public/images/logo.png";
 import { useStore } from "../../../../store";
 import { GetServerSideProps } from "next";

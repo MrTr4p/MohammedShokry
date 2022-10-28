@@ -101,9 +101,11 @@ function BillTypeModal() {
 
                                             href={`/create/${value}`}>
 
-                                            <Dialog.Close className="btn-primary px-6 h-full">
+                                        <a>
+										<Dialog.Close className="btn-primary px-6 h-full">
                                                 أكمل
                                             </Dialog.Close>
+										</a>
 
                                         </Link>
 										<Dialog.Close className="btn-outline px-6">

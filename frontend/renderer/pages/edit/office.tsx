@@ -8,9 +8,6 @@ import {
 	useStore,
 } from "../../store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import WorkerInputTable from "../../components/WorkerInputTable";
-import ExpensesInputTable from "../../components/ExpensesInputTable";
-import RevenuesInputTable from "../../components/RevenuesInputTable";
 import { useRouter } from "next/router";
 import TextArea from "../../components/Textarea";
 import { GetServerSideProps } from "next";
@@ -62,8 +59,10 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 					</h1>
 					<p>هنا يمكنك ملئ الحقول لتعديل فاتورة خاصة (فاتورة اخرى)</p>
 				</div>
-				<Link href="/"  className="btn-outline px-6" onClick={resetState}>
-                    ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
+				<Link href="/" className="btn-outline px-6" onClick={resetState}>
+                    <a className="btn-outline px-6"> 
+					ألغاء<XMarkIcon className="btn-outline w-6 h-6"></XMarkIcon>
+					</a>
 
                 </Link>
 			</header>
