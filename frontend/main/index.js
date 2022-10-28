@@ -10,9 +10,11 @@ const url_1 = require("url");
 const electron_1 = require("electron");
 const electron_is_dev_1 = __importDefault(require("electron-is-dev"));
 const electron_next_1 = __importDefault(require("electron-next"));
+const { spawn } = require('child_process');
 // Prepare the renderer once the app is ready
 electron_1.app.on("ready", async () => {
     await (0, electron_next_1.default)("./renderer");
+    spawn(`${__dirname}/meilisearch.exe`);
     const mainWindow = new electron_1.BrowserWindow({
         autoHideMenuBar: true,
         maximizable: true,

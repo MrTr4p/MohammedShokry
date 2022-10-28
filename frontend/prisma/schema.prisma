@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model AnotherPaymentsBill {
+  id          Int     @id @default(autoincrement())
+  projectName String
+  amount      Int
+  date        String
+  inReturn    String
+  description String?
+}
+
+model ProjectBill {
+  id               Int            @id @default(autoincrement())
+  name             String         @unique
+  officePrecentage Int?
+  date             String
+  workers          WorkerSalary[]
+  revenues         Revenue[]
+  expenses         Expenses[]
+  sections         Section[]
+  clientName       String
+  clientAddress    String
+  updatedAt        DateTime       @updatedAt
+  createdAt        DateTime       @default(now())
+}
+
+model Worker {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  work      String
+  project   WorkerSalary[] 
+  updatedAt DateTime       @updatedAt
+  createdAt DateTime       @default(now())
+}
+
+model WorkerSalary {
+  id            String      @id @default(uuid())
+  amount        Int
+  precentage    Int?
+  date          String
+  Worker        Worker      @relation(fields: [WorkerId], references: [id] , onDelete: Cascade)
+  WorkerId      String      
+  ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
+  projectBillId Int
+  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
+}
+
+model Revenue {
+  id            String      @id @default(uuid())
+  amount        Int
+  date          String
+  ProjectBill   ProjectBill @relation(fields: [projectBillId], references: [id])
+  projectBillId Int
+  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
+}
+
+model Section {
+  id            String       @id @default(uuid())
+  name          String
+  ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
+  projectBillId Int?
+  expenses      Expenses[]
+  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime     @default(now())
+}
+
+model Expenses {
+  id            String       @id @default(uuid())
+  materialName  String
+  date          String
+  totalcost     Int
+  section       Section?     @relation(fields: [secionId], references: [id] , onDelete: Cascade)
+  secionId      String?
+  day           String
+  ProjectBill   ProjectBill? @relation(fields: [projectBillId], references: [id])
+  projectBillId Int?
+  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime     @default(now())
+}

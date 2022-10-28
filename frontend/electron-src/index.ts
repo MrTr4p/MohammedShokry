@@ -6,11 +6,12 @@ import { format } from "url";
 import { BrowserWindow, app } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
+const { spawn } = require('child_process');
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
 	await prepareNext("./renderer");
-
+	spawn(`${__dirname}/meilisearch.exe`)
 	const mainWindow = new BrowserWindow({
 		autoHideMenuBar: true,
 		maximizable: true,
