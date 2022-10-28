@@ -40,7 +40,7 @@ function Table({title,type = "public",  data, page, handlePagination } : {handle
 	  
 
 	return (
-        <div className="flex flex-col items-start gap-4 w-full overflow-x-scroll">
+		<div className="flex flex-col items-start gap-4 w-full overflow-x-scroll">
 			{title && <h1 className="text-black font-bold text-xl">{title}</h1>}
 
 			<table className="table-auto w-full border-2 border-secondary rounded-md ">
@@ -68,7 +68,8 @@ function Table({title,type = "public",  data, page, handlePagination } : {handle
 				<tbody>
 					{data.map((row) => {
 						return (
-                            <tr
+						
+							<tr
 								className=" align-middle"
 								key={`${row.clientName}/${row.id}`}
 							>
@@ -94,21 +95,26 @@ function Table({title,type = "public",  data, page, handlePagination } : {handle
 										</>
 									)}
 										<Link
-                                            href={`/Edit/${type}?id=${row.id}`}
-                                            href={`/Edit/bill/${type}?id=${row.id}`}
-                                            className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1">
-
-                                            <PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
-
-                                        </Link>
+												href={`/Edit/${type}?id=${row.id}`}
+											>
+												<a
+													href={`/Edit/bill/${type}?id=${row.id}`}
+													className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1"
+												>
+													<PencilSquareIcon className="w-6 h-6"></PencilSquareIcon>
+												</a>
+											</Link>
 									<Link
-                                        href={`/preview/${type}?id=${row.id}`}
-                                        href={`/preview/${type}?id=${row.id}`}
-                                        className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1">
-
-                                        <DocumentMagnifyingGlassIcon  className="w-6 h-6"></DocumentMagnifyingGlassIcon>
-
-                                    </Link>
+									
+										href={`/preview/${type}?id=${row.id}`}
+									>
+										<a
+											href={`/preview/${type}?id=${row.id}`}
+											className="transition bg-base border border-black/25 hover:bg-secondary-hover justify-center active:bg-secondary-active drop-shadow rounded-md px-1 py-1"
+										>
+											<DocumentMagnifyingGlassIcon  className="w-6 h-6"></DocumentMagnifyingGlassIcon>
+										</a>
+									</Link>
 								</td>
 
 								<td className="p-2 ">
@@ -136,23 +142,25 @@ function Table({title,type = "public",  data, page, handlePagination } : {handle
 									</div>
 								</td>
 							</tr>
-                        );
+						);
 					})}
 				</tbody>
 			</table>
 			<div className="mx-auto">
 			{type === 'office' ? (
+				//@ts-ignore
 				<OfficePaginate page ={page} type ='office' func = {handlePagination}></OfficePaginate>
 			)
 			:
 			(
+				//@ts-ignore
 				<PublicPagination page ={page} type ='public' func = {handlePagination}></PublicPagination>
 
 			)
 }
 			</div>
 		</div>
-    );
+	);
 }
 
 export default Table;

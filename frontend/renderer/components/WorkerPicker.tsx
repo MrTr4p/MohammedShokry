@@ -85,7 +85,10 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 			<div className="drop-shadow-lg bg-base max-w-xs rounded-md border-2 gap-4 pb-16 w-full flex flex-col items-center p-4">
 				<div className="flex flex-col items-center mb-4 ">
 					<div className="w-36 h-36 ">
-						<Image src={Logo} className=""></Image>
+						{
+							//@ts-ignore
+							<Image src={Logo} className=""></Image>
+						}
 					</div>
 					<h1 className="font-semibold text-xl mt-2">
 						S.H Steel Construction

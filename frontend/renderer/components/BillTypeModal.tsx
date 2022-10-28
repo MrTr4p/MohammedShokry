@@ -97,6 +97,8 @@ function BillTypeModal() {
                                             href={
 												value ? `/create/${value}` : "/"
 											}
+																						//@ts-ignore
+
                                             href={`/create/${value}`}>
 
                                             <Dialog.Close className="btn-primary px-6 h-full">

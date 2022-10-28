@@ -14,7 +14,10 @@ function expenses(billData) {
 	const ExpenseData = billData.billData
 	return (
 		<>
-								<Image className="-z-50" src={backgroundImage} layout="fill" />
+								{
+									//@ts-ignore
+									<Image className="-z-50" src={backgroundImage} layout="fill" />
+								}
 
 			
 			<div className="space-y-6 my-40">

@@ -48,7 +48,7 @@ function Office() {
 					</h1>
 					<p>هنا يمكنك ملئ الحقول لصنع فاتورة خاصة (فاتورة اخرى)</p>
 				</div>
-				<Link href="/" href="" className="btn-outline px-6" onClick={resetState}>
+				<Link href="/" className="btn-outline px-6" onClick={resetState}>
                     ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
 
                 </Link>

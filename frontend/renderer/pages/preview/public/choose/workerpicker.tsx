@@ -24,7 +24,10 @@ function workerpicker(billData) {
 	const WorkerData = billData.billData
 	return (
 		<>
-								<Image className="-z-50" src={backgroundImage} layout="fill" />
+								{
+									//@ts-ignore
+									<Image className="-z-50" src={backgroundImage} layout="fill" />
+								}
 
 	
 					

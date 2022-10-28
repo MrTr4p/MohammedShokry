@@ -102,6 +102,7 @@ function BillPrintTypeModal({ id }: { id: number }) {
 													? `/preview/public/${value}?id=${id}`
 													: "/"
 											}
+											//@ts-ignore
                                             href={
                                                 value
                                                     ? `/preview/public/${value}?id=${id}`
