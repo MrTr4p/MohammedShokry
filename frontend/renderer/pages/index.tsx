@@ -86,11 +86,12 @@ async function filter(
       throw new createError(status.FORBIDDEN , e)
     }
   
-    return JSON.parse(String({result : {
+    return JSON.parse(JSON.stringify({result : {
 		projectBills: projectbill,
 		anotherBills: anotherBills,
 	  }}));
   }
+
 
 //@ts-ignore
 const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
@@ -265,7 +266,6 @@ export const getServerSideProps: GetServerSideProps = async (props) => {
 	const PAGE_SIZE = 25;
 	const PAGE = 1;
 	
-	//@ts-ignore
 	const  { result : data} = await filter(PAGE , PAGE_SIZE , PAGE , PAGE_SIZE)
 	console.log('this', data)
 	const {projectBills , anotherBills} = data
