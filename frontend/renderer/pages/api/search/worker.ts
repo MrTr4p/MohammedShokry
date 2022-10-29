@@ -7,7 +7,7 @@ import * as createError from 'http-errors'
 async function getWorker(id: string): Promise<Worker> {
     if (!id)
       throw new createError("يجب ملئ ايدى العامل", status.BAD_REQUEST);
-    let worker = await this.prisma.worker.findUnique({ where: { id } });
+    let worker = await prisma.worker.findUnique({ where: { id } }) as any;
     if (!worker)
       throw new createError("لا يجود هذا العامل", status.NOT_FOUND);
     return worker;

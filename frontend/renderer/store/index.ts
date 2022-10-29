@@ -87,7 +87,7 @@ const storeSlice: StateCreator<
 > = (set) => ({
 	user: {
 		loggedIn: true,
-		accountType: "create",
+		accountType: "edit",
 	},
 	dropdownWorkers: [],
 	homePublicBills: [],

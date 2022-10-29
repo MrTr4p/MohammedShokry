@@ -67,7 +67,7 @@ function WorkerPicker(billId,  { readOnly = false }: IProps) {
 
 		axios({
 			url:
-				"http://localhost:3000/search/workers?query=" +
+			"http://localhost:8000/api/search/workerbyname?query=" +
 				encodeURIComponent(searchQuery),
 			signal: controller.signal,
 		}).then(({ data }) => {
