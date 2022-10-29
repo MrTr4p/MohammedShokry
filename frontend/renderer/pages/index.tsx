@@ -44,7 +44,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 				setSearchState("loading");
 				let { data } = await axios({
 					url:
-						"http://localhost:3000/search/bill?max_results=100&query=" +
+						"http://localhost:8000/api/search/bill?query=" +
 						query,
 				});
 				if (
