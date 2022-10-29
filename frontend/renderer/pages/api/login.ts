@@ -15,11 +15,16 @@ async function login(req) {
       accountType: body.password == AdminPass ? "edit" : "create",
     };
   } else {
-    throw new createError(status.UNAUTHORIZED , "لا يوجد حساب ب هذا الرمز")
+    return {
+      status: status.UNAUTHORIZED, 
+      error: true,
+      msg: 'الرمز السري غير صحيح'
+    }
   }
 }
 
   export default async function handler(req, res) {
     const result = await login(req)
+    if(result.error == true) return res.status(status.NOT_ACCEPTABLE).json({error : true , msg : result.msg})
     res.status(200).json(result)
   }

@@ -101,17 +101,16 @@ const storeSlice: StateCreator<
 				password,
 			},
 		}).catch((err) => err.response);
-
-		if (data.error) return data;
-
+		if (data.error) return  { message: data.msg, error: true };
 		set(() => ({
 			user: {
 				loggedIn: true,
 				accountType: data.accountType,
 			},
 		}));
-
-		return { message: "الرمز السرى صحيح", error: false };
+			return { message: "الرمز السرى صحيح", error: false };
+		
+		
 	},
 	removeHomePublicBill: async (billId) => {
 		let { data } = await axios({
