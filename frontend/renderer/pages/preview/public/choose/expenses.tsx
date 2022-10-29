@@ -107,7 +107,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const id: string = context.query.id as string;
 	const name : string = context.query.name as string;
 	console.log('This is expe' , context.query)
-	const url = encodeURI(`http://localhost:3000/get/section?name=${name}&id=${id}`)
+	const url = encodeURI(`http://localhost:8000/api/get/specific/section?name=${name}&id=${id}`)
 	const { data: billData } = await axios({
 		url: url,
 	});

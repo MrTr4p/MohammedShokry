@@ -20,7 +20,7 @@ export default expenses;
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const id: string = context.query.id as string;
 	const { data: billData } = await axios({
-		url: `http://localhost:3000/bill/all/get?id=` + id,
+		url: `http://localhost:8000/api/get/public?id=` + id
 	});
 	return {
 		props: {

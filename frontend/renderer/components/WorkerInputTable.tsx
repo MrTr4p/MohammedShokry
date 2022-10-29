@@ -46,7 +46,7 @@ function WorkerInputTable({ readOnly = false }: IProps) {
 		console.log('//')
 		if (!(dropdownWorkers.length > 0)) {
 			axios({
-				url: "http://localhost:3000/search/workers/get",
+				url: "http://localhost:8000/api/get/all/worker",
 			}).then(({ data }) => {
 				console.log(data)
 				setDropdownWorkers(data);

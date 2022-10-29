@@ -86,7 +86,7 @@ const storeSlice: StateCreator<
 	State
 > = (set) => ({
 	user: {
-		loggedIn: true,
+		loggedIn: false,
 		accountType: "create",
 	},
 	dropdownWorkers: [],
@@ -95,7 +95,7 @@ const storeSlice: StateCreator<
 	searchState: "empty",
 	login: async (password) => {
 		let { data } = await axios({
-			url: "http://localhost:3000/login",
+			url: "http://localhost:8000/api/login",
 			method: "post",
 			data: {
 				password,
@@ -115,7 +115,7 @@ const storeSlice: StateCreator<
 	},
 	removeHomePublicBill: async (billId) => {
 		let { data } = await axios({
-			url: `http://localhost:3000/delete/bill?id=${billId}`,
+			url: `http://localhost:8000/api/delete/public?id=${billId}`,
 			method: "delete",
 		});
 
@@ -127,7 +127,7 @@ const storeSlice: StateCreator<
 	},
 	removeHomeOfficeBill: async (billId) => {
 		let { data } = await axios({
-			url: `http://localhost:3000/delete/bill/another?id=${billId}`,
+			url: `http://localhost:3000/api/delete/office?id=${billId}`,
 			method: "delete",
 		});
 		set((state) => ({
@@ -139,7 +139,7 @@ const storeSlice: StateCreator<
 	setPickWorker : async (nameWorker , idWorker)  =>{
 		console.log(`Worker Name ${nameWorker} and his id is ${idWorker} `)
 		let {data} = await axios({
-			url:`http://localhost:3000/get/worker?name=${nameWorker}&id=${idWorker}`,
+			url:`http://localhost:3000/api/get/specific/worker?name=${nameWorker}&id=${idWorker}`,
 		})
 		return data
 	} ,
@@ -154,7 +154,7 @@ const storeSlice: StateCreator<
 		),
 	newDropdownWorker: async (workerData) => {
 		let { data } = await axios({
-			url: "http://localhost:3000/create/worker",
+			url: "http://localhost:8000/api/create/worker",
 			method: "POST",
 			data: workerData,
 		});
@@ -166,7 +166,7 @@ const storeSlice: StateCreator<
 	removeDropdownWorker: async (workerData) => {
 		console.log(workerData)
 		let { data } = await axios({
-			url: "http://localhost:3000/delete/worker?id=" + workerData,
+			url: "http://localhost:8000/api/delete/worker?id=" + workerData,
 			method: "delete",
 		});
 
@@ -177,7 +177,7 @@ const storeSlice: StateCreator<
 	removeSectionDropDown: async (sectiondata) => {
 		console.log(sectiondata)
 		let { data } = await axios({
-			url: "http://localhost:3000/delete/section?id=" + sectiondata,
+			url: "http://localhost:8000/api/delete/section?id=" + sectiondata,
 			method: "delete",
 		});
 
@@ -259,7 +259,7 @@ const projectBillSlice: StateCreator<
 			restState,
 		} = get();
 		let { data } = await axios({
-			url: "http://localhost:3000/create/bill/project",
+			url: "http://localhost:8000/api/create/public",
 			method: "post",
 			data: {
 				officePrecentage,
@@ -294,7 +294,7 @@ const projectBillSlice: StateCreator<
 		} = get();
 		console.log(sections)
 		let { data } = await axios({
-			url: "http://localhost:3000/update/bill/project?id=" + id,
+			url: "http://localhost:8000/api/update/public?id=" + id,
 			method: "put",
 			data: {
 				officePrecentage,
@@ -342,7 +342,7 @@ const projectBillSlice: StateCreator<
 		if (workerId) {
 			let { data }: { data: undefined | Worker } = await axios({
 				url:
-					"http://localhost:3000/search/workers/get/single?id=" +
+					"http://localhost:8000/api/search/worker?id=" +
 					workerId,
 			});
 			set(
@@ -372,7 +372,7 @@ const projectBillSlice: StateCreator<
 		if (workername) {
 			let { data }: { data: undefined | Worker } = await axios({
 				url:
-					"http://localhost:3000/get/worker?name=" + workername,
+					"http://localhost:8000/api/get/specific/worker?name=" + workername,
 			});
 			set(
 				produce<State & newProjectBill>((draft) => {
@@ -606,7 +606,7 @@ const anotherPaymentsBillStore: StateCreator<
 		} = get();
 
 		let { message, error } = await axios({
-			url: "http://localhost:3000/update/anotherBill",
+			url: "http://localhost:8000/api/update/office",
 			method: "post",
 			data: {
 				amount,
@@ -637,7 +637,7 @@ const anotherPaymentsBillStore: StateCreator<
 		} = get();
 
 		let { message, error } = await axios({
-			url: "http://localhost:3000/create/bill/anotherBill",
+			url: "http://localhost:8000/api/create/office",
 			method: "post",
 			data: {
 				amount,

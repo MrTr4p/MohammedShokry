@@ -14,8 +14,6 @@ import Table from "../components/Table";
 import {  AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import { PrismaClient } from '@prisma/client'
 
-import {filter} from './main'
-
 interface IProps {
 	publicBills: ProjectBill[];
 	officeBills: AnotherPaymentsBill[];
@@ -35,7 +33,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	const setHomeOfficeBills = useStore((state) => state.setHomeOfficeBills);
 	const setSearchState = useStore((state) => state.setSearchState);
 	const [page, setPage] = useState(0);
-	const pagesize = 25;
+	const pagesize = 3;
 	async function search(e: any) {
 		e.preventDefault();
 		if (searchState === "loading") return;
@@ -65,13 +63,12 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 			}
 		}
 	}
-		async function handlePagination(lalal , paga ){
-		const prisma = new PrismaClient()
-		console.log(lalal)
-		console.log('paga'  +  paga)
-	
-		const  { result : data} = await filter(paga , pagesize , paga , pagesize, prisma)
-		const { projectBills, anotherBills } = data;
+		async function handlePagination(lalal , paga ){	
+		const  data = await axios({
+			url: `http://localhost:8000/api/main?abpage=${paga}&ablimit=${pagesize}&bpage=${paga}&blimit=${pagesize}`,
+			method:'GET'
+		})
+		const {projectBills , anotherBills} = data.data
 		setHomePublicBills(projectBills.data);
 		setHomeOfficeBills(anotherBills.data);
 		return {
@@ -192,13 +189,14 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps = async (props) => {
-	const prisma = new PrismaClient()
-	const PAGE_SIZE = 25;
+	const PAGE_SIZE = 3;
 	const PAGE = 1;
 	
-	const  { result : data} = await filter(PAGE , PAGE_SIZE , PAGE , PAGE_SIZE , prisma)
-	console.log(data)
-	const {projectBills , anotherBills} = data
+	const  data = await axios({
+		url: `http://localhost:8000/api/main?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE}`,
+		method:'GET'
+	})
+	const {projectBills , anotherBills} = data.data
 	return {
 		props: {
 			PAGE:PAGE,

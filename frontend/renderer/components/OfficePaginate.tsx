@@ -51,11 +51,11 @@ function OfficePaginate ({func}, {type} : {type: "office" | "public";} , officep
 export default OfficePaginate
 export const getServerSideProps: GetServerSideProps = async (props) => {
 	
-	const limit = 25;
+	const limit = 3;
 	const PAGE = 1;
 
 	const { data: billsData } = await axios({
-		url: `http://localhost:3000/pageCount?limit=${limit}`,
+		url: `http://localhost:8000/api/getpagecount?limit=${limit}`,
 	});	
 	const { pagination } = billsData;
 	return {
