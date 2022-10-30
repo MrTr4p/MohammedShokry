@@ -2,6 +2,8 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 const prisma = new PrismaClient()
 import * as status from 'http-status' 
 import * as createError from 'http-errors'
+import MeiliSearch from "meilisearch";
+const meili =  new MeiliSearch({host:'http://localhost:7700'})
 
 async function deleteWorker(id: string) {
   console.log("Delete worker");
@@ -20,7 +22,7 @@ async function deleteWorker(id: string) {
         project: true,
       },
     });
-    //await this.meili.index("workers").deleteDocument(worker.id);
+    await meili.index("workers").deleteDocument(worker.id);
   }
 }
 

@@ -126,7 +126,7 @@ const storeSlice: StateCreator<
 	},
 	removeHomeOfficeBill: async (billId) => {
 		let { data } = await axios({
-			url: `http://localhost:3000/api/delete/office?id=${billId}`,
+			url: `http://localhost:8000/api/delete/office?id=${billId}`,
 			method: "delete",
 		});
 		set((state) => ({

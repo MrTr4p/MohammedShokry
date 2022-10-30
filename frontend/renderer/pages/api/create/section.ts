@@ -2,7 +2,8 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 const prisma = new PrismaClient()
 import * as status from 'http-status' 
 import * as createError from 'http-errors'
-
+import MeiliSearch from "meilisearch";
+const meili =  new MeiliSearch({host:'http://localhost:7700'})
 async function createSecion(req , name){
   let revs = []
   const body = req.body
@@ -23,7 +24,7 @@ async function createSecion(req , name){
     }
   })
   revs.push(rev)
-  //this.meili.index('section').addDocuments(revs)
+  await meili.index('section').addDocuments(revs)
   console.log(rev)
   return { message: "لقد تم اضافة بند بنجاح", error: false}
 }
