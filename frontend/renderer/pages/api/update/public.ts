@@ -2,7 +2,8 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 const prisma = new PrismaClient()
 import * as status from 'http-status' 
 import * as createError from 'http-errors'
-
+import MeiliSearch from "meilisearch";
+const meili =  new MeiliSearch({host:'http://localhost:7700'})
 async function Validation(body){
   if(body.projectName){
     
@@ -56,7 +57,7 @@ async function updatePublicBill(req, id: number) {
     },
   });
   result.push(projectBill)
-  //this.meili.index('project').addDocuments(result)
+  await meili.index('project').addDocuments(result)
   try {
     await prisma.revenue.deleteMany({
       where: {

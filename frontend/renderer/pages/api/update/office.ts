@@ -2,7 +2,8 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 const prisma = new PrismaClient()
 import * as status from 'http-status' 
 import * as createError from 'http-errors'
-
+import MeiliSearch from "meilisearch";
+const meili =  new MeiliSearch({host:'http://localhost:7700'})
 async function Validation(body){
   if(body.projectName){
     
@@ -58,7 +59,7 @@ async function updateOffice(req) {
     }
   })
   result.push(res)
-  //this.meili.index('anotherBill').addDocuments(result)
+  await meili.index('anotherBill').addDocuments(result)
 
   return { message: "تم تعديل فاتورة خاصة بنجاح", error: false}
 }

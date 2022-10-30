@@ -2,6 +2,8 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 const prisma = new PrismaClient()
 import * as status from 'http-status' 
 import * as createError from 'http-errors'
+import MeiliSearch from "meilisearch";
+const meili =  new MeiliSearch({host:'http://localhost:7700'})
 
 async function Validation(body) {
   if (body.name) {
@@ -75,7 +77,7 @@ async function Validation(body) {
         },
       });
       project.push(projectBill)
-      //this.meili.index('project').addDocuments(project)
+      await meili.index('project').addDocuments(project)
     } catch (e) {
       console.log(e)
       throw new createError("اسم هذا المشروع مستخدم في فاتورة مشروع مسبقا", status.BAD_REQUEST);

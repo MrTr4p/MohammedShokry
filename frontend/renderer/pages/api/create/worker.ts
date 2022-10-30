@@ -2,7 +2,8 @@ import { PrismaClient, ProjectBill } from "@prisma/client";
 const prisma = new PrismaClient()
 import * as status from 'http-status' 
 import * as createError from 'http-errors'
-
+import MeiliSearch from "meilisearch";
+const meili =  new MeiliSearch({host:'http://localhost:7700'})
 async function createWorker(reqB) {
   let workers = []
   const body = reqB.body;
@@ -14,7 +15,7 @@ async function createWorker(reqB) {
       },
     });
     workers.push(worker)
-    //this.meili.index('workers').addDocuments(workers)
+    await meili.index('workers').addDocuments(workers)
     return worker;
   } catch (e) {
     throw new createError(status.BAD_REQUEST , "يجب ملئ اسم و عمل العامل")
