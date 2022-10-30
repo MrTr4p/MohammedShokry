@@ -47,6 +47,7 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 				resetState();
 				router.push("/");
 			}
+			
 		});
 	}
 

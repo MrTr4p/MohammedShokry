@@ -109,7 +109,7 @@ function Public({ billData }: { billData: ProjectBill }) {
 			.catch((err) => {
 				console.log(err)
 				setInfoMessage({
-					message: err.response.data.message,
+					message: "هناك خطا في الفاتورة",
 					error: true,
 				});
 			});
