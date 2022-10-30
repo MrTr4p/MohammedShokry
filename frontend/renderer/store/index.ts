@@ -309,7 +309,7 @@ const projectBillSlice: StateCreator<
 		});
 
 		restState();
-		console.log(data);
+		console.log('this', data);
 		return data;
 	},
 	restState: () =>

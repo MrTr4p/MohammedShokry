@@ -4,37 +4,57 @@ import * as status from 'http-status'
 import * as createError from 'http-errors'
 import MeiliSearch from "meilisearch";
 const meili =  new MeiliSearch({host:'http://localhost:7700'})
-async function Validation(body){
-  if(body.projectName){
-    
-    if(!body.date){
+async function Validation(body) {
+  console.log(body)
+  if (body.name) {
+    if(!body.date || !body.clientName || !body.clientAddress )
+    {
       throw new createError(
-        "لقد نسيت ان تضع قيمة ل خانة التاريخ",
+        "يجب ملئ مدخلات الصف الاول",
         status.NOT_ACCEPTABLE,
       );
     }
-    if(!body.amount){
-      throw new createError(
-        "لقد نسيت ان تضع قيمة ل خانة المبلغ",
-        status.NOT_ACCEPTABLE,
-      );
+
+    for (let i = 0; i < body.workers.length; i++) {
+      const element = body.workers[i];
+      if (!element.project.date || !element.project.salary || !element.work || !element.name)
+        throw new createError(
+          "يبدو انك قمت باضافة عمال . تحقق و تاكد ان المدخلات ليست فارغة",
+          status.NOT_ACCEPTABLE,
+        );
     }
-    if(!body.inReturn){
-      throw new createError(
-        "لقد نسيت ان تضع قيمة ل خانة المقابل",
-        status.NOT_ACCEPTABLE,
-      );
+    for (let i = 0; i < body.expenses.length; i++) {
+      const element = body.expenses[i];
+      if (
+        !element.materialName ||
+        !element.date ||
+        !element.day ||
+        !element.totalcost
+      )
+
+        throw new createError(
+          status.NOT_ACCEPTABLE,
+          "يبدو انك قمت باضافة مصروفات . تحقق و تاكد ان المدخلات ليست فارغة"
+          
+        );
+    }
+
+   
+    for (let i = 0; i < body.revenues.length; i++) {
+      const element = body.revenues[i];
+      console.log(element)
+      if (!element.amount || !element.date)
+        throw new createError(
+          "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
+          status.NOT_ACCEPTABLE,
+        );
     }
   }else{
-    throw new createError(
-      "لقد حدث خطأ ما , يرجي التاكد من المدخلات",
-      status.NOT_ACCEPTABLE,
-    );
+    throw new createError(status.NOT_ACCEPTABLE ,  "لقد حدث خطأ ما . يرجي التاكد من المدخلات")
   }
 }
 
 async function updatePublicBill(req, id: number) {
-  console.log("//")
   const body = req.body;
   const result = []
   const workers = (await req.body.workers) || [];

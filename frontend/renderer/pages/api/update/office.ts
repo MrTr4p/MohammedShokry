@@ -51,7 +51,7 @@ async function updateOffice(req) {
 
     },
     data:{
-      projectName: body.name || oldBill.projectName,
+      projectName: body.projectName || oldBill.projectName,
       date:body.date || oldBill.date,
       description:body.description || oldBill.description,
       inReturn: body.inReturn || oldBill.inReturn,
