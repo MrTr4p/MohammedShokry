@@ -149,12 +149,12 @@ function Table({title,type = "public",  data, page, handlePagination } : {handle
 			<div className="mx-auto">
 			{type === 'office' ? (
 				//@ts-ignore
-				<OfficePaginate page ={page} type ='office' func = {handlePagination}></OfficePaginate>
+				<OfficePaginate pagecount ={page} type ='office' func = {handlePagination}></OfficePaginate>
 			)
 			:
 			(
 				//@ts-ignore
-				<PublicPagination page ={page} type ='public' func = {handlePagination}></PublicPagination>
+				<PublicPagination pagecount ={page} type ='public' func = {handlePagination}></PublicPagination>
 
 			)
 }

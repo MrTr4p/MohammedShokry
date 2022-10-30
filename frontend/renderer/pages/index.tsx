@@ -23,7 +23,7 @@ interface IProps {
 
 
 //@ts-ignore
-const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
+const IndexPage = ({ publicBills, officeBills, PAGE , publicPageCount , officePageCount }: IProps) => {
 	console.log()
 	const homePublicBills = useStore((state) => state.homePublicBills);
 	const homeOfficeBills = useStore((state) => state.homeOfficeBills);
@@ -65,7 +65,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 	}
 		async function handlePagination(lalal , paga ){	
 		const  data = await axios({
-			url: `http://localhost:8000/api/main?abpage=${paga}&ablimit=${pagesize}&bpage=${paga}&blimit=${pagesize}`,
+			url: `http://localhost:8000/api/main?abpage=${paga}&ablimit=${pagesize}&bpage=${lalal}&blimit=${pagesize}`,
 			method:'GET'
 		})
 		const {projectBills , anotherBills} = data.data
@@ -130,7 +130,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 						type="public"
 						title={"الفواتير العامة"}
 						data={homePublicBills}
-						page ={PAGE}
+						page ={publicPageCount}
 						handlePagination ={handlePagination}
 
 					></Table>
@@ -139,7 +139,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE }: IProps) => {
 						type="office"
 						title={"الفواتير الخاصة"}
 						data={homeOfficeBills}
-						page ={PAGE}
+						page ={officePageCount}
 						handlePagination ={handlePagination}
 
 					></Table>
@@ -203,7 +203,11 @@ export const getServerSideProps: GetServerSideProps = async (props) => {
 			publicBills: projectBills.data,
 			officeBills: anotherBills.data,
 			publicPagination : projectBills.pagination,
-			officePagination : anotherBills.pagination
+			officePagination : anotherBills.pagination,
+			publicPageCount : projectBills.pagination.totalPages,
+			officePageCount : anotherBills.pagination.totalPages,
+
+
 		},
 		
 	};

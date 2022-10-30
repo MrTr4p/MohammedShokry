@@ -10,7 +10,7 @@ import {GetServerSideProps} from 'next'
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import axios from "axios";
 
-function PublicPagination ({func}, {type} : {type: "office" | "public";} , publicpagecount) {
+function PublicPagination ({func , pagecount}) {
     async function handlePageClick (data){
 			const page = data.selected + 1
 			func(page, 1)
@@ -23,13 +23,11 @@ function PublicPagination ({func}, {type} : {type: "office" | "public";} , publi
     }
 	return (
 		<div>
-			
-			
 									{
 										//@ts-ignore
 											<ReactPaginate
 											previousLabel={<div><ArrowUturnRightIcon className="w-8 h-4 my-2"></ArrowUturnRightIcon></div>}
-											pageCount={publicpagecount}
+											pageCount={pagecount}
 											onPageChange={handlePageClick}
 											nextLabel={<div><ArrowUturnLeftIcon className="w-8 h-4 my-2"></ArrowUturnLeftIcon></div>}
 											marginPagesDisplayed={1}
@@ -49,22 +47,4 @@ function PublicPagination ({func}, {type} : {type: "office" | "public";} , publi
 }
 
 export default PublicPagination
-export const getServerSideProps: GetServerSideProps = async (props) => {
-	
-	const limit = 3;
-	const PAGE = 1;
-
-	const { data: billsData } = await axios({
-		url: `http://localhost:8000/api/getpagecount?limit=${limit}`,
-	});	
-	const { pagination } = billsData;
-	return {
-		props: {
-			PAGE:PAGE,
-			publicpagecount: pagination.public,
-		},
-		
-	};
-
-};
 

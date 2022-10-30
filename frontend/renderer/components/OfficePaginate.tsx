@@ -10,7 +10,7 @@ import {GetServerSideProps} from 'next'
 import { AnotherPaymentsBill, ProjectBill, useStore } from "../store";
 import axios from "axios";
 import PublicPagination from './PublicPagination';
-function OfficePaginate ({func}, {type} : {type: "office" | "public";} , officepagecount) {
+function OfficePaginate ({pagecount , func} ) {
     async function handlePageClick (data){
 			const officepage = data.selected + 1
 			func(1 , officepage)
@@ -24,7 +24,7 @@ function OfficePaginate ({func}, {type} : {type: "office" | "public";} , officep
         										//@ts-ignore
                             <ReactPaginate
                             previousLabel={<div><ArrowUturnRightIcon className="w-8 h-4 my-2"></ArrowUturnRightIcon></div>}
-                            pageCount={officepagecount}
+                            pageCount={pagecount}
                             onPageChange={handlePageClick}
                             nextLabel={<div><ArrowUturnLeftIcon className="w-8 h-4 my-2"></ArrowUturnLeftIcon></div>}
                             marginPagesDisplayed={1}
@@ -49,21 +49,4 @@ function OfficePaginate ({func}, {type} : {type: "office" | "public";} , officep
 }
 
 export default OfficePaginate
-export const getServerSideProps: GetServerSideProps = async (props) => {
-	
-	const limit = 3;
-	const PAGE = 1;
 
-	const { data: billsData } = await axios({
-		url: `http://localhost:8000/api/getpagecount?limit=${limit}`,
-	});	
-	const { pagination } = billsData;
-	return {
-		props: {
-			PAGE:PAGE,
-			officepagecount: pagination.office,
-		},
-		
-	};
-
-};
