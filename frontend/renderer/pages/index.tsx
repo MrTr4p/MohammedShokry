@@ -33,7 +33,7 @@ const IndexPage = ({ publicBills, officeBills, PAGE , publicPageCount , officePa
 	const setHomeOfficeBills = useStore((state) => state.setHomeOfficeBills);
 	const setSearchState = useStore((state) => state.setSearchState);
 	const [page, setPage] = useState(0);
-	const pagesize = 3;
+	const pagesize = 13;
 	async function search(e: any) {
 		e.preventDefault();
 		if (searchState === "loading") return;
@@ -189,14 +189,15 @@ const IndexPage = ({ publicBills, officeBills, PAGE , publicPageCount , officePa
 export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps = async (props) => {
-	const PAGE_SIZE = 3;
+	const PAGE_SIZE = 13;
 	const PAGE = 1;
 	
 	const  data = await axios({
-		url: `http://localhost:8000/api/main?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE}`,
+		url: `http://localhost:8000/api/main?abpage=${PAGE}&ablimit=${PAGE_SIZE}&bpage=${PAGE}&blimit=${PAGE_SIZE}`,
 		method:'GET'
 	})
 	const {projectBills , anotherBills} = data.data
+	console.log(projectBills.pagination.totalPages)
 	return {
 		props: {
 			PAGE:PAGE,

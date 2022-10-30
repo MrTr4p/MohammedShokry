@@ -9,8 +9,8 @@ async function getPageCount(query){
     await prisma.projectBill.count(),
   ]);
   const limit = Number(query.limit)
-  const bPage = Math.round(Number(bCount)/limit)
-  const abPage = Math.round(Number(aBCount)/limit)
+  const bPage = ((bCount / Number(limit)) - Math.floor(bCount / Number(limit))) !== 0 ? Math.round(bCount / Number(limit)) + 1 : Math.round(bCount / Number(limit))
+  const abPage = ((aBCount / Number(limit)) - Math.floor(aBCount / Number(limit))) !== 0 ? Math.round(aBCount / Number(limit)) + 1 : Math.round(aBCount / Number(limit))
   return {
     office: abPage, 
     public: bPage

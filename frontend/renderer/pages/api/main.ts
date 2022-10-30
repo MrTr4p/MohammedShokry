@@ -36,9 +36,10 @@ const meili =  new MeiliSearch({host:'http://localhost:7700'})
     const bindex = bpageReq * blimitReq;
     const bskipindex = (bpageReq - 1) * blimitReq;
     const abskipindex = (pageReq - 1) * limitReq;
-    const totalabPages = Math.round(aBCount / Number(limitReq));
-    const totalBPages = Math.round(bCount / Number(blimitReq));
-  
+    const totalabPages = ((aBCount / Number(limitReq)) - Math.floor(aBCount / Number(limitReq))) !== 0 ? Math.round(aBCount / Number(limitReq)) + 1 : Math.round(aBCount / Number(limitReq))
+    const totalBPages = ((bCount / Number(blimitReq)) - Math.floor(bCount / Number(blimitReq))) !== 0 ? Math.round(bCount / Number(blimitReq)) + 1 : Math.round(bCount / Number(blimitReq))
+    console.log(totalBPages , totalabPages)
+    
     anotherBills.pagination.currentPage = Number(pageReq);
     anotherBills.pagination.pageSize = Number(limitReq);
     anotherBills.pagination.totalCount = aBCount;
