@@ -41,14 +41,19 @@ function Office({ billData }: { billData: AnotherPaymentsBill }) {
 	const router = useRouter();
 
 	async function handleSave() {
-		editBill().then((result) => {
-			setInfoMessage({ message: result.message, error: result.error });
-			if (!result.error) {
-				resetState();
+
+		editBill()
+			.then((result) => {
+				setInfoMessage({ message: result.message, error: false });
 				router.push("/");
-			}
-			
-		});
+			})
+			.catch((err) => {
+				console.log(err)
+				setInfoMessage({
+					message: "هناك خطا في الفاتورة",
+					error: true,
+				});
+			});
 	}
 
 	return (
