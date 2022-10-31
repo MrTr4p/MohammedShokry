@@ -5,23 +5,30 @@ import * as createError from 'http-errors'
 import MeiliSearch from "meilisearch";
 const meili =  new MeiliSearch({host:'http://localhost:7700'})
 async function Validation(body) {
-  console.log(body)
+  console.log(body);
   if (body.name) {
-    if(!body.date || !body.clientName || !body.clientAddress )
-    {
-      throw new createError(
-        "يجب ملئ مدخلات الصف الاول",
-        status.NOT_ACCEPTABLE,
-      );
+    if (!body.date || !body.clientName || !body.clientAddress) {
+      return {
+        msg: "يجب ملئ مدخلات الصف الاول",
+        error: true,
+        status: status.NOT_ACCEPTABLE,
+      };
     }
 
     for (let i = 0; i < body.workers.length; i++) {
       const element = body.workers[i];
-      if (!element.project.date || !element.project.salary || !element.work || !element.name)
-        throw new createError(
-          "يبدو انك قمت باضافة عمال . تحقق و تاكد ان المدخلات ليست فارغة",
-          status.NOT_ACCEPTABLE,
-        );
+      if (
+        !element.project.date ||
+        !element.project.salary ||
+        !element.work ||
+        !element.name
+      ) {
+        return {
+          msg: "يبدو انك قمت باضافة عمال تحقق و تاكد ان المدخلات ليست فارغة",
+          error: true,
+          status: status.NOT_ACCEPTABLE,
+        };
+      }
     }
     for (let i = 0; i < body.expenses.length; i++) {
       const element = body.expenses[i];
@@ -30,31 +37,36 @@ async function Validation(body) {
         !element.date ||
         !element.day ||
         !element.totalcost
-      )
-
-        throw new createError(
-          status.NOT_ACCEPTABLE,
-          "يبدو انك قمت باضافة مصروفات . تحقق و تاكد ان المدخلات ليست فارغة"
-          
-        );
+      ) {
+        return {
+          msg: "يبدو انك قمت باضافة مصروفات . تحقق و تاكد ان المدخلات ليست فارغة",
+          error: true,
+          status: status.NOT_ACCEPTABLE,
+        };
+      }
     }
 
-   
     for (let i = 0; i < body.revenues.length; i++) {
       const element = body.revenues[i];
-      console.log(element)
-      if (!element.amount || !element.date)
-        throw new createError(
-          "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
-          status.NOT_ACCEPTABLE,
-        );
+      console.log(element);
+      if (!element.amount || !element.date) {
+        return {
+          msg: "يبدو انك قمت باضافة ارادات . تحقق و تاكد ان المدخلات ليست فارغة",
+          error: true,
+          status: status.NOT_ACCEPTABLE,
+        };
+      }
     }
-  }else{
-    throw new createError(status.NOT_ACCEPTABLE ,  "لقد حدث خطأ ما . يرجي التاكد من المدخلات")
+  } else {
+    return {
+      msg: " لقد حدث خطأ ما يرجي التاكد من مدخلات الصف الاول",
+      error: true,
+      status: status.NOT_ACCEPTABLE,
+    };
   }
 }
 
-async function updatePublicBill(req, id: number) {
+async function updatePublicBill(req, id: number , res) {
   const body = req.body;
   const result = []
   const workers = (await req.body.workers) || [];
@@ -63,7 +75,10 @@ async function updatePublicBill(req, id: number) {
       id: id,
     },
   });
-  await Validation(body)
+  const val = await Validation(body);
+  if (val.error == true) {
+    return res.status(val.status).send(val.msg);
+  }
   const projectBill = await prisma.projectBill.update({
     where: {
       id: oldProject.id,
@@ -195,7 +210,7 @@ async function updatePublicBill(req, id: number) {
 
   export default async function handler(req, res) {
     const id = Number(req.query.id)
-    const result = await updatePublicBill(req, id)
+    const result = await updatePublicBill(req, id , res)
     res.status(200).json(result)
   }
 

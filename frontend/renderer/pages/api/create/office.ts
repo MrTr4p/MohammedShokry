@@ -6,39 +6,35 @@ import MeiliSearch from "meilisearch";
 const meili =  new MeiliSearch({host:'http://localhost:7700'})
 
 async function Validation(body){
+  console.log(body)
   if(body.projectName){
     
     if(!body.date){
-      throw new createError(
-        "لقد نسيت ان تضع قيمة ل خانة التاريخ",
-        status.NOT_ACCEPTABLE,
-      );
+      return {msg :  "لقد نسيت ان تضع قيمة ل خانة التاريخ" , error : true}
     }
     if(!body.amount){
-      throw new createError(
-        "لقد نسيت ان تضع قيمة ل خانة المبلغ",
-        status.NOT_ACCEPTABLE,
-      );
+      return {msg :  "لقد نسيت ان تضع قيمة ل خانة المبلغ" , error : true}
+
     }
     if(!body.inReturn){
-      throw new createError(
-        "لقد نسيت ان تضع قيمة ل خانة المقابل",
-        status.NOT_ACCEPTABLE,
-      );
+      return {msg :  "لقد نسيت ان تضع قيمة ل خانة المقابل", error : true}
+
     }
   }else{
-    throw new createError(
-      "لقد حدث خطأ ما , يرجي التاكد من المدخلات",
-      status.NOT_ACCEPTABLE,
-    );
+    return {msg :  "لقد حدث خطأ ما , يرجي التاكد من المدخلات", error : true}
+
   }
+  return {msg : 'تم بنجاح' , error : false}
 }
 
 
-  async function createOfficeBill(req) {
+  async function createOfficeBill(req, response) {
     const body = req.body
     let ab = []
-    await Validation(body)
+    const val = await Validation(body)
+    if(val.error == true){
+      return response.status(406).send(val.msg)
+    }
     const res = await prisma.anotherPaymentsBill.create({
       data:{
         projectName: body.projectName,
@@ -57,7 +53,7 @@ async function Validation(body){
   }
 
   export default async function handler(req, res) {
-    const result = await createOfficeBill(req)
+    const result = await createOfficeBill(req, res)
     res.status(200).json(result)
   }
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Input from "../../components/Input";
 import { useAnotherPaymentsBillStore } from "../../store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -25,17 +25,30 @@ function Office() {
 		message: "",
 		error: false,
 	});
+	useEffect(() => resetState(), []);
 
 	const router = useRouter();
 
 	async function handleSave() {
-		saveBill().then((result) => {
-			setInfoMessage({ message: result.message, error: result.error });
-			if (!result.error) {
-				resetState();
+		saveBill()
+			.then((result) => {
+				if(result.error == true) return setInfoMessage({
+					message: result.message,
+					error: true,
+					
+				});
+				setInfoMessage({ message: result.message, error: false });
 				router.push("/");
-			}
-		});
+				console.log('gay');
+
+			})
+			.catch((err) => {
+				console.log(err)
+				setInfoMessage({
+					message: err.response.data,
+					error: true,
+				});
+			});
 	}
 
 	return (

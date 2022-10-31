@@ -86,7 +86,7 @@ const storeSlice: StateCreator<
 	State
 > = (set) => ({
 	user: {
-		loggedIn: false,
+		loggedIn: true,
 		accountType: "edit",
 	},
 	dropdownWorkers: [],
@@ -274,8 +274,9 @@ const projectBillSlice: StateCreator<
 		});
 
 		restState();
-		console.log(data);
 		return data;
+
+	
 	},
 	editBill: async () => {
 		let {
@@ -616,9 +617,9 @@ const anotherPaymentsBillStore: StateCreator<
 				description,
 			},
 		})
-			.then(({ data }) => ({ message: data.message, error: false }))
+			.then(({ data }) => ({ message: data, error: false }))
 			.catch((err) => ({
-				message: err?.reponse?.data?.message,
+				message: err?.reponse?.data,
 				error: true,
 			}));
 
@@ -647,12 +648,15 @@ const anotherPaymentsBillStore: StateCreator<
 				description,
 			},
 		})
-			.then(({ data }) => ({ message: data.message, error: false }))
-			.catch((err) => ({
-				message: err?.reponse?.data?.message,
+			.then(({ data }) => {
+				console.log('this' , data)
+				return ({ message: data, error: false })})
+			.catch((err) => { 
+				return ({
+				message: err.response.data,
 				error: true,
-			}));
-
+			})});
+			console.log
 		return { message, error };
 	},
 	setProjectName: (name: string) => set({ projectName: name }),
