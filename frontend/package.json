@@ -1,6 +1,7 @@
 {
   "private": true,
   "main": "main/index.js",
+  "icon": "/renderer/public/images/logo.png",
   "productName": "S.H COMPANY",
   "scripts": {
     "clean": "rimraf dist main renderer/out renderer/.next",
@@ -61,5 +62,10 @@
       "main",
       "renderer/out"
     ]
-  }
+  },  
+    "win": {
+      "target": "squirrel",
+      "icon": "/renderer/public/images/logo.png"
+    }
+  
 }

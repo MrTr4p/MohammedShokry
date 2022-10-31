@@ -56,7 +56,7 @@ function Public() {
 					<p>هنا يمكنك ملئ الحقول لصنع فاتورة عامة (فاتورة مشروع)</p>
 				</div>
 				<Link href="/" className="btn-outline px-6" onClick={restState}>
-                    <a>
+                    <a className="btn-outline px-6"> 
 					ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
 					</a>
 

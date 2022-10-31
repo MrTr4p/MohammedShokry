@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Input from "../../components/Input";
 import { useAnotherPaymentsBillStore } from "../../store";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
 import { useRouter } from "next/router";
 import TextArea from "../../components/Textarea";
 function Office() {
@@ -49,7 +48,9 @@ function Office() {
 					<p>هنا يمكنك ملئ الحقول لصنع فاتورة خاصة (فاتورة اخرى)</p>
 				</div>
 				<Link href="/" className="btn-outline px-6" onClick={resetState}>
-                    ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
+                    <a className="btn-outline px-6"> 
+					ألغاء<XMarkIcon className="w-6 h-6"></XMarkIcon>
+					</a>
 
                 </Link>
 			</header>
